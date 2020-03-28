@@ -3,6 +3,9 @@ import { Link, useHistory } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import api from "../../services/api";
 
+import Cabecalho from "../../components/Cabecalho/Cabecalho"
+import Rodape from "../../components/Rodape/Rodape"
+
 import "./styles.css";
 
 export default function Register() {
@@ -30,44 +33,48 @@ export default function Register() {
   }
 
   return (
-    <div className="register-container">
-      <div className="content">
-        <section>
-          <h1>Cadastro</h1>
-          <p>Faça seu Cadastro, para entrar na comunidade PetParty!</p>
-          <Link className="backlink" to="/">
-            <FiArrowLeft size={16} color="#e02041 " />
+    <div>
+      <Cabecalho />
+      <div className="register-container">
+        <div className="content">
+          <section>
+            <h1>Cadastro</h1>
+            <p>Faça seu Cadastro, para entrar na comunidade PetParty!</p>
+            <Link className="backlink" to="/">
+              <FiArrowLeft size={16} color="#e02041 " />
             Não Tenho Cadastro
           </Link>
-        </section>
+          </section>
 
-        <form onSubmit={handleRegister}>
-          <input
-            placeholder="Nome Completo"
-            value={nome}
-            onChange={e => setName(e.target.value)}
-          />
-          <input
-            placeholder="Email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <input
-            placeholder="Senha"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-          <input
-            placeholder="CPF"
-            value={cpf}
-            onChange={e => setCpf(e.target.value)}
-          />
+          <form onSubmit={handleRegister}>
+            <input
+              placeholder="Nome Completo"
+              value={nome}
+              onChange={e => setName(e.target.value)}
+            />
+            <input
+              placeholder="Email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+            <input
+              placeholder="Senha"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+            <input
+              placeholder="CPF"
+              value={cpf}
+              onChange={e => setCpf(e.target.value)}
+            />
 
-          <button className="button" type="submit">
-            Cadastrar
+            <button className="button" type="submit">
+              Cadastrar
           </button>
-        </form>
+          </form>
+        </div>
       </div>
+      <Rodape />
     </div>
   );
 }

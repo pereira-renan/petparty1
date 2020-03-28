@@ -1,0 +1,15 @@
+li {
+    text-decoration: none;
+    display: inline;
+    margin-right: 50px;
+    font-size: 25px;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    color: orange;
+    text-decoration: none;
+}

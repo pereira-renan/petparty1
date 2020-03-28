@@ -1,28 +1,24 @@
 import React, { Component } from "react";
 import "./BotaoNav.css"
 
-var href = setaHref;
+var setaHref = (props) => {
 
-var setaHref = () => {
-    if(this.props.nome === "Login") {
-        href = "/";
+    if(props.nome === "Login") {
+        return "/";
     }
-    else if(this.props.nome === "Cadastro") {
-        href = "/register";
+    else if(props.nome === "Cadastrar") {
+        return "/register";
     }
-    else {
-        href = "/"
-    }
+    return "/";
+
 }
 
-class BotaoNav extends Component {
-    render() {
-        return (
-            <li>
-                <a href={href}>{this.props.nome}</a>
-            </li>
-        );
-    }
+const BotaoNav = (props) => {
+    return(
+        <li>
+            <a href={setaHref(props)}>{props.nome}</a>
+        </li>
+    );
 }
 
 export default BotaoNav;

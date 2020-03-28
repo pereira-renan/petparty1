@@ -1,5 +1,11 @@
 #cabecalho {
-    background-color: red;
-    width: 100%;
-    padding: 20px;
+    padding: 15px;
+    height: 70px;
+    border-width: 0px 0px 10px 0px;
+    border-style: solid;
+    border-color: orange;
+}
+
+ul {
+    float: right;
 }
