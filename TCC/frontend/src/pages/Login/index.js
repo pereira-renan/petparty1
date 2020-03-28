@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiLogIn } from "react-icons/fi"; // Importação de icones
 
+import Cabecalho from "../../components/Cabecalho/Cabecalho";
+import Rodape from "../../components/Rodape/Rodape";
+
 import api from "../../services/api";
 
 import "./styles.css";
@@ -40,30 +43,34 @@ export default function Login() {
   }
 
   return (
-    <div className="logon-container">
-      <section className="form">
-        <form onSubmit={handleLogin}>
-          <h1> Faça Seu Login!</h1>
-          <input
-            placeholder="Digite o Email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Digite o Senha"
-            value={pass}
-            onChange={e => setPassword(e.target.value)}
-          />
-          <button className="button" type="submit">
-            Entrar
-          </button>
-          <Link to="/register">
-            <FiLogIn size={16} color="#e02041" />
-            Cadastre-se
-          </Link>
-        </form>
-      </section>
+    <div>
+      <Cabecalho />
+      <div className="logon-container">
+        <section className="form">
+          <form onSubmit={handleLogin}>
+            <h1> Faça Seu Login!</h1>
+            <input
+              placeholder="Digite o Email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Digite o Senha"
+              value={pass}
+              onChange={e => setPassword(e.target.value)}
+            />
+            <button className="button" type="submit">
+              Entrar
+            </button>
+            <Link to="/register">
+              <FiLogIn size={16} color="#e02041" />
+              Cadastre-se
+            </Link>
+          </form>
+        </section>
+      </div>
+      <Rodape />
     </div>
   );
 }
