@@ -2,46 +2,55 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiPower, FiTrash2 } from "react-icons/fi";
 
-import api from "../../services/api";
-
 import "./styles.css";
 export default function Profile() {
-  const history = useHistory();
+  // const history = useHistory();
+  // const ongId = localStorage.getItem("ongId");
+  // const ongName = localStorage.getItem("ongName");
+  // const [incidents, setIncidents] = useState([]);
 
-  const [infoUser, setInfo] = useState([]);
+  // useEffect(() => {
+  //   api.get("profile", { headers: { Authorization: ongId } }).then(response => {
+  //     setIncidents(response.data);
+  //   });
+  // }, [ongId]);
 
-  // pegando as variaveis do local storage
-  const token = localStorage.getItem("token");
-  const id = localStorage.getItem("id");
- 
+  // async function handleDeleteIncident(id) {
+  //   try {
+  //     await api.delete(`incidents/${id}`, {
+  //       headers: {
+  //         Authorization: ongId
+  //       }
+  //     });
+  //     // filtrando os incidentes deletados
+  //     setIncidents(incidents.filter(incident => incident.id !== id));
+  //   } catch (error) {
+  //     alert("erro ao deletar o caso");
+  //   }
+  // }
 
-  // console.log(token);
-  // console.log(id);
+  // function handleLogout(){
+  //   localStorage.clear();
+  //   history.push('/');
 
-  useEffect(() => {
-    api.post("info",{id} ).then(response => {
-      setInfo(response.data);
-    });
-  }, [id]);
- 
- 
-
-
-
- 
+  // }
 
   return (
     <div className="profile-container">
       <header>
-        <span>Bem Vindo, {infoUser.nome} </span>
-     
+        <span>Bem Vinda , }</span>
+        <Link className="button" to="/incidents/new">
+          {" "}
+          Cadastrar novo Caso
+        </Link>
+      
       </header>
       <h1>Informações Pessoais</h1>
       <ul>
         <li>
-          <p> Nome: {infoUser.nome}</p>
-          <p> CPF : {infoUser.cpf}</p>
-          <p> Email:{infoUser.email}</p>
+          <p> Nome</p>
+          <p> Email</p>
+          <p> CPF</p>
           <p> Nome</p>
           <p> Nome</p>
           <p> Nome</p>

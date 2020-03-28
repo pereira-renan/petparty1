@@ -121,14 +121,7 @@ class UserController {
     return res.json(retorno);
   }
 
-  // buscando informações do usuario
-  async infoUser(req, res) {
-    const  {id} = await req.body;
-    console.log("ID-->"+id);
-    const user =  await User.findById(id);
-    console.log("User-->"+user);
-    return res.json(user);
-  }
-}
 
+  
+}
 export default new UserController();
