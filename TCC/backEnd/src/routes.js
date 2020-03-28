@@ -17,17 +17,20 @@ routes.get("/", (req, res) => {
 
 routes.post("/user/create", UserController.CriarUsuar);
 routes.post("/login", SessionController.store);
-routes.post("/resetPassword",SessionController.resetPassword);
+routes.post("/resetPassword", SessionController.resetPassword);
 routes.post("/forgot", SessionController.forgotPassword);
+routes.post("/info", UserController.infoUser);
 
 
-routes.use(authMiddleware); // midleware de verificação do token do usuario
-routes.put("/user", UserController.update);
-//    require('./controller/authController')(routes);
 
 routes.get("/providers", ProviderController.mostrarCuidadores);
 
-routes.post("/files", upload.single("file"), FileController.store);
+//routes.use(authMiddleware); // midleware de verificação do token do usuario 
 
+//todas as rotas que estão abaixo passará pela autenticação
+
+routes.put("/user", UserController.update);
+
+routes.post("/files", upload.single("file"), FileController.store);
 
 export default routes;

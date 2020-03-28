@@ -19,9 +19,20 @@ export default function Login() {
 
     try {
       const response = await api.post("login", credenciais);
-      
-   
-      alert(`Logado`);
+
+      // destruturando as informações retornadas pela api
+      const { user, token } = response.data;
+
+      const { id, nome, email } = user;
+
+      alert(
+        `Logado : ID: ${id}\n NOME: ${nome} \n EMAIL : ${email} \n Token : ${token}`
+      );
+      // salvando o token no localstorage
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("id", id);
+
       history.push("/profile");
     } catch (error) {
       alert(`Erro ao realizar o Login! Tente Novamente` + error);
