@@ -90,7 +90,7 @@ class UserController {
 
     /// Verificacao email existente
     const { email, oldpassword } = req.body;
-    console.log(email);
+   
     const user = await User.findById(req.userId);
 
     if (email != user.email) {
@@ -123,10 +123,13 @@ class UserController {
 
   // buscando informações do usuario
   async infoUser(req, res) {
-    const  {id} = await req.body;
-    console.log("ID-->"+id);
-    const user =  await User.findById(id);
-    console.log("User-->"+user);
+   
+    const { id } = await req.body;
+
+
+    console.log("ID-->" + id);
+    const user = await User.findById(id);
+    console.log("User-->" + user);
     return res.json(user);
   }
 }
