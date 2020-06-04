@@ -22,6 +22,8 @@ export default function Login() {
     const credenciais = { email, pass };
 
     try {
+      document.querySelector('#validacao').classList.add('invisivel');
+      document.querySelector('#validacao').classList.remove('visivel');
       const response = await api.post("login", credenciais);
 
       // destruturando as informações retornadas pela api

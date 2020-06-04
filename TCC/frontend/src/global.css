@@ -104,6 +104,8 @@ a:active {
 }
 .visivel {
   display: block;
+  transition: 1s;
+  background: green;
 }
 .invisivel {
   display: none;
