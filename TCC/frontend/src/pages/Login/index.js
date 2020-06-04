@@ -39,8 +39,8 @@ export default function Login() {
 
       history.push("/profile");
     } catch (error) {
-      //classNameCredencial += 'visivel';
-      alert(`Erro ao realizar o Login! Tente Novamente` + error);
+      document.querySelector('#validacao').classList.remove('invisivel');
+      document.querySelector('#validacao').classList.add('visivel');
     }
   }
 
@@ -53,7 +53,7 @@ export default function Login() {
               <img src="logo8.png"/>
             </a>
             <p>Área de login</p>
-            <span className="credencial-invalida visivel">Esse email ou senha estão incorretos</span>
+            <span id="validacao" className="credencial-invalida invisivel">Esse email ou senha estão incorretos</span>
             <hr/>
           </header>
           <input type="text" name="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} className="input input-texto"/>
