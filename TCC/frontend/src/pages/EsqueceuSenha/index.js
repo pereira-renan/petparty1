@@ -1,33 +1,53 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { FiArrowLeft } from "react-icons/fi";
 import api from "../../services/api";
+
+import CardCentral from '../../components/CardCentral/index';
+import FormHeader from '../../components/FormHeader/index';
+import Input from '../../components/Input/index';
+import Button from '../../components/Button/index';
+import DivAviso from '../../components/DivAviso/index';
 
 import "./styles.css";
 
 export default function EsqueceuSenha() {
+	const [email, setEmail] = useState("");
+	const [catchSuccess, setCatchSuccess] = useState(false);
 
-  return (
-    <main>
-		<section>
-			<form>
-				<header>
-					<a href={"/"}>
-						<img src="logo8.png"/>
-					</a>
-					<p>Área de recuperação de senha</p>
-					<hr/>
-				</header>
-				<div className="margin-80 desc">
-					<span>Para prosseguir por favor digite seu email no campo abaixo que enviaremos as instrucões para recuperação da sua senha</span>
+	async function enviarEmail(e) {
+		e.preventDefault();
+
+		const dados = { email };
+
+		try {
+			setCatchSuccess(false);
+			await api.post("forgot", dados);
+			setCatchSuccess(true);
+		}
+		catch(error) {
+			setCatchSuccess(false);
+		}
+	}
+
+	return (
+		<main>
+			<CardCentral>
+				<form onSubmit={enviarEmail}>
+				<FormHeader nomeArea="cadastro">
+					<DivAviso.sucesso value={catchSuccess} text="Email enviado"/>
+				</FormHeader>
+				<div className="descricao-formulario">
+					<div>
+					Para prosseguir por favor digite seu email no campo abaixo que enviaremos as 
+					instrucões para recuperação da sua senha
+					</div>
 				</div>
-				<input type="text" name="email" placeholder="Email" className="input input-texto"/>
-				<div className="margin-80">
-					<a href={"/"} className="align-left">Voltar</a>
-					<input type="submit" name="cadastrar" className="btn input btn-enviar align-right" value="Enviar"/>
+				<Input.text type="email" placeHolder="Email" />
+				<div className="grid">
+					<Button.secundario type="button" nome="voltar" text="Voltar" href={"/"}/>
+					<Button.principal type="submit" name="enviar" text="Enviar"/>
 				</div>
-			</form>
-		</section>
-	</main>
-  );
+				</form>
+			</CardCentral>
+		</main>
+	);
 }

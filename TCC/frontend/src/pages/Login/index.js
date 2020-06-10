@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { FiLogIn } from "react-icons/fi"; // Importação de icones
+import { useHistory } from "react-router-dom";
 
-import Button from '../../components/Button/Button';
+import CardCentral from '../../components/CardCentral/index';
+import FormHeader from '../../components/FormHeader/index';
+import Input from '../../components/Input/index';
+import Button from '../../components/Button/index';
+import DivAviso from '../../components/DivAviso/index';
 
 import api from "../../services/api";
 
@@ -13,6 +16,7 @@ export default function Login() {
 
   const [pass, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [catchError, setCatchError] = useState(false);
 
   const history = useHistory();
 
@@ -22,8 +26,9 @@ export default function Login() {
     const credenciais = { email, pass };
 
     try {
-      document.querySelector('#validacao').classList.add('invisivel');
-      document.querySelector('#validacao').classList.remove('visivel');
+      setCatchError(false);
+      //document.querySelector('#validacao').classList.add('invisivel');
+      //document.querySelector('#validacao').classList.remove('visivel');
       const response = await api.post("login", credenciais);
 
       // destruturando as informações retornadas pela api
@@ -41,38 +46,36 @@ export default function Login() {
 
       history.push("/profile");
     } catch (error) {
-      document.querySelector('#validacao').classList.remove('invisivel');
-      document.querySelector('#validacao').classList.add('visivel');
+      setCatchError(true);
+      //document.querySelector('#validacao').classList.remove('invisivel');
+      //document.querySelector('#validacao').classList.add('visivel');
     }
   }
 
   return (
     <main>
-      <section>
+      <CardCentral>
         <form onSubmit={handleLogin}>
-          <header>
-            <a className="a1" href={"/"}>
-              <img src="logo8.png"/>
-            </a>
-            <p>Área de login</p>
-            <span id="validacao" className="credencial-invalida invisivel">Esse email ou senha estão incorretos</span>
-            <hr/>
-          </header>
-          <input type="text" name="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} className="input input-texto"/>
-          <input type="password" name="senha" placeholder="Senha" value={pass} onChange={e => setPassword(e.target.value)} className="input input-texto"/>
-          <div className="margin-80-1">
-            <input type="checkbox" name="lembrarUsuario" className="inline align-left"/>
-            <label htmlFor="lembrarUsuario" className="inline align-left link-esqueceu-senha">Lembrar meu usuário</label>
-            <a href={"/remember"} className="align-right a1">Esqueceu a senha?</a>
+          <FormHeader nomeArea="login">
+            <DivAviso.erro value={catchError} text="Email ou senha estão incorretos"/>
+          </FormHeader>
+          <Input.text value={email} onChange={e => setEmail(e.target.value)} type="text" placeHolder="Email" />
+          <Input.text value={pass} onChange={e => setPassword(e.target.value)} type="password" placeHolder="Senha"/>
+          <div className="grid">
+            <div>
+              <input type="checkbox" name="lembrarUsuario"/>
+              <label htmlFor="lembrarUsuario">Lembrar meu usuário</label>
+            </div>
+            <div>
+              <a href={"/remember"}>Esqueceu a senha?</a>
+            </div>
           </div>
-          <div className="margin-80-1">
-            <a className="a1"href={"/register"}>
-              <button type="button" name="cadastrar" className="btn input" onAction={"/register"}>Cadastrar</button>
-            </a>
-            <button type="submit" name="enviar" className="btn input btn-enviar">Entrar</button>
+          <div className="grid">
+            <Button.secundario type="button" name="cadastrar" text="Cadastrar" href={"/register"}/>
+            <Button.principal type="submit" name="enviar" text="Entrar"/>
           </div> 
         </form>
-      </section>
+      </CardCentral>
     </main>
   );
 }

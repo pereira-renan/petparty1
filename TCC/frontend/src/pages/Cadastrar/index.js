@@ -1,58 +1,78 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { FiArrowLeft } from "react-icons/fi";
+import { useHistory } from "react-router-dom";
 import api from "../../services/api";
+
+import CardCentral from '../../components/CardCentral/index';
+import FormHeader from '../../components/FormHeader/index';
+import Input from '../../components/Input/index';
+import Button from '../../components/Button/index';
+import DivAviso from '../../components/DivAviso/index';
+
 
 import "./styles.css";
 
 export default function Register() {
-  const [nome, setName] = useState("");
+  const [name, setName] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [cpf, setCpf] = useState("");
+
+  const [validacaoName, setValidacaoName] = useState(true);
+  const [validacaoTelefone, setValidacaoTelefone] = useState(true);
+  const [validacaoEmail, setValidacaoEmail] = useState(true);
+  const [validacaoPassword, setValidacaoPassword] = useState(true);
+  const [validacaoConfirmPassword, setValidacaoConfirmPassword] = useState(true);
+
   const user_validado = true;
   const user_cuidador = true;
+
+  const [catchSuccess, setCatchSuccess] = useState(false);
 
   const history = useHistory();
 
   async function handleRegister(e) {
     e.preventDefault();
 
-    const data = { nome, telefone, email, password, cpf, user_validado, user_cuidador };
+    const data = { name, telefone, email, password, cpf, user_validado, user_cuidador };
 
     try {
+      setCatchSuccess(false);
       const response = await api.post("user/create", data);
       alert(`Cadastro Realizado com Sucesso! ! `);
+      setCatchSuccess(true);
       history.push("/");
     } catch (error) {
       alert(`Erro ao Cadastrar! Tente Novamente` + error);
+      setCatchSuccess(false);
     }
   }
 
   return (
     <main>
-      <section>
-        <form onSubmit={handleRegister}>
-          <header>
-            <a href={"/"}>
-              <img src="logo8.png"/>
-            </a>
-            <p>Área de cadastro</p>
-            <hr/>
-          </header>
-          <input type="text" name="nome" placeholder="Nome Completo" value={nome} onChange={e => setName(e.target.value)} className="input input-texto"/>
-          <div className="erro-validacao visivel">Por favor, digite o nome completo.</div>
-          <input type="text" name="telefone" placeholder="Telefone" value={telefone} onChange={e => setTelefone(e.target.value)} className="input input-texto"/>
-          <input type="text" name="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} className="input input-texto"/>
-          <input type="password" name="senha" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} className="input input-texto"/>
-          <input type="password" name="confirmaSenha" placeholder="Confirme sua senha" value={cpf} onChange={e => setCpf(e.target.value)} className="input input-texto"/>
-          <div className="margin-80">
-            <a href={"/"} className="align-left">Já possui cadastro?</a>
-            <input type="submit" name="cadastrar" className="btn input btn-enviar align-right" value="Cadastrar"/>
+      <CardCentral>
+        <form onSubmit={handleRegister} id="form">
+          <FormHeader nomeArea="cadastro">
+              <DivAviso.sucesso value={catchSuccess} text="Cadastrado com sucesso!"/>
+          </FormHeader>
+
+          <Input.text value={name} validado={validacaoName} onBlur={e => setValidacaoName(true)} onChange={e => setName(e.target.value)} type="text" placeHolder="Nome Completo" id="nome" name="nome" />
+          <DivAviso.validacao text="Por favor, digite seu nome completo." />
+          <Input.text value={telefone} validado={validacaoTelefone} onBlur={e => setValidacaoTelefone(true)} onChange={e => setTelefone(e.target.value)} type="text" placeHolder="Telefone" id="telefone" name="telefone" />
+          <div></div>
+          <Input.text value={email} validado={validacaoEmail} onBlur={e => setValidacaoEmail(false)} onChange={e => setEmail(e.target.value)} type="email" placeHolder="Email" id="email" name="email" />
+          <div></div>
+          <Input.text value={password} validado={validacaoPassword} onBlur={e => setValidacaoPassword(true)} onChange={e => setPassword(e.target.value)} type="password" placeHolder="Senha" id="senha" name="senha" />
+          <div></div>
+          <Input.text value={confirmPassword} validado={validacaoConfirmPassword} onBlur={e => setValidacaoConfirmPassword(false)} onChange={e => setConfirmPassword(e.target.value)} type="password" placeHolder="Confirme sua Senha" id="confirmSenha" name="confirmSenha" />
+          <div></div>
+          <div className="grid">
+            <Button.secundario type="button" name="login" text="Já possui cadastro?" href={"/"}/>
+            <Button.principal type="submit" name="cadastrar" text="Cadastrar"/>
           </div>
         </form>
-      </section>
+      </CardCentral>
     </main>
   );
 }

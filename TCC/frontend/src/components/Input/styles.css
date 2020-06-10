@@ -1,0 +1,26 @@
+:root {
+    --cor-fundo-valido: #93bf85;
+    --cor-fundo-invalido: #ff9e81;
+}
+
+.input-texto {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    flex-direction: column;
+    width: 80%;
+}
+.input {
+    padding: 10px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: var(--cor-borda);
+    outline: none;
+}
+
+.valido {
+    background: var(--cor-fundo-valido);
+}
+.invalido {
+    background: var(--cor-fundo-invalido);
+}
