@@ -11,14 +11,20 @@ const Input = {
                             onBlur={props.onBlur}
                             onChange={props.onChange}
                             className="input input-texto"
-                            value={props.value}
-                            validado={typeof props.validado === "undefined" || props.validado}
+                            validado={typeof props.validado === "undefined" || props.value === '' || props.validado}
             />
         );
     },
     radio: (props) => {
         return(
-            <InputRadioStructure />
+            <InputRadioStructure name="inputRadio"
+                                 value={props.value}
+                                 onCHange={props.onChange}
+                                 className="input input-radio"
+                                 htmlFor={props.htmlFor}
+                                 id={props.id}
+                                 text={props.text}
+            />
         );
     }
 }
@@ -38,9 +44,16 @@ const InputTextStructure = (props) => {
 
 const InputRadioStructure = (props) => {
     return(
-        <input type="radio">
-            {props.children}
-        </input>
+        <div>
+            <label className={props.className} htmlFor={props.htmlFor}>{props.text}</label>
+            <input type="radio"
+                   id={props.id}
+                   name={props.name}
+                   value={props.value}
+                   onChange={props.onChange}
+                   className={props.className}
+            />
+        </div>
     );
 }
 

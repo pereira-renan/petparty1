@@ -12,6 +12,11 @@ body {
   color: var(--cor-texto);
 }
 
+body, button, a {
+  margin: 0;
+  padding: 0;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -20,6 +25,7 @@ body {
 }
 a {
   text-decoration: none;
+  vertical-align: middle;
 }
 a:hover {
   opacity: 0.95;

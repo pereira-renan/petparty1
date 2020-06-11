@@ -11,6 +11,7 @@ import "./styles.css";
 
 export default function EsqueceuSenha() {
 	const [email, setEmail] = useState("");
+	const [validacaoEmail, setValidacaoEmail] = useState(true);
 	const [catchSuccess, setCatchSuccess] = useState(false);
 
 	async function enviarEmail(e) {
@@ -30,6 +31,10 @@ export default function EsqueceuSenha() {
 		}
 	}
 
+	function validaEmail(email) {
+		setValidacaoEmail(!!email.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi));
+	}
+
 	return (
 		<main>
 			<CardCentral>
@@ -43,7 +48,8 @@ export default function EsqueceuSenha() {
 					instrucões para recuperação da sua senha
 					</div>
 				</div>
-				<Input.text type="email" value={email} onChange={e => setEmail(e.target.value)} placeHolder="Email" />
+				<Input.text type="email" value={email} onBlur={e => validaEmail(email)} onChange={e => setEmail(e.target.value)} placeHolder="Email" />
+				<DivAviso.validacao value={!validacaoEmail && email !== ''} text="Por favor, digite um email válido." />
 				<div className="grid">
 					<Button.secundario type="button" nome="voltar" text="Voltar" href={"/"}/>
 					<Button.principal type="submit" name="enviar" text="Enviar"/>

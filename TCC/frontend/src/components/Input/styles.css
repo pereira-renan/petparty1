@@ -3,6 +3,16 @@
     --cor-fundo-invalido: #ff9e81;
 }
 
+.input-radio {
+    background: red;
+    width: 100%;
+    height: 100%;
+}
+
+.input-radio:active {
+    background: blue;
+}
+
 .input-texto {
     display: block;
     margin: 0 auto;
