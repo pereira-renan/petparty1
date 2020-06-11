@@ -44,4 +44,7 @@ form {
   width: 420px;
   border-radius: 5px;
   background-color: var(--cor-fundo-form);
+  border-style: solid;
+  border-color: var(--cor-borda);
+  border-width: 1px;
 }

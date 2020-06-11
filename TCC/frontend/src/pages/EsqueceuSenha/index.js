@@ -13,11 +13,12 @@ export default function EsqueceuSenha() {
 	const [email, setEmail] = useState("");
 	const [validacaoEmail, setValidacaoEmail] = useState(true);
 	const [catchSuccess, setCatchSuccess] = useState(false);
+	const [catchError, setCatchError] = useState(false);
 
 	async function enviarEmail(e) {
 		e.preventDefault();
 
-		if(email !== '') {
+		if(validaEmail(email)) {
 			const dados = { email };
 			try {
 				setCatchSuccess(false);
@@ -25,16 +26,30 @@ export default function EsqueceuSenha() {
 					console.log(response.data)
 
 					setCatchSuccess(true);
+					setTimeout(() => {
+						setCatchSuccess(false);
+					}, 4000);
 				}
 				catch(error) {
 					setCatchSuccess(false);
+					setCatchError(true);
+					setTimeout(() => {
+						setCatchError(false);
+					}, 4000);
 				}
-			}
-			
+		}
+		else if(email === '') {
+			setCatchError(true);
+			setTimeout(() => {
+				setCatchError(false);
+			}, 4000);
+		}
 	}
 
 	function validaEmail(email) {
 		setValidacaoEmail(!!email.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi));
+		if(email === '') return false;
+		return validacaoEmail;
 	}
 
 	return (
@@ -43,6 +58,7 @@ export default function EsqueceuSenha() {
 				<form onSubmit={enviarEmail}>
 				<FormHeader nomeArea="cadastro">
 					<DivAviso.sucesso value={catchSuccess} text="Email enviado"/>
+					<DivAviso.erro value={catchError} text={email === '' ? "Digite um email!" : "Este email não está registrado"}/>
 				</FormHeader>
 				<div className="descricao-formulario">
 					<div>

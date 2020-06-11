@@ -47,6 +47,9 @@ export default function Login() {
       history.push("/profile");
     } catch (error) {
       setCatchError(true);
+      setTimeout(() => {
+				setCatchError(false);
+			}, 4000);
       //document.querySelector('#validacao').classList.remove('invisivel');
       //document.querySelector('#validacao').classList.add('visivel');
     }

@@ -17,18 +17,19 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [cpf, setCpf] = useState("");
-  const [userCuidador, setUserCuidador] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [user_cuidador, setUserCuidador] = useState("");
   const [userNormal, setUserNormal] = useState("");
+  const [usuario_validado, setUsuarioValidado] = useState("");
 
   const [validacaoNome, setValidacaoNome] = useState(true);
   const [validacaoEmail, setValidacaoEmail] = useState(true);
   const [validacaoPassword, setValidacaoPassword] = useState(true);
   const [validacaoConfirmPassword, setValidacaoConfirmPassword] = useState(true);
   const [validacaoCpf, setValidacaoCpf] = useState(true);
+  const [validacaoTelefone, setValidacaoTelefone] = useState(true);
   const [validacaoUserCuidador, setValidacaoUserCuidador] = useState(true);
-
-  const user_validado = true;
-  const user_cuidador = true;
+  const [validacaoUsuario, setValidacaoUsuario] = useState(false);
 
   const [catchSuccess, setCatchSuccess] = useState(false);
   const [catchError, setCatchError] = useState(false);
@@ -38,15 +39,25 @@ export default function Register() {
   async function handleRegister(e) {
     e.preventDefault();
 
-    if(validaNome(nome) &&
-      validaEmail(email) &&
-      validaCpf(cpf) &&
-      validaTipo(userCuidador) &&
-      validaSenha(password) &&
-      validaConfirmSenha(confirmPassword)) {
+    let valido = true;
+
+    valido = validaNome(nome) && valido;
+    valido = validaEmail(email) && valido;
+    valido = validaCpf(cpf) && valido;
+    valido = validaTelefone(telefone) && valido;
+    valido = validaTipo(user_cuidador) && valido;
+    valido = validaSenha(password) && valido;
+    valido = validaConfirmSenha(confirmPassword) && valido;
+
+    setValidacaoUsuario(valido);
+    setUsuarioValidado(valido);
+
+    const data = { nome, email, password, cpf, usuario_validado, user_cuidador, telefone };
+
+    if(valido) {
         try {
+          console.log(data);
           setCatchSuccess(false);
-          const data = { nome, email, password, cpf, userCuidador };
           const response = await api.post("user/create", data);
           alert(`Cadastro Realizado com Sucesso! ! `);
           setCatchSuccess(true);
@@ -56,12 +67,14 @@ export default function Register() {
           setCatchSuccess(false);
         }
     } else {
-      console.log(validaNome(nome),
-      validaEmail(email),
-      validaCpf(cpf),
-      validaTipo(userCuidador),
-      validaSenha(password),
-      validaConfirmSenha(confirmPassword));
+      console.log(validacaoNome,
+      validacaoEmail,
+      validacaoCpf,
+      validacaoTelefone,
+      validacaoUserCuidador,
+      validacaoPassword,
+      validacaoConfirmPassword,
+      validacaoUsuario);
 
       setCatchError(true);
       setTimeout(() => {
@@ -72,19 +85,18 @@ export default function Register() {
 
 
   function validaNome(nome) {
-    if (nome === '') return false;
     setValidacaoNome(!!nome.match(/[A-Z][a-z]* [A-Z][a-z]*/));
+    if (nome === '') return false;
     return validacaoNome;
   }
 
   function validaEmail(email) {
-    if (email === '') return false;
     setValidacaoEmail(!!email.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi));
+    if (email === '') return false;
     return validacaoEmail;
   }
 
   function validaCpf(cpf) {
-    if (cpf === '') return false;
     setValidacaoCpf(cpf);
     
     setValidacaoCpf((cpf) => {
@@ -126,31 +138,39 @@ export default function Register() {
         return false;		
       return true;  
     });
-
+    if (cpf === '') return false;
     return validacaoCpf;
   }
 
+  function validaTelefone(telefone) {
+    setValidacaoTelefone(!!telefone.match(/\+\d{2}\s\(\d{2}\)\s\d{4,5}-?\d{4}/g));
+    if (telefone === '') return false;
+    return validacaoTelefone;
+  }
+
   function validaTipo(userCuidador) {
-    if (userCuidador === '') return false;
-    setValidacaoUserCuidador(userCuidador !== '');
+    setValidacaoUserCuidador(userCuidador);
+    setTipo(userCuidador)
+    if(userCuidador === '') return false;
     return validacaoUserCuidador;
   }
 
   function setTipo(isCuidador) {
     setUserCuidador(isCuidador);
-    setUserNormal(!isCuidador)
+    setUserNormal(!isCuidador);
   }
 
   function validaSenha(password) {
-    if (password === '') return false;
     setPassword(password);
+    validaConfirmSenha(password);
     setValidacaoPassword(!!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/));
+    if (password === '') return false;
     return validacaoPassword;
   }
 
-  function validaConfirmSenha(confirmPassword) {
-    if (confirmPassword === '') return false;
+  function validaConfirmSenha(password) {
     setValidacaoConfirmPassword(confirmPassword === password);
+    if (confirmPassword === '') return false;
     return validacaoConfirmPassword;
   }
 
@@ -160,7 +180,7 @@ export default function Register() {
         <form onSubmit={handleRegister} id="form">
           <FormHeader nomeArea="cadastro">
               <DivAviso.sucesso value={catchSuccess} text="Cadastrado com sucesso!"/>
-              <DivAviso.erro value={catchError} text="Preencha os campos corretamente antes de submeter o formuário!"/>
+              <DivAviso.erro value={catchError} text={ validacaoUsuario ? "Ocorreu um problema no servidor. Por favor, tente novamente mais tarde!" : "Preencha os campos corretamente antes de submeter o formuário!"}/>
           </FormHeader>
 
           <Input.text value={nome} validado={validacaoNome} onBlur={e => validaNome(nome)} onChange={e => setNome(e.target.value)} type="text" placeHolder="Nome Completo" id="nome" name="nome" />
@@ -169,19 +189,22 @@ export default function Register() {
           <Input.text value={email} validado={validacaoEmail} onBlur={e => validaEmail(email)} onChange={e => setEmail(e.target.value)} type="email" placeHolder="Email" id="email" name="email" />
           <DivAviso.validacao value={!validacaoEmail && email !== ''} text="Por favor, digite um email válido." />
 
-          <Input.text value={cpf} validado={validacaoCpf} onBlur={e => validaCpf(cpf)} onChange={e => setCpf(e.target.value)} type="text" placeHolder="Cpf" id="cpf" name="cpf" />
-          <DivAviso.validacao value={!validacaoCpf && cpf !== ''} text="Por favor, digite um cpf válido." />
+          <Input.text value={cpf} validado={validacaoCpf} onBlur={e => validaCpf(cpf)} onChange={e => setCpf(e.target.value)} type="text" placeHolder="CPF" id="cpf" name="cpf" />
+          <DivAviso.validacao value={!validacaoCpf && cpf !== ''} text="Por favor, digite um CPF válido." />
+
+          <Input.text value={telefone} validado={validacaoTelefone} onBlur={e => validaTelefone(telefone)} onChange={e => setTelefone(e.target.value)} type="text" placeHolder="Telefone" id="telefone" name="telefone" />
+          <DivAviso.validacao value={!validacaoTelefone && telefone !== ''} text="Por favor, digite um telefone válido no padrão +99 (99) 9999-9999." />
 
           <span className="desc-checkbox-tipo">Você quer se cadastrar como:</span>
           <div className="grid">
-            <Input.radio id="cuidador" name="tipo" value={userCuidador} onClick={e => setTipo(true)} htmlFor="cuidador" text="Cuidador" />
-            <Input.radio id="usuario" name="tipo" value={userNormal} onClick={e => setTipo(false)} htmlFor="usuario" text="Usuário" />
+            <Input.radio id="cuidador" name="tipo" value={user_cuidador} onClick={e => validaTipo(true)} htmlFor="cuidador" text="Cuidador" />
+            <Input.radio id="usuario" name="tipo" value={userNormal} onClick={e => validaTipo(false)} htmlFor="usuario" text="Usuário" />
           </div>
           
           <Input.text value={password} validado={validacaoPassword} onBlur={e => validaSenha(password)} onChange={e => setPassword(e.target.value)} type="password" placeHolder="Senha" id="senha" name="senha" />
           <DivAviso.validacao value={!validacaoPassword && password !== ''} text="Sua senha deve ter no mínimo 8 caracteres, pelo menos 1 letra, 1 número e 1 caractere especial." />
 
-          <Input.text value={confirmPassword} validado={validacaoConfirmPassword} onBlur={e => validaConfirmSenha(confirmPassword)} onChange={e => setConfirmPassword(e.target.value)} type="password" placeHolder="Confirme sua Senha" id="confirmSenha" name="confirmSenha" />
+          <Input.text value={confirmPassword} validado={validacaoConfirmPassword} onBlur={e => validaConfirmSenha(password)} onChange={e => setConfirmPassword(e.target.value)} type="password" placeHolder="Confirme sua Senha" id="confirmSenha" name="confirmSenha" />
           <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar a mesma senha digitada no campo acima." />
           <div></div>
           <div className="grid">
