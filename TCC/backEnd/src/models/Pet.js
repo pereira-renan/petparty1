@@ -1,9 +1,6 @@
 const mongoose = require("../database");
 const bcrypt = require("bcryptjs");
 
-const Schema = mongoose.Schema;
-const ObjectId = Schema.Types.ObjectId;
-
 const PetSchema = mongoose.Schema(
   {
     nome: {
@@ -11,21 +8,21 @@ const PetSchema = mongoose.Schema(
       require: true
     },
     id_dono: {
-      type: ObjectId,
-      require: true
-    },
-    idade: {
       type: String,
       require: true
     },
-    tipo_pet: {
+    idade:{
       type: String,
-      require: true
+      require:true
+    },  
+    tipo_pet:{
+      type:String,
+      require:true
     },
-    porte: {
+    porte:{
       type: String
     },
-    raca: {
+    raca:{
       type: String
     },
     avatar: {
@@ -54,9 +51,15 @@ const PetSchema = mongoose.Schema(
   }
 );
 
-PetSchema.virtual("url").get(function() {});
+PetSchema.virtual("url").get(function() {
+
+
+});
 
 // transformando a senha do usuario em hash antes de enviar para o banco
 
-const PetModel = mongoose.model("tb_pet", PetSchema);
+
+
+
+const PetModel= mongoose.model("tb_pet", PetSchema);
 export default PetModel;

@@ -14,6 +14,7 @@ class SessionController {
     if (!user) {
       return res.status(400).json({ error: "Email não cadastrado!" });
     }
+
     //cryptografa a senha que o usuario digitou e compara com a do usuario
 
     let result = bcrypt.compareSync(pass, user.password);
@@ -21,15 +22,14 @@ class SessionController {
     if (!result) {
       return res.status(400).json("Senha invalida! ");
     }
-
     const { id, nome } = user;
     return res.json({
       user: {
         id,
         nome,
-        email
+        email,
       },
-      token: jwt.sign({ id }, authConfig.secret)
+      token: jwt.sign({ id }, authConfig.secret),
     });
   }
 
@@ -37,44 +37,47 @@ class SessionController {
 
   async forgotPassword(req, res) {
     const { email } = req.body;
+    const emailreset = await User.findOne({ email });
+    console.log("result -->" + emailreset);
 
     try {
-      const user = await User.findOne({ email });
+      if (!emailreset) {
+        return res.status(402).json({ error: " Email Invalido" });
+      } else {
+        const token = crypto.randomBytes(3).toString("hex");
 
-      if (!user) {
-        return res.status(400).json({ error: "Email não cadastrado!" });
+        // tempo de expiração do token de recuperacao;
+        const now = new Date();
+        console.log("hora atual" + now.getHours());
+        now.setHours(now.getHours() + 1);
+        console.log("" + now);
+        var _id = emailreset._id;
+        const update = { passwordresetoken: token, passwordresetexpires: now };
+        const filter = { _id };
+        await User.updateOne(filter, update);
+
+        const mail = await mailer.sendMail(
+          {
+            to: email,
+            subject: " Esqueceu a sua Senha ?",
+            template: "auth/forgot_password",
+            context: { token },
+          },
+          (err) => {
+            if (err)
+              res.status(400).json({ error: " Error ao enviar o email" + err });
+            else {
+              return res.status(200).json({ error: " Email Enviado!" + err });
+            }
+          }
+        );
+        console.log(mail);
       }
-
-      const token = crypto.randomBytes(3).toString("hex");
-
-      // tempo de expiração do token de recuperacao;
-      const now = new Date();
-      console.log("hora atual" + now.getHours());
-      now.setHours(now.getHours() + 1);
-      console.log("" + now);
-      var _id = user._id;
-      const update = { passwordresetoken: token, passwordresetexpires: now };
-      const filter = { _id };
-      await User.updateOne(filter, update);
-
-      mailer.sendMail(
-        {
-          to: email,
-          from: "admorais.mateus@gmail.com",
-          template: "auth/forgot_password",
-          context: { token }
-        },
-        err => {
-          if (err)
-            return res
-              .status(400)
-              .json({ error: " Error ao enviar o email" + err });
-        }
-      );
     } catch (error) {
-      res.status(400).send({ error: "Erro ao recuperar a senha" } + error);
+      return res
+        .status(400)
+        .send({ error: "Erro ao recuperar a senha" } + error);
     }
-    return res.json("Enviado");
   }
 
   // RESET PASSWORD

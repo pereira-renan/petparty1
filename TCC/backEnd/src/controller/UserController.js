@@ -7,20 +7,17 @@ class UserController {
     // Validando campos de entrada
     const schemavalidation = Yup.object().shape({
       nome: Yup.string().required("Nome Obrigatorio"),
-      email: Yup.string()
-        .required("Email invalido")
-        .email(),
-      password: Yup.string()
-        .required("Min. 8 letras ")
-        .min(8),
+      email: Yup.string().required("Email invalido").email(),
+      password: Yup.string().required("Min. 8 letras ").min(8),
       cpf: Yup.string().required("CPF Obrigatorio"),
-      user_cuidador: Yup.boolean().required()
+      user_cuidador: Yup.boolean().required(),
+      telefone: Yup.string().required("Telefone Obrigatorio"),
     });
 
     let isvalid = await schemavalidation.isValid(req.body);
 
     if (!isvalid) {
-      return res.status(400).json({ error: "Validação dos campos invalidos!" });
+      return res.status(400).json({ error: "Validação dos campos invalidos!" +  isvalid});
     }
     // fim validacao dos campos
 
@@ -39,7 +36,8 @@ class UserController {
         user_cuidador,
         cpf,
         password,
-        usuario_validado
+        usuario_validado,
+        telefone,
       } = await User.create(req.body);
 
       return res.json({
@@ -49,7 +47,8 @@ class UserController {
         cpf,
         password,
         user_cuidador,
-        usuario_validado
+        usuario_validado,
+        telefone,
       });
     } catch (err) {
       return res
@@ -77,7 +76,7 @@ class UserController {
 
       confirmpassword: Yup.string().when("password", (password, field) =>
         password ? field.required().oneOf([Yup.ref("password")]) : field
-      )
+      ),
     });
 
     let isvalid = await schemavalidation.isValid(req.body);
@@ -90,7 +89,7 @@ class UserController {
 
     /// Verificacao email existente
     const { email, oldpassword } = req.body;
-   
+    console.log(email);
     const user = await User.findById(req.userId);
 
     if (email != user.email) {
@@ -123,10 +122,7 @@ class UserController {
 
   // buscando informações do usuario
   async infoUser(req, res) {
-   
     const { id } = await req.body;
-
-
     console.log("ID-->" + id);
     const user = await User.findById(id);
     console.log("User-->" + user);

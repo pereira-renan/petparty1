@@ -1,7 +1,7 @@
 import User from "../../src/models/User";
-import { startOfHour} from 'date-fns';
+
 import Agendamento from "../../src/models/Agendamentos";
-import * as Yup from "yup";
+
 
 class AgendamentoController {
   async store(req, res) {

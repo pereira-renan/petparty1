@@ -3,12 +3,13 @@ import multer from "multer";
 import authMiddleware from "./middlewares/auth";
 import multerConfig from "./config/multer";
 
+
 import PetController from "./controller/PetController";
+import AgendamentoController from "./controller/AgendamentoController";
 import UserController from "./controller/UserController";
 import SessionController from "./controller/SessionController";
 import FileController from "./controller/FileController";
 import ProviderController from "./controller/ProviderController";
-import AgendamentoController from "./controller/AgendamentoController";
 
 const routes = new Router();
 const upload = multer(multerConfig);
@@ -33,14 +34,12 @@ routes.delete("/pet/delete", PetController.delete);
 // AGENDAMENTO
 
 routes.post("/agendamento", AgendamentoController.store);
-
 routes.get("/providers", ProviderController.mostrarCuidadores);
 
-routes.use(authMiddleware); // midleware de verificação do token do usuario 
+//routes.use(authMiddleware); // midleware de verificação do token do usuario 
 
 //todas as rotas que estão abaixo passará pela autenticação
 
-routes.get("/user/agendamento", AgendamentoController.index);
 routes.put("/user", UserController.update);
 
 routes.post("/files", upload.single("file"), FileController.store);

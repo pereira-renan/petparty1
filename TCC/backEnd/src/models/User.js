@@ -13,15 +13,21 @@ const UserSchema = mongoose.Schema(
       required: true,
       lowercase: true
     },
+    telefone:{
+      type: String,
+      unique: true,
+      required: true,
+    },
     password: {
       type: String,
       required: true
     },
+
     passwordresetoken: {
       type: String,
       select: false
     },
-    passwordresetexpires: {
+    passwordexpires:{
       type: Date,
       select: false
     },
