@@ -4,7 +4,7 @@ import './styles.css';
 const Input = {
     text: (props) => {
         return(
-            <InputStructure type={props.type}
+            <InputTextStructure type={props.type}
                             name="inputText"
                             placeHolder={props.placeHolder}
                             value={props.value}
@@ -16,9 +16,14 @@ const Input = {
             />
         );
     },
+    radio: (props) => {
+        return(
+            <InputRadioStructure />
+        );
+    }
 }
 
-const InputStructure = (props) => {
+const InputTextStructure = (props) => {
     return(
         <input type={props.type}
                name={props.name}
@@ -28,6 +33,14 @@ const InputStructure = (props) => {
                onChange={props.onChange}
                className={props.validado ? props.className : props.className + ' invalido'}
         />
+    );
+}
+
+const InputRadioStructure = (props) => {
+    return(
+        <input type="radio">
+            {props.children}
+        </input>
     );
 }
 

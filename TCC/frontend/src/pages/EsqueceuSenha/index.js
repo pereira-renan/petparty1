@@ -20,7 +20,9 @@ export default function EsqueceuSenha() {
 
 		try {
 			setCatchSuccess(false);
-			await api.post("forgot", dados);
+			const response = await api.post("forgot", dados);
+			console.log(response.data)
+
 			setCatchSuccess(true);
 		}
 		catch(error) {
@@ -41,7 +43,7 @@ export default function EsqueceuSenha() {
 					instrucões para recuperação da sua senha
 					</div>
 				</div>
-				<Input.text type="email" placeHolder="Email" />
+				<Input.text type="email" value={email} onChange={e => setEmail(e.target.value)} placeHolder="Email" />
 				<div className="grid">
 					<Button.secundario type="button" nome="voltar" text="Voltar" href={"/"}/>
 					<Button.principal type="submit" name="enviar" text="Enviar"/>
