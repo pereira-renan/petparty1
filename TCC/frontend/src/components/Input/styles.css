@@ -1,16 +1,22 @@
 :root {
     --cor-fundo-valido: #93bf85;
     --cor-fundo-invalido: #ff9e81;
+
+    --cor-fundo-radio: #e9e9e9;
+    --cor-fundo-radio-checked: #48D1CC; 
 }
 
 .input-radio {
-    background: red;
-    width: 100%;
+    display: block;
+    background: var(--cor-fundo-radio);
+    width: 60%;
     height: 100%;
+    margin: 0 auto;
+    color: black;
 }
 
-.input-radio:active {
-    background: blue;
+.input-radio-checked {
+    background: var(--cor-fundo-radio-checked);
 }
 
 .input-texto {

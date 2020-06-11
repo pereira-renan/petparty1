@@ -17,18 +17,20 @@ export default function EsqueceuSenha() {
 	async function enviarEmail(e) {
 		e.preventDefault();
 
-		const dados = { email };
+		if(email !== '') {
+			const dados = { email };
+			try {
+				setCatchSuccess(false);
+					const response = await api.post("forgot", dados);
+					console.log(response.data)
 
-		try {
-			setCatchSuccess(false);
-			const response = await api.post("forgot", dados);
-			console.log(response.data)
-
-			setCatchSuccess(true);
-		}
-		catch(error) {
-			setCatchSuccess(false);
-		}
+					setCatchSuccess(true);
+				}
+				catch(error) {
+					setCatchSuccess(false);
+				}
+			}
+			
 	}
 
 	function validaEmail(email) {
@@ -48,7 +50,7 @@ export default function EsqueceuSenha() {
 					instrucões para recuperação da sua senha
 					</div>
 				</div>
-				<Input.text type="email" value={email} onBlur={e => validaEmail(email)} onChange={e => setEmail(e.target.value)} placeHolder="Email" />
+				<Input.text type="email" value={email} validado={validacaoEmail} onBlur={e => validaEmail(email)} onChange={e => setEmail(e.target.value)} placeHolder="Email" />
 				<DivAviso.validacao value={!validacaoEmail && email !== ''} text="Por favor, digite um email válido." />
 				<div className="grid">
 					<Button.secundario type="button" nome="voltar" text="Voltar" href={"/"}/>

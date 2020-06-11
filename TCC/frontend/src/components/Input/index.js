@@ -19,7 +19,7 @@ const Input = {
         return(
             <InputRadioStructure name="inputRadio"
                                  value={props.value}
-                                 onCHange={props.onChange}
+                                 onClick={props.onClick}
                                  className="input input-radio"
                                  htmlFor={props.htmlFor}
                                  id={props.id}
@@ -37,6 +37,7 @@ const InputTextStructure = (props) => {
                value={props.value}
                onBlur={props.onBlur}
                onChange={props.onChange}
+               autoComplete="off"
                className={props.validado ? props.className : props.className + ' invalido'}
         />
     );
@@ -45,12 +46,15 @@ const InputTextStructure = (props) => {
 const InputRadioStructure = (props) => {
     return(
         <div>
-            <label className={props.className} htmlFor={props.htmlFor}>{props.text}</label>
+            <label className={props.value ? props.className + ' input-radio-checked' : props.className} 
+                   htmlFor={props.htmlFor}>
+                       {props.text}
+            </label>
             <input type="radio"
                    id={props.id}
                    name={props.name}
                    value={props.value}
-                   onChange={props.onChange}
+                   onClick={props.onClick}
                    className={props.className}
             />
         </div>

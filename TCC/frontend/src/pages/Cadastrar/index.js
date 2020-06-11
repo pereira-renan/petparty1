@@ -18,48 +18,75 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [cpf, setCpf] = useState("");
   const [userCuidador, setUserCuidador] = useState("");
+  const [userNormal, setUserNormal] = useState("");
 
   const [validacaoNome, setValidacaoNome] = useState(true);
   const [validacaoEmail, setValidacaoEmail] = useState(true);
   const [validacaoPassword, setValidacaoPassword] = useState(true);
   const [validacaoConfirmPassword, setValidacaoConfirmPassword] = useState(true);
   const [validacaoCpf, setValidacaoCpf] = useState(true);
+  const [validacaoUserCuidador, setValidacaoUserCuidador] = useState(true);
 
   const user_validado = true;
   const user_cuidador = true;
 
   const [catchSuccess, setCatchSuccess] = useState(false);
+  const [catchError, setCatchError] = useState(false);
 
   const history = useHistory();
 
   async function handleRegister(e) {
     e.preventDefault();
 
-    const data = { nome, email, password, cpf, user_cuidador };
+    if(validaNome(nome) &&
+      validaEmail(email) &&
+      validaCpf(cpf) &&
+      validaTipo(userCuidador) &&
+      validaSenha(password) &&
+      validaConfirmSenha(confirmPassword)) {
+        try {
+          setCatchSuccess(false);
+          const data = { nome, email, password, cpf, userCuidador };
+          const response = await api.post("user/create", data);
+          alert(`Cadastro Realizado com Sucesso! ! `);
+          setCatchSuccess(true);
+          history.push("/");
+        } catch (error) {
+          alert(`Erro ao Cadastrar! Tente Novamente` + error);
+          setCatchSuccess(false);
+        }
+    } else {
+      console.log(validaNome(nome),
+      validaEmail(email),
+      validaCpf(cpf),
+      validaTipo(userCuidador),
+      validaSenha(password),
+      validaConfirmSenha(confirmPassword));
 
-    try {
-      setCatchSuccess(false);
-      const response = await api.post("user/create", data);
-      alert(`Cadastro Realizado com Sucesso! ! `);
-      setCatchSuccess(true);
-      history.push("/");
-    } catch (error) {
-      alert(`Erro ao Cadastrar! Tente Novamente` + error);
-      setCatchSuccess(false);
+      setCatchError(true);
+      setTimeout(() => {
+        setCatchError(false);
+      }, 4000);
     }
   }
 
+
   function validaNome(nome) {
+    if (nome === '') return false;
     setValidacaoNome(!!nome.match(/[A-Z][a-z]* [A-Z][a-z]*/));
+    return validacaoNome;
   }
 
   function validaEmail(email) {
+    if (email === '') return false;
     setValidacaoEmail(!!email.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi));
+    return validacaoEmail;
   }
 
   function validaCpf(cpf) {
+    if (cpf === '') return false;
     setValidacaoCpf(cpf);
-
+    
     setValidacaoCpf((cpf) => {
       let rev;
       let i;
@@ -99,15 +126,32 @@ export default function Register() {
         return false;		
       return true;  
     });
+
+    return validacaoCpf;
+  }
+
+  function validaTipo(userCuidador) {
+    if (userCuidador === '') return false;
+    setValidacaoUserCuidador(userCuidador !== '');
+    return validacaoUserCuidador;
+  }
+
+  function setTipo(isCuidador) {
+    setUserCuidador(isCuidador);
+    setUserNormal(!isCuidador)
   }
 
   function validaSenha(password) {
+    if (password === '') return false;
+    setPassword(password);
     setValidacaoPassword(!!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/));
-    validaConfirmSenha(password);
+    return validacaoPassword;
   }
 
-  function validaConfirmSenha(password) {
+  function validaConfirmSenha(confirmPassword) {
+    if (confirmPassword === '') return false;
     setValidacaoConfirmPassword(confirmPassword === password);
+    return validacaoConfirmPassword;
   }
 
   return (
@@ -116,6 +160,7 @@ export default function Register() {
         <form onSubmit={handleRegister} id="form">
           <FormHeader nomeArea="cadastro">
               <DivAviso.sucesso value={catchSuccess} text="Cadastrado com sucesso!"/>
+              <DivAviso.erro value={catchError} text="Preencha os campos corretamente antes de submeter o formuário!"/>
           </FormHeader>
 
           <Input.text value={nome} validado={validacaoNome} onBlur={e => validaNome(nome)} onChange={e => setNome(e.target.value)} type="text" placeHolder="Nome Completo" id="nome" name="nome" />
@@ -127,9 +172,10 @@ export default function Register() {
           <Input.text value={cpf} validado={validacaoCpf} onBlur={e => validaCpf(cpf)} onChange={e => setCpf(e.target.value)} type="text" placeHolder="Cpf" id="cpf" name="cpf" />
           <DivAviso.validacao value={!validacaoCpf && cpf !== ''} text="Por favor, digite um cpf válido." />
 
+          <span className="desc-checkbox-tipo">Você quer se cadastrar como:</span>
           <div className="grid">
-            <Input.radio id="cuidador" name="tipo" value="cuidador" htmlFor="cuidador" text="Cuidador" />
-            <Input.radio id="usuario" name="tipo" value="usuario" htmlFor="usuario" text="Usuário" />
+            <Input.radio id="cuidador" name="tipo" value={userCuidador} onClick={e => setTipo(true)} htmlFor="cuidador" text="Cuidador" />
+            <Input.radio id="usuario" name="tipo" value={userNormal} onClick={e => setTipo(false)} htmlFor="usuario" text="Usuário" />
           </div>
           
           <Input.text value={password} validado={validacaoPassword} onBlur={e => validaSenha(password)} onChange={e => setPassword(e.target.value)} type="password" placeHolder="Senha" id="senha" name="senha" />
