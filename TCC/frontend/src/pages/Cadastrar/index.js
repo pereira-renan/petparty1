@@ -19,8 +19,8 @@ export default function Register() {
   const [cpf, setCpf] = useState("");
   const [telefone, setTelefone] = useState("");
   const [user_cuidador, setUserCuidador] = useState("");
-  const [userNormal, setUserNormal] = useState("");
-  const [usuario_validado, setUsuarioValidado] = useState("");
+  const [user_normal, setUserNormal] = useState("");
+  let usuario_validado = false;
 
   const [validacaoNome, setValidacaoNome] = useState(true);
   const [validacaoEmail, setValidacaoEmail] = useState(true);
@@ -28,8 +28,7 @@ export default function Register() {
   const [validacaoConfirmPassword, setValidacaoConfirmPassword] = useState(true);
   const [validacaoCpf, setValidacaoCpf] = useState(true);
   const [validacaoTelefone, setValidacaoTelefone] = useState(true);
-  const [validacaoUserCuidador, setValidacaoUserCuidador] = useState(true);
-  const [validacaoUsuario, setValidacaoUsuario] = useState(false);
+  const [validacaoTipo, setValidacaoTipo] = useState(true);
 
   const [catchSuccess, setCatchSuccess] = useState(false);
   const [catchError, setCatchError] = useState(false);
@@ -49,32 +48,31 @@ export default function Register() {
     valido = validaSenha(password) && valido;
     valido = validaConfirmSenha(confirmPassword) && valido;
 
-    setValidacaoUsuario(valido);
-    setUsuarioValidado(valido);
+    usuario_validado = valido;
 
     const data = { nome, email, password, cpf, usuario_validado, user_cuidador, telefone };
 
-    if(valido) {
-        try {
-          console.log(data);
-          setCatchSuccess(false);
-          const response = await api.post("user/create", data);
-          alert(`Cadastro Realizado com Sucesso! ! `);
-          setCatchSuccess(true);
-          history.push("/");
-        } catch (error) {
-          alert(`Erro ao Cadastrar! Tente Novamente` + error);
-          setCatchSuccess(false);
-        }
+    if(usuario_validado) {
+      try {
+        console.log(data);
+        setCatchSuccess(false);
+        const response = await api.post("user/create", data);
+        alert(`Cadastro Realizado com Sucesso! ! `);
+        setCatchSuccess(true);
+        history.push("/");
+      } catch (error) {
+        alert(`Erro ao Cadastrar! Tente Novamente` + error);
+        setCatchSuccess(false);
+      }
     } else {
       console.log(validacaoNome,
       validacaoEmail,
       validacaoCpf,
       validacaoTelefone,
-      validacaoUserCuidador,
+      validacaoTipo,
       validacaoPassword,
       validacaoConfirmPassword,
-      validacaoUsuario);
+      usuario_validado);
 
       setCatchError(true);
       setTimeout(() => {
@@ -149,10 +147,13 @@ export default function Register() {
   }
 
   function validaTipo(userCuidador) {
-    setValidacaoUserCuidador(userCuidador);
+    if(userCuidador === '') {
+      setValidacaoTipo(false);
+      return false;
+    }
     setTipo(userCuidador)
-    if(userCuidador === '') return false;
-    return validacaoUserCuidador;
+    setValidacaoTipo(true);
+    return true;
   }
 
   function setTipo(isCuidador) {
@@ -180,7 +181,7 @@ export default function Register() {
         <form onSubmit={handleRegister} id="form">
           <FormHeader nomeArea="cadastro">
               <DivAviso.sucesso value={catchSuccess} text="Cadastrado com sucesso!"/>
-              <DivAviso.erro value={catchError} text={ validacaoUsuario ? "Ocorreu um problema no servidor. Por favor, tente novamente mais tarde!" : "Preencha os campos corretamente antes de submeter o formuário!"}/>
+              <DivAviso.erro value={catchError} text={ usuario_validado ? "Ocorreu um problema no servidor. Por favor, tente novamente mais tarde!" : "Preencha os campos corretamente antes de submeter o formuário!"}/>
           </FormHeader>
 
           <Input.text value={nome} validado={validacaoNome} onBlur={e => validaNome(nome)} onChange={e => setNome(e.target.value)} type="text" placeHolder="Nome Completo" id="nome" name="nome" />
@@ -198,7 +199,7 @@ export default function Register() {
           <span className="desc-checkbox-tipo">Você quer se cadastrar como:</span>
           <div className="grid">
             <Input.radio id="cuidador" name="tipo" value={user_cuidador} onClick={e => validaTipo(true)} htmlFor="cuidador" text="Cuidador" />
-            <Input.radio id="usuario" name="tipo" value={userNormal} onClick={e => validaTipo(false)} htmlFor="usuario" text="Usuário" />
+            <Input.radio id="usuario" name="tipo" value={user_normal} onClick={e => validaTipo(false)} htmlFor="usuario" text="Usuário" />
           </div>
           
           <Input.text value={password} validado={validacaoPassword} onBlur={e => validaSenha(password)} onChange={e => setPassword(e.target.value)} type="password" placeHolder="Senha" id="senha" name="senha" />
