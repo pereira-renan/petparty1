@@ -57,11 +57,9 @@ export default function Register() {
         console.log(data);
         setCatchSuccess(false);
         const response = await api.post("user/create", data);
-        alert(`Cadastro Realizado com Sucesso! ! `);
         setCatchSuccess(true);
         history.push("/");
       } catch (error) {
-        alert(`Erro ao Cadastrar! Tente Novamente` + error);
         setCatchSuccess(false);
       }
     } else {

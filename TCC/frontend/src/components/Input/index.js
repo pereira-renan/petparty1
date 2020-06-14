@@ -12,6 +12,7 @@ const Input = {
                             onChange={props.onChange}
                             className="input input-texto"
                             validado={typeof props.validado === "undefined" || props.value === '' || props.validado}
+                            disabled={props.disabled}
             />
         );
     },
@@ -39,6 +40,7 @@ const InputTextStructure = (props) => {
                onChange={props.onChange}
                autoComplete="off"
                className={props.validado ? props.className : props.className + ' invalido'}
+               disabled={props.disabled}
         />
     );
 }

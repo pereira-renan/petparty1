@@ -13,7 +13,6 @@ export default function Profile() {
   // pegando as variaveis do local storage
   const token = localStorage.getItem("token");
   const id = localStorage.getItem("id");
- 
 
   // console.log(token);
   // console.log(id);
@@ -23,12 +22,6 @@ export default function Profile() {
       setInfo(response.data);
     });
   }, [id]);
- 
- 
-
-
-
- 
 
   return (
     <div className="profile-container">
