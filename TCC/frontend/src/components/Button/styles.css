@@ -38,6 +38,14 @@
     color: var(--txt-secundario);
 }
 
+.btn-secundario a {
+    color: black;
+}
+
+.btn-secundario a:hover {
+    color: white;
+}
+
 .btn-secundario:hover {
     transition-duration: 0.1s;
     background: var(--btn-secundario-hover);
