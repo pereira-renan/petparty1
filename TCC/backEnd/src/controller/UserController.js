@@ -17,7 +17,9 @@ class UserController {
     let isvalid = await schemavalidation.isValid(req.body);
 
     if (!isvalid) {
-      return res.status(400).json({ error: "Validação dos campos invalidos!" +  isvalid});
+      return res
+        .status(400)
+        .json({ error: "Validação dos campos invalidos!" + isvalid });
     }
     // fim validacao dos campos
 
@@ -90,8 +92,8 @@ class UserController {
     /// Verificacao email existente
     const { email, oldpassword } = req.body;
     console.log(email);
-    const user = await User.findById(req.userId);
-
+    const user = await User.findOne({email});
+    console.log(user.email);
     if (email != user.email) {
       const userExists = await User.findOne({ email });
       // valida se o email já esta cadastrado
@@ -99,7 +101,6 @@ class UserController {
         return res.status(400).json("Bad request.  email invalido ");
       }
     }
-
     // verificação da senha no banco
     if (
       oldpassword &&

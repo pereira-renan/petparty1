@@ -5,82 +5,82 @@ const UserSchema = mongoose.Schema(
   {
     nome: {
       type: String,
-      require: true
+      require: true,
     },
     email: {
       type: String,
       unique: true,
       required: true,
-      lowercase: true
+      lowercase: true,
     },
-    telefone:{
+    telefone: {
       type: String,
       unique: true,
       required: true,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
 
     passwordresetoken: {
       type: String,
-      select: false
+      select: false,
     },
-    passwordexpires:{
+    passwordexpires: {
       type: Date,
-      select: false
+      select: false,
     },
     usuario_validado: {
-      type: Boolean
+      type: Boolean,
     },
     cpf: {
       type: String,
-      required: true
+      required: true,
     },
     user_cuidador: {
-      type: Boolean
+      type: Boolean,
     },
+    matchId: [ {id_user: String, id_anfitriao: String, status: String}],
     avatar: {
       nome: {
         type: String,
-        default: "default.png"
+        default: "default.png",
       },
-      path: { type: String, default: "default.png" }
+      path: { type: String, default: "default.png" },
     },
     createdAt: {
       type: Date,
-      default: Date.now
-    }
+      default: Date.now,
+    },
   },
   {
     toObject: {
       getters: true,
       setter: true,
-      virtuals: true
+      virtuals: true,
     },
     toJSON: {
       getters: true,
       setter: true,
-      virtuals: true
-    }
+      virtuals: true,
+    },
   }
 );
 
-UserSchema.virtual("url").get(function() {
+UserSchema.virtual("url").get(function () {
   console.log(this.avatar.path);
   return `http://localhost:3000/files/${this.avatar.path}`;
 });
 
 // transformando a senha do usuario em hash antes de enviar para o banco
 
-UserSchema.pre("save", async function(next) {
+UserSchema.pre("save", async function (next) {
   const salt = bcrypt.genSaltSync(10);
   const hash = await bcrypt.hash(this.password, salt);
   this.password = hash;
   next();
 });
-
 
 const UserModel = mongoose.model("tb_users", UserSchema);
 export default UserModel;
