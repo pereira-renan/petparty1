@@ -11,6 +11,7 @@ export default function Profile() {
   const history = useHistory();
 
   const [infoUser, setInfo] = useState([]);
+  const [usersList, setUsersList] = useState([]);
 
   // pegando as variaveis do local storage
   const token = localStorage.getItem("token");
@@ -20,10 +21,28 @@ export default function Profile() {
   // console.log(id);
 
   useEffect(() => {
+    populaLista();
     api.post("info",{id} ).then(response => {
       setInfo(response.data);
     });
   }, [id]);
+
+  async function populaLista() {
+    setUsersList(await api.get("providers").then(response => {
+      console.log(response);
+    }))
+  }
+
+  /*
+  useEffect(() => {
+    api.get("providers").then(response => {
+      console('a');
+      console(response.data);
+      setUsersList(response.data);
+    });
+  }, [id]);
+  */
+  //const usersList = await api.get("providers");
 
   return (
     <div className="profile-container">
@@ -42,7 +61,7 @@ export default function Profile() {
           <p> Nome</p>
         </li>
       </ul>
-      <UsuariosList />
+      <UsuariosList lista={usersList}/>
     </div>
   );
 }

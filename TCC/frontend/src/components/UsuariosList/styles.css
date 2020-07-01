@@ -41,10 +41,9 @@ tr:hover {
 
 img {
     border-radius: 3px;
-    border-style: solid;
     border-color: #dcdcdc;
     border-width: 0.2px;
-    width: 100px;
+    width: 70px;
 }
 
 @media (max-width: 800px) {
