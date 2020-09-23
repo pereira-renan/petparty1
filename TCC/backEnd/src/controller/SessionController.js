@@ -6,8 +6,10 @@ import crypto from "crypto";
 import mailer from "../config/mailer";
 
 class SessionController {
+  
+   // LOGIN
   async store(req, res) {
-    // LOGIN
+   
     const { email, pass } = await req.body;
     const user = await User.findOne({ email });
 
@@ -32,9 +34,7 @@ class SessionController {
       token: jwt.sign({ id }, authConfig.secret),
     });
   }
-
   // ESQUECI A SENHA
-
   async forgotPassword(req, res) {
     const { email } = req.body;
     const emailreset = await User.findOne({ email });
@@ -79,7 +79,6 @@ class SessionController {
         .send({ error: "Erro ao recuperar a senha" } + error);
     }
   }
-
   // RESET PASSWORD
   async resetPassword(req, res) {
     const { email, token, password } = req.body;

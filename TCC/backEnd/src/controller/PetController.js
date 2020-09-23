@@ -1,8 +1,10 @@
 import Pet from "../models/Pet";
 
 class PetController {
+ 
+  // Cadastrando PET
   async store(req, res) {
-    // Cadastrando PET
+   
     try {
       const pet = await Pet.create(req.body);
       return res.json(pet);
@@ -10,10 +12,8 @@ class PetController {
       return res.status(400).json("Erro ao cadastrar o pet" + error);
     }
   }
-
+// Mostrando pets
   async index(req, res) {
-    // Inserindo a foto de avatar no usuario
-
     try {
       const pets = await Pet.find(req.body);
       return res.json(pets);
@@ -21,13 +21,12 @@ class PetController {
       return res.status(400).json("Erro ao cadastrar o pet" + error);
     }
   }
-
+  // Atualizando PET
   async update(req, res) {
-    // Atualizando PET
 
     // puxando ID do pet que vem no header
     const id_pet = req.header("id_pet");
-
+    console.log(id_pet);
     try {
       let pet = await Pet.findById(id_pet);
 
@@ -45,11 +44,9 @@ class PetController {
       return res.status(400).json("Erro ao atualizar o pet" + error);
     }
   }
-
+    // Deletando Pet
   async delete(req, res) {
-    // Atualizando PET
 
-    // puxando ID do pet que vem no header
     const id_pet = req.header("id_pet");
 
     try {
@@ -71,5 +68,4 @@ class PetController {
     }
   }
 }
-
 export default new PetController();

@@ -12,6 +12,7 @@ import FileController from "./controller/FileController";
 import ProviderController from "./controller/ProviderController";
 import MatchController from "./controller/MatchController";
 
+
 const routes = new Router();
 const upload = multer(multerConfig);
 
@@ -28,20 +29,35 @@ routes.post("/info", UserController.infoUser);
 
 //PET
 routes.get("/pets", PetController.index);
+
+
+
+
+// Pesquisa
+
+routes.get("/searchProviders", ProviderController.index);
+
+
+
+routes.use(authMiddleware); // midleware de verificação do token do usuario 
+
+//PET
 routes.post("/pet/create", PetController.store);
 routes.put("/pet/update", PetController.update);
 routes.delete("/pet/delete", PetController.delete);
 
-// AGENDAMENTO
-
+// agendamentos
 routes.post("/agendamento", AgendamentoController.store);
-routes.get("/providers", ProviderController.mostrarCuidadores);
+routes.put("/agendamento/accept", AgendamentoController.aceitarAgendamento);
+routes.get("/meusAgendamentos",AgendamentoController.index);
 
-//routes.use(authMiddleware); // midleware de verificação do token do usuario 
+
+
+routes.get("/providers", ProviderController.mostrarCuidadores);
 
 //todas as rotas que estão abaixo passará pela autenticação
 
-routes.put("/user", UserController.update);
+routes.put("/user/update", UserController.update);
 
 routes.put("/match", MatchController.Match);
 routes.get("/getmatchs", MatchController.MatchPendentes);

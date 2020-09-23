@@ -13,6 +13,12 @@ const AgendamentoSchema = mongoose.Schema(
     id_prestador:{
       type:String,
     },
+    id_pet:{
+      type: String,
+    },
+    status:{
+      type: String,
+    },
     created_at: {
       type: Date,
       default: Date.now

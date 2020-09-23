@@ -1,7 +1,7 @@
 const mongoose = require("../database");
 const bcrypt = require("bcryptjs");
-
-const UserSchema = mongoose.Schema(
+const PointSchema = require ('../utils/PointSchema');
+const UserSchema =  new mongoose.Schema(
   {
     nome: {
       type: String,
@@ -49,6 +49,11 @@ const UserSchema = mongoose.Schema(
       },
       path: { type: String, default: "default.png" },
     },
+    location:{
+      type: PointSchema,
+      index: '2dsphere',
+  
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -67,6 +72,7 @@ const UserSchema = mongoose.Schema(
     },
   }
 );
+
 
 UserSchema.virtual("url").get(function () {
   console.log(this.avatar.path);
