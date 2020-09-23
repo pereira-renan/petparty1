@@ -15,7 +15,9 @@ class PetController {
 // Mostrando pets
   async index(req, res) {
     try {
-      const pets = await Pet.find(req.body);
+      const id_dono = req.header("id_dono");
+      console.log(id_dono);
+      const pets = await Pet.find({id_dono});
       return res.json(pets);
     } catch (error) {
       return res.status(400).json("Erro ao cadastrar o pet" + error);

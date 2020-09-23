@@ -24,7 +24,7 @@ routes.post("/user/create", UserController.CriarUsuar);
 routes.post("/login", SessionController.store);
 routes.post("/resetPassword", SessionController.resetPassword);
 routes.post("/forgot", SessionController.forgotPassword);
-routes.post("/info", UserController.infoUser);
+routes.get("/info", UserController.infoUser);
 
 
 //PET

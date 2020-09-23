@@ -16,14 +16,11 @@ class UserController {
       }
 
       const { nome, email, cpf, user_cuidador, password, telefone, latitude, longitude } = req.body;
-      console.log("teste");
       const location = {
         type: 'Point',
         coordinates: [longitude, latitude],
       };
-
       // criar usuário s
-
       const user = await User.create({
         nome,
         email,
@@ -33,18 +30,6 @@ class UserController {
         telefone,
         location,
       })
-
-      // const {
-      //   id,
-      //   nome,
-      //   email,
-      //   user_cuidador,
-      //   cpf,
-      //   password,
-      //   usuario_validado,
-      //   telefone,
-
-      // } = await User.create(req.body);
 
       return res.json(user);
     } catch (err) {
@@ -108,9 +93,12 @@ class UserController {
     const retorno = await User.findOne({ email: req.body.email });
     return res.json(retorno);
   }
+
+
+
   // Buscando Infomações do Usuario
   async infoUser(req, res) {
-    const { id } = await req.body;
+    const id = req.header("id_user");
     console.log("ID-->" + id);
     const user = await User.findById(id);
     console.log("User-->" + user);
