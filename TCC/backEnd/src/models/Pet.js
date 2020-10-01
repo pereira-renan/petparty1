@@ -56,10 +56,6 @@ PetSchema.virtual("url").get(function() {
 
 });
 
-// transformando a senha do usuario em hash antes de enviar para o banco
-
-
-
 
 const PetModel= mongoose.model("tb_pet", PetSchema);
 export default PetModel;

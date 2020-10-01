@@ -1,23 +1,24 @@
 import Pet from "../models/Pet";
-
+import jwt from "jsonwebtoken";
 class PetController {
- 
+
   // Cadastrando PET
   async store(req, res) {
-   
+
     try {
+      const { id } = jwt.decode(req.header("token"));
+      req.body.id_dono = id;
       const pet = await Pet.create(req.body);
       return res.json(pet);
     } catch (error) {
       return res.status(400).json("Erro ao cadastrar o pet" + error);
     }
   }
-// Mostrando pets
+  // Mostrando pets
   async index(req, res) {
     try {
-      const id_dono = req.header("id_dono");
-      console.log(id_dono);
-      const pets = await Pet.find({id_dono});
+      const { id } = jwt.decode(req.header("token"));
+      const pets = await Pet.find({id_dono : id});
       return res.json(pets);
     } catch (error) {
       return res.status(400).json("Erro ao cadastrar o pet" + error);
@@ -46,7 +47,7 @@ class PetController {
       return res.status(400).json("Erro ao atualizar o pet" + error);
     }
   }
-    // Deletando Pet
+  // Deletando Pet
   async delete(req, res) {
 
     const id_pet = req.header("id_pet");

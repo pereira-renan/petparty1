@@ -2,6 +2,8 @@ import User from "../models/User";
 import jwt from "jsonwebtoken";
 
 class MatchController {
+ 
+ 
   async Match(req, res) {
     let { id } = jwt.decode(req.header("token")); // pegando o token  do user vindo do header
 
@@ -10,6 +12,7 @@ class MatchController {
       { _id: id },
       { $push: { matchId: { id_anfitriao, status } } }
     );
+    
     await User.updateOne(
       { _id: id_anfitriao },
       { $push: { matchId: { id_anfitriao: id, status } } }

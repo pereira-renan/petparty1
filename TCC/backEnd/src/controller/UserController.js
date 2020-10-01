@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 import User from "../models/User";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 class UserController {
 
@@ -41,30 +42,7 @@ class UserController {
 
   // METODO ATUALIZACAO DE DADOS
   async update(req, res) {
-    // /// validacao dos campos na atualizacao dos campos
-    // const schemavalidation = Yup.object().shape({
-    //   nome: Yup.string(),
-    //   email: Yup.string().email(),
-    //   password: Yup.string().min(8),
-    //   cpf: Yup.string(),
-    //   user_cuidador: Yup.boolean(),
-    //   oldpassword: Yup.string().min(6),
-    //   password: Yup.string()
-    //     .min(6)
-    //     .when("oldpassword", (oldpassword, field) =>
-    //       oldpassword ? field.required() : field
-    //     ),
-
-    //   confirmpassword: Yup.string().when("password", (password, field) =>
-    //     password ? field.required().oneOf([Yup.ref("password")]) : field
-    //   ),
-    // });
-    // let isvalid = await schemavalidation.isValid(req.body);
-    // if (!isvalid) {
-    //   return res.status(400).json({ error: "Validação dos campos invalidos!" });
-    // }
-    // FIM validacao dos campos
-
+  
     /// Verificacao email existente
     const { email, oldpassword } = req.body;
     console.log(email);
@@ -98,7 +76,7 @@ class UserController {
 
   // Buscando Infomações do Usuario
   async infoUser(req, res) {
-    const id = req.header("id_user");
+    const { id } = jwt.decode(req.header("token"));
     console.log("ID-->" + id);
     const user = await User.findById(id);
     console.log("User-->" + user);

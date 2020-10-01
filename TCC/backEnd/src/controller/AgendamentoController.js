@@ -1,23 +1,18 @@
 import User from "../../src/models/User";
-
+import jwt from "jsonwebtoken";
 import Agendamento from "../../src/models/Agendamentos";
 
 
 class AgendamentoController {
   async store(req, res) {
-    // const schema = Yup.object().shape({
-    //   id_prestador: Yup.string().required(),
-    //   date: Yup.date().required()
-    // });
 
-    // if (!(await schema.isValid(req.body))) {
-    //   return res.status(400).json({ error: "Validation fails" });
-    // }
-
+    const { id } = jwt.decode(req.header("token"));
+    req.body.id_usuario = id;
+    console.log(req.body.id_usuario);
     const id_prestador = req.header("id_prestador");
-    const { id_pet, data, id_usuario } = req.body;
+    const { id_pet, data } = req.body;
     const status = "pendente";
-    console.log(id_prestador);
+    // console.log(id_prestador);
 
     // verificando se o informado é um prestador de serviço
     try {
@@ -35,7 +30,7 @@ class AgendamentoController {
 
       const agendamento = await Agendamento.create({
         //  id_usuario: req.userId,
-        id_usuario,
+        id_usuario: id,
         id_prestador,
         data,
         id_pet,
@@ -50,6 +45,19 @@ class AgendamentoController {
 
   async index(req, res) {
     try {
+      const { id } = jwt.decode(req.header("token"));
+      console.log(id);
+      const isPrestador = await User.findById(id)
+        .where("user_cuidador")
+        .equals(true);
+
+      if (!isPrestador) {
+        req.body.id_usuario = id;
+      }
+      else {
+        req.body.id_prestador = id;
+      }
+     
       const agendamentos = await Agendamento.find(req.body);
       return res.json(agendamentos);
     }
@@ -74,11 +82,10 @@ class AgendamentoController {
     }
 
   }
+
   async updateAgendamento(req, res) {
 
-
   }
-
 
 }
 
