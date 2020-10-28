@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiPower, FiTrash2 } from "react-icons/fi";
+import Header from '../common/template/header';
+import ContentHeader from '../common/template/contentHeader';
 
 import UsuariosList from '../../components/UsuariosList/index';
 
@@ -13,25 +15,33 @@ export default function Profile() {
   const [infoUser, setInfo] = useState([]);
   const [usersList, setUsersList] = useState([]);
 
-  // pegando as variaveis do local storage
   const token = localStorage.getItem("token");
-  const id = localStorage.getItem("id");
-
-  // console.log(token);
-  // console.log(id);
 
   useEffect(() => {
-    populaLista();
-    api.post("info",{id} ).then(response => {
+    api.get("info", {
+      headers: {
+        token: localStorage.getItem("token")
+      }
+    }).then(response => {
       setInfo(response.data);
-    });
-  }, [id]);
+    })
+  }, [localStorage.getItem("token")])
 
-  async function populaLista() {
-    setUsersList(await api.get("providers").then(response => {
-      console.log(response);
-    }))
-  }
+  useEffect(() => {
+    api.get("searchProviders", {
+      headers: {
+        token: localStorage.getItem("token")
+      },
+      params: {
+        latitude: "-23.9773083",
+        longitude: "-46.4494753",
+        distancia: "5000"
+      }
+    }).then(response => {
+      setUsersList(response.data);
+      //setInfo(response.data);
+    })
+  }, [localStorage.getItem("token")])
 
   /*
   useEffect(() => {
@@ -45,23 +55,24 @@ export default function Profile() {
   //const usersList = await api.get("providers");
 
   return (
-    <div className="profile-container">
-      <header>
-        <span>Bem Vindo, {infoUser.nome} </span>
-     
-      </header>
-      <h1>Informações Pessoais</h1>
-      <ul>
-        <li>
-          <p> Nome: {infoUser.nome}</p>
-          <p> CPF : {infoUser.cpf}</p>
-          <p> Email:{infoUser.email}</p>
-          <p> Nome</p>
-          <p> Nome</p>
-          <p> Nome</p>
-        </li>
-      </ul>
-      <UsuariosList lista={usersList}/>
+    <div>
+      <Header/>
+      
+      <div className="profile-container">
+        <header>
+          <span>Bem Vindo, {infoUser.nome} </span>
+      
+        </header>
+        <h1>Informações Pessoais</h1>
+        <ul>
+          <li>
+            <p> Nome: {infoUser.nome}</p>
+            <p> CPF : {infoUser.cpf}</p>
+            <p> Email:{infoUser.email}</p>
+          </li>
+        </ul>
+        <UsuariosList lista={usersList}/>
+      </div>
     </div>
   );
 }

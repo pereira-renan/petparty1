@@ -20,6 +20,8 @@ export default function Register() {
   const [telefone, setTelefone] = useState("");
   const [user_cuidador, setUserCuidador] = useState("");
   const [user_normal, setUserNormal] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   let usuario_validado = false;
 
   const [validacaoNome, setValidacaoNome] = useState(true);
@@ -29,6 +31,8 @@ export default function Register() {
   const [validacaoCpf, setValidacaoCpf] = useState(true);
   const [validacaoTelefone, setValidacaoTelefone] = useState(true);
   const [validacaoTipo, setValidacaoTipo] = useState(true);
+  const [validacaoLatitude, setValidacaoLatitude] = useState(true);
+  const [validacaoLongitude, setValidacaoLongitude] = useState(true);
 
   const [catchSuccess, setCatchSuccess] = useState(false);
   const [catchError, setCatchError] = useState(false);
@@ -50,7 +54,7 @@ export default function Register() {
 
     usuario_validado = valido;
 
-    const data = { nome, email, password, cpf, usuario_validado, user_cuidador, telefone };
+    const data = { nome, email, password, cpf, usuario_validado, user_cuidador, telefone, latitude, longitude };
 
     if(usuario_validado) {
       try {
@@ -173,6 +177,14 @@ export default function Register() {
     return validacaoConfirmPassword;
   }
 
+  function validaLatitude(latitude) {
+    return true;
+  }
+
+  function validaLongitude(longitude) {
+    return true;
+  }
+
   return (
     <main>
       <CardCentral>
@@ -205,6 +217,12 @@ export default function Register() {
 
           <Input.text value={confirmPassword} validado={validacaoConfirmPassword} onBlur={e => validaConfirmSenha(password)} onChange={e => setConfirmPassword(e.target.value)} type="password" placeHolder="Confirme sua Senha" id="confirmSenha" name="confirmSenha" />
           <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar a mesma senha digitada no campo acima." />
+
+          <Input.text value={latitude} validado={validacaoLatitude} onBlur={e => validaLatitude(latitude)} onChange={e => setLatitude(e.target.value)} type="latitude" placeHolder="Latitude" id="latitude" name="latitude" />
+          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua latitude no campo acima." />
+
+          <Input.text value={longitude} validado={validacaoLongitude} onBlur={e => validaLongitude(longitude)} onChange={e => setLongitude(e.target.value)} type="longitude" placeHolder="Longitude" id="longitude" name="longitude" />
+          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua longitude no campo acima." />
           <div></div>
           <div className="grid">
             <Button.secundario type="button" name="login" text="Já possui cadastro?" href={"/"}/>

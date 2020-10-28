@@ -12,7 +12,6 @@ import api from "../../services/api";
 import "./styles.css";
 
 export default function Login() {
-  //let classNameCredencial = 'credencial-invalida ';
 
   const [pass, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -27,22 +26,10 @@ export default function Login() {
 
     try {
       setCatchError(false);
-      //document.querySelector('#validacao').classList.add('invisivel');
-      //document.querySelector('#validacao').classList.remove('visivel');
       const response = await api.post("login", credenciais);
 
-      // destruturando as informações retornadas pela api
-      const { user, token } = response.data;
-
-      const { id, nome, email } = user;
-
-      alert(
-        `Logado : ID: ${id}\n NOME: ${nome} \n EMAIL : ${email} \n Token : ${token}`
-      );
-      // salvando o token no localstorage
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("id", id);
+      const { token } = response.data;
+      localStorage.setItem('token', token);
 
       history.push("/profile");
     } catch (error) {
@@ -50,8 +37,6 @@ export default function Login() {
       setTimeout(() => {
 				setCatchError(false);
 			}, 4000);
-      //document.querySelector('#validacao').classList.remove('invisivel');
-      //document.querySelector('#validacao').classList.add('visivel');
     }
   }
 

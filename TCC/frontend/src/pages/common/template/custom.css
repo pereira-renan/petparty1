@@ -1,0 +1,48 @@
+.main-footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+.skin-blue .main-header .logo {
+    background-color: #ffae1a;
+}
+
+.skin-blue .main-header .logo:hover {
+    background-color: #ffa500;
+}
+
+.skin-blue .main-header .navbar {
+    background-color: #ffae1a;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+    background-color: #ffa500;
+}
+
+.bg-Cachorro {
+    background-color: #17a2b8;
+}
+
+.bg-Gato {
+    background-color: #3d9970
+}
+
+.bg-Peixe {
+    background-color: #F08080;
+}
+
+.titulo-card {
+    background-color: #DCDCDC;
+    padding: 0px 15px;
+}
+
+.my-10 {
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 30px;
+}
+
+.titulo-card h4 {
+    display: inline-block;
+}
