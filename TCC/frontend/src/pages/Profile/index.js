@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { FiPower, FiTrash2 } from "react-icons/fi";
 import Header from '../common/template/header';
 import ContentHeader from '../common/template/contentHeader';
+import Input from '../../components/Input/index';
 
 import UsuariosList from '../../components/UsuariosList/index';
 
@@ -11,6 +12,8 @@ import api from "../../services/api";
 import "./styles.css";
 export default function Profile() {
   const history = useHistory();
+
+  const [distancia, setDistancia] = useState("5");
 
   const [infoUser, setInfo] = useState([]);
   const [usersList, setUsersList] = useState([]);
@@ -35,13 +38,13 @@ export default function Profile() {
       params: {
         latitude: "-23.9773083",
         longitude: "-46.4494753",
-        distancia: "5000"
+        distancia: distancia * 1000
       }
     }).then(response => {
       setUsersList(response.data);
       //setInfo(response.data);
     })
-  }, [localStorage.getItem("token")])
+  }, distancia)
 
   /*
   useEffect(() => {
@@ -71,6 +74,7 @@ export default function Profile() {
             <p> Email:{infoUser.email}</p>
           </li>
         </ul>
+        <Input.text value={distancia} onChange={e => setDistancia(e.target.value)} type="number" placeHolder="Distancia em Km" />
         <UsuariosList lista={usersList}/>
       </div>
     </div>
