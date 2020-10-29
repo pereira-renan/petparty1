@@ -42,7 +42,7 @@ class UserController {
 
   // METODO ATUALIZACAO DE DADOS
   async update(req, res) {
-  
+
     /// Verificacao email existente
     const { email, oldpassword } = req.body;
     console.log(email);
