@@ -46,7 +46,7 @@ export default function Dashboard() {
       }
     }).then(response => {
       setUsersList(response.data);
-      //setInfo(response.data);
+      console.log(response.data)
     })
   }, distancia)
 

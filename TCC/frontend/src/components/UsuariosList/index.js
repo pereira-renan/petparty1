@@ -9,14 +9,13 @@ const lista = []
 
 const UsuariosList = (props) => {
 
-    const listaProviders = props.lista.providers === undefined? [] : props.lista.providers;
+    const listaProviders = props.lista === undefined? [] : props.lista;
 
     return(
         <table>
             <thead>
                 <th className="campo-1">Foto</th>
                 <th>Nome</th>
-                <th>Email</th>
                 <th>Telefone</th>
                 <th className="dispensavel">Distância</th>
                 <th>Ação</th>
@@ -28,9 +27,8 @@ const UsuariosList = (props) => {
                             <img src={user.url}/>
                         </td>
                         <td>{user.nome}</td>
-                        <td>{user.email}</td>
                         <td>{user.telefone || "-"}</td>
-                        <td className="dispensavel">{user.location.coordinates}</td>
+                        <td className="dispensavel">{user.km}</td>
                         <td>
                             <Button.secundario type="button" name="chamar" text="Chamar" href="#"/>
                         </td>
