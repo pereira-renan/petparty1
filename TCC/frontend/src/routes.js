@@ -2,8 +2,9 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 import Cadastro from "./pages/Cadastrar";
-import Perfil from "./pages/Profile";
+import Profile from "./pages/Profile";
 import EsqueceuSenha from "./pages/EsqueceuSenha";
 
 export default function Routes() {
@@ -11,9 +12,10 @@ export default function Routes() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route path="/register" component={Cadastro} />
-        <Route path="/profile" component={Perfil} />
-        <Route path="/remember" component={EsqueceuSenha} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route exact path="/register" component={Cadastro} />
+        <Route exact path="/profile" component={Profile} />
+        <Route exact path="/remember" component={EsqueceuSenha} />
       </Switch>
     </BrowserRouter>
   );

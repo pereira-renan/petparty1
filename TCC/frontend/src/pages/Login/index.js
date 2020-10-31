@@ -31,7 +31,7 @@ export default function Login() {
       const { token } = response.data;
       localStorage.setItem('token', token);
 
-      history.push("/profile");
+      history.push("/dashboard");
     } catch (error) {
       setCatchError(true);
       setTimeout(() => {
