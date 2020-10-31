@@ -66,4 +66,8 @@ routes.put("/refusematch", MatchController.MatchRefuse);
 
 routes.post("/files", upload.single("file"), FileController.store);
 
+routes.post("/filess", upload.single("file") ,(req,res) =>{
+  return res.json({ok: true});
+})
+
 export default routes;

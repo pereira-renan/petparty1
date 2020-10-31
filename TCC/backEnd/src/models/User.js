@@ -75,9 +75,11 @@ const UserSchema =  new mongoose.Schema(
 
 
 UserSchema.virtual("url").get(function () {
-  console.log(this.avatar.path);
   return `http://localhost:3333/files/${this.avatar.path}`;
 });
+
+
+
 
 // transformando a senha do usuario em hash antes de enviar para o banco
 

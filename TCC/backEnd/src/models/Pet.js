@@ -51,10 +51,10 @@ const PetSchema = mongoose.Schema(
   }
 );
 
-PetSchema.virtual("url").get(function() {
-
-
+PetSchema.virtual("url").get(function () {
+  return `http://localhost:3333/files/${this.avatar.path}`;
 });
+
 
 
 const PetModel= mongoose.model("tb_pet", PetSchema);
