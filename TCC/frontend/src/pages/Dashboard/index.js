@@ -66,21 +66,27 @@ export default function Dashboard() {
     <Header userName={infoUser.nome} userCuidador={infoUser.user_cuidador} createdAt={infoUser.createdAt === undefined ? '' : infoUser.createdAt.slice(0, 10)}/>
     <SideBar/>
     <Content title="Dashboard">
-      <Row cols='12'>
-          <div className="titulo-card form-user">
+      <div className="row">
+        <div className="col-xs-7 col-md-5">
+          <div id="box-mapa" className="box">
+            <div className="titulo-card form-user">
               <h4>Mapa</h4>
-          </div> 
-          
-      </Row>
+            </div> 
+            <img src="https://i.stack.imgur.com/yEshb.gif"/>
+          </div>   
+        </div>
 
-      <Row cols='12'>
-          <div className="titulo-card form-user">
+        <div className="col-xs-12 col-md-7">
+          <div id="box-lista" className="box">
+            <div className="titulo-card form-user">
               <h4>Lista</h4>
-              <Input.text value={distancia} onChange={e => setDistancia(e.target.value)} type="number" placeHolder="Distancia em Km" />
-              <UsuariosList lista={usersList}/>
-          </div> 
-      </Row>
-  </Content>
+            </div> 
+            <Input.text value={distancia} onChange={e => setDistancia(e.target.value)} type="number" placeHolder="Distancia em Km" />
+            <UsuariosList lista={usersList}/>
+          </div>
+        </div>
+      </div>
+    </Content>
   </div>
   );
 }

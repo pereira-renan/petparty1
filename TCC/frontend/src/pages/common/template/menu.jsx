@@ -8,7 +8,7 @@ export default props => (
         <MenuItem path='/dashboard' label='Início' icon='home'/>
         <MenuItem path='/profile' label='Perfil' icon='user'/>
         <MenuTree label='Cadastro' icon='edit'>
-            <MenuItem path='/userProfile?addPet'
+            <MenuItem path='/profile'
                 label='Registrar um pet' icon='paw'/>
         </MenuTree>
     </ul>

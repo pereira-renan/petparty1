@@ -36,7 +36,9 @@ export default function Header(props) {
                                 <img src="https://avatars0.githubusercontent.com/u/44417337?s=460&v=4" className="img-circle" alt="User Image"/>
     
                                 <p>
-                                {props.userName} - {props.userCuidador ? 'Cuidador' : 'Usuário'}
+                                {props.userName}
+                                <br/> 
+                                ({props.userCuidador ? 'Cuidador' : 'Usuário'})
                                 <small>Membro desde {props.createdAt.split('-').reverse().join('/')}</small>
                                 </p>
                             </li>

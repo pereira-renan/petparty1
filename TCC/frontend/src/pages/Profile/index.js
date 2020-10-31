@@ -62,40 +62,46 @@ export default function Profile() {
       <Header userName={infoUser.nome} userCuidador={infoUser.user_cuidador} createdAt={infoUser.createdAt === undefined ? '' : infoUser.createdAt.slice(0, 10)}/>
       <SideBar/>
       <Content title="Perfil">
-        <Row cols='12 12 12 5'>
-          <div className="titulo-card form-user">
-            <h4>Informações</h4>
-          </div> 
-          <form name="formUsuario">
-            <input id="id" name="id" type="hidden" value={infoUser._id}></input>
-            <br/>
-            <label htmlFor="name">Nome</label><br/>
-            <input id="nome" name="nome" type="text" value={infoUser.nome}></input>
-            <br/>
-            <label htmlFor="email">Email</label><br/>
-            <input id="email" name="email" type="text" value={infoUser.email}></input>
-            <br/>
-            <label htmlFor="cpf">Cpf</label><br/>
-            <input id="cpf" name="cpf" type="text" value={infoUser.cpf}></input>
-            <br/>
-            <label htmlFor="telefone">Telefone</label><br/>
-            <input id="telefone" name="telefone" type="text" value={infoUser.telefone}></input>
-            <br/>
-            <label htmlFor="cuidador">Cuidador?</label><br/>
-            <input id="cuidador" name="cuidador" type="text" value={infoUser.user_cuidador}></input>
-            <br/>
-            <input id="btnAtualizar" name="btnAtualizar" type="submit" value="Atualizar"></input>
-          </form>
-        </Row>
-        <Row cols='12 12 12 7'>
-          <div className="titulo-card">
-            <h4>Pets</h4>
-          </div> 
-          {infoPets.map((value, index) => {
-            return <ValueBox cols='12 6' key={index} idPet={value._id} color={value.tipo_pet} icon='paw'
-              value={`${value.nome}`} text={value.tipo_pet}/>
-          })}
-        </Row>
+        <div className="row">
+          <div className="col-xs-8 col-md-6">
+            <div className="box">
+              <div className="titulo-card form-user">
+                <h4>Informações</h4>
+              </div> 
+              <form name="formUsuario">
+                <input id="id" name="id" type="hidden" value={infoUser._id}></input>
+                <br/>
+                <label htmlFor="name">Nome</label><br/>
+                <input id="nome" name="nome" type="text" value={infoUser.nome}></input>
+                <br/>
+                <label htmlFor="email">Email</label><br/>
+                <input id="email" name="email" type="text" value={infoUser.email}></input>
+                <br/>
+                <label htmlFor="cpf">Cpf</label><br/>
+                <input id="cpf" name="cpf" type="text" value={infoUser.cpf}></input>
+                <br/>
+                <label htmlFor="telefone">Telefone</label><br/>
+                <input id="telefone" name="telefone" type="text" value={infoUser.telefone}></input>
+                <br/>
+                <label htmlFor="cuidador">Cuidador?</label><br/>
+                <input id="cuidador" name="cuidador" type="text" value={infoUser.user_cuidador}></input>
+                <br/>
+                <input id="btnAtualizar" name="btnAtualizar" type="submit" value="Atualizar"></input>
+              </form>
+            </div>
+          </div>
+          <div className="col-xs-12 col-md-6">
+            <div className="box">
+              <div className="titulo-card">
+                <h4>Pets</h4>
+              </div> 
+              {infoPets.map((value, index) => {
+                return <ValueBox cols='12 6' key={index} idPet={value._id} color={value.tipo_pet} icon='paw'
+                  value={`${value.nome}`} text={value.tipo_pet}/>
+              })}
+            </div>
+          </div>
+        </div>
       </Content>
   </div>
   );

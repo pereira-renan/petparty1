@@ -4,19 +4,12 @@ import Button from '../../components/Button/index';
 import './styles.css';
 
 
-const lista = [
-    {id: 1, foto: "https://avatars0.githubusercontent.com/u/44417337?s=460&v=4", nome: "Joao", telefone: "+55 (13) 9999-9999", distancia: 10},
-    {id: 2, foto: "https://avatars0.githubusercontent.com/u/44417337?s=460&v=4", nome: "Ricardo", telefone: "+55 (13) 9999-9999", distancia: 10},
-    {id: 3, foto: "https://avatars0.githubusercontent.com/u/44417337?s=460&v=4", nome: "Kleber", telefone: "+55 (13) 9999-9999", distancia: 10},
-    {id: 4, foto: "https://avatars0.githubusercontent.com/u/44417337?s=460&v=4", nome: "Kleber", telefone: "+55 (13) 9999-9999", distancia: 10}
-
-]
+const lista = []
 
 
 const UsuariosList = (props) => {
 
     const listaProviders = props.lista.providers === undefined? [] : props.lista.providers;
-    console.log(listaProviders);
 
     return(
         <table>

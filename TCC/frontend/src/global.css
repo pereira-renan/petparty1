@@ -86,6 +86,7 @@ form {
 
 .titulo-card {
   background-color: #DCDCDC;
+  text-align: left !important;
   padding: 0px 15px;
 }
 
@@ -101,4 +102,14 @@ form {
 
 .skin-blue .main-header li.user-header {
   background-color: #222d32 !important;
+}
+
+.skin-blue .main-header li.user-footer {
+  background-color:#A9A9A9 !important;
+}
+
+.skin-blue .main-header li.user-footer a {
+  background-color:#A9A9A9 !important;
+  color: white !important;
+  padding: 6px 18px;
 }
