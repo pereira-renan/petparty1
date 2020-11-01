@@ -21,6 +21,8 @@ export default function Dashboard() {
   const [infoUser, setInfo] = useState([]);
   const [usersList, setUsersList] = useState([]);
 
+  const [location, setLocation] = useState([]);
+
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -30,7 +32,8 @@ export default function Dashboard() {
       }
     }).then(response => {
       setInfo(response.data);
-      console.log(response.data);
+      setLocation(response.data.location.coordinates);
+      //console.log(response.data);
     })
   }, [localStorage.getItem("token")])
 
@@ -40,26 +43,15 @@ export default function Dashboard() {
         token: localStorage.getItem("token")
       },
       params: {
-        latitude: "-23.9773083",
-        longitude: "-46.4494753",
+        latitude: '' + location[0],
+        longitude: '' + location[1],
         distancia: distancia * 1000
-      }
+     }
     }).then(response => {
       setUsersList(response.data);
-      console.log(response.data)
+      //console.log(response.data)
     })
-  }, distancia)
-
-  /*
-  useEffect(() => {
-    api.get("providers").then(response => {
-      console('a');
-      console(response.data);
-      setUsersList(response.data);
-    });
-  }, [id]);
-  */
-  //const usersList = await api.get("providers");
+  }, [distancia, location])
 
   return (
     <div>
@@ -72,7 +64,7 @@ export default function Dashboard() {
             <div className="titulo-card form-user">
               <h4>Mapa</h4>
             </div> 
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3646.502958300999!2d-46.328558384399976!3d-23.942648581669534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce024465fa95bf%3A0x1e411e16e8228ce3!2sFatec%20Rubens%20Lara!5e0!3m2!1spt-BR!2sbr!4v1604246662323!5m2!1spt-BR!2sbr">
+            <iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3646.502958300999!2d-${location[0]}!3d-${location[1]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce024465fa95bf%3A0x1e411e16e8228ce3!2sFatec%20Rubens%20Lara!5e0!3m2!1spt-BR!2sbr!4v1604246662323!5m2!1spt-BR!2sbr`}>
             </iframe>
           </div>   
         </div>
