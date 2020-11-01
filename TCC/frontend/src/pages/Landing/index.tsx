@@ -28,7 +28,7 @@ function Landing(){
          <div id="page-landing-content" className="container">
              <div className="logo-container">
                  <img src={logoImg} alt="PetParty"/>
-                 <h2> A plataforma para te ajudar</h2>
+                 <h2> A plataforma para ajudar você e seus pets</h2>
              </div>
 
              <img 
