@@ -41,7 +41,7 @@ a:active {
   text-align: center;
 }
 
-form {
+.form-auth {
   width: 420px;
   border-radius: 5px;
   background-color: var(--cor-fundo-form);
@@ -112,4 +112,22 @@ form {
   background-color:#A9A9A9 !important;
   color: white !important;
   padding: 6px 18px;
+}
+
+.box-header {
+  background: #DCDCDC;
+}
+
+.content {
+  justify-content: space-between !important;
+}
+
+.content-header {
+  justify-content: left !important;
+}
+
+.row {
+  width: 100%;
+  margin-right: 0px;
+  margin-left: 0px;
 }

@@ -133,7 +133,7 @@ export default function EsqueceuSenha() {
 	return (
 		<main>
 			<CardCentral>
-				<form onSubmit={!emailEnviado ? enviarEmail : trocarSenha}>
+				<form className="form-auth" onSubmit={!emailEnviado ? enviarEmail : trocarSenha}>
 				<FormHeader nomeArea="recuperação de senha">
 					<DivAviso.sucesso value={catchSuccess} text="Email enviado."/>
 					<DivAviso.erro value={catchError} text={email === '' ? "Preencha os campos!" : "Este email não está registrado."}/>

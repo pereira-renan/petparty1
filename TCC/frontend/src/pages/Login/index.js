@@ -43,7 +43,7 @@ export default function Login() {
   return (
     <main>
       <CardCentral>
-        <form onSubmit={handleLogin}>
+        <form className="form-auth" onSubmit={handleLogin}>
           <FormHeader nomeArea="login">
             <DivAviso.erro value={catchError} text="Email ou senha estão incorretos"/>
           </FormHeader>

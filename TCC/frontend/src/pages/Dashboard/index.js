@@ -67,7 +67,7 @@ export default function Dashboard() {
     <SideBar/>
     <Content title="Dashboard">
       <div className="row">
-        <div className="col-xs-7 col-md-5">
+        <div className="col-xs-12">
           <div id="box-mapa" className="box">
             <div className="titulo-card form-user">
               <h4>Mapa</h4>
@@ -76,13 +76,22 @@ export default function Dashboard() {
           </div>   
         </div>
 
-        <div className="col-xs-12 col-md-7">
-          <div id="box-lista" className="box">
-            <div className="titulo-card form-user">
-              <h4>Lista</h4>
-            </div> 
-            <Input.text value={distancia} onChange={e => setDistancia(e.target.value)} type="number" placeHolder="Distancia em Km" />
-            <UsuariosList lista={usersList}/>
+        <div className="col-xs-12">
+          <div className="box">
+            <div className="box-header">
+              <div className="box-title">
+                <h4>Lista</h4>
+              </div> 
+              <div className="box-tools">
+                <span className="label-filter-list">Distância máxima em Km: </span>
+                <div className="input-group input-group-sm">
+                  <Input.text id="input-filter-list" value={distancia} onChange={e => setDistancia(e.target.value)} type="number" placeHolder="Distancia em Km" />
+                </div>
+              </div>
+            </div>
+            <div className="box-body table-responsive no-padding">
+              <UsuariosList lista={usersList}/>
+            </div>
           </div>
         </div>
       </div>

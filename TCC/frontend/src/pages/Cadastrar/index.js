@@ -188,7 +188,7 @@ export default function Register() {
   return (
     <main>
       <CardCentral>
-        <form onSubmit={handleRegister} id="form">
+        <form className="form-auth" onSubmit={handleRegister} id="form">
           <FormHeader nomeArea="cadastro">
               <DivAviso.sucesso value={catchSuccess} text="Cadastrado com sucesso!"/>
               <DivAviso.erro value={catchError} text={ usuario_validado ? "Ocorreu um problema no servidor. Por favor, tente novamente mais tarde!" : "Preencha os campos corretamente antes de submeter o formuário!"}/>
