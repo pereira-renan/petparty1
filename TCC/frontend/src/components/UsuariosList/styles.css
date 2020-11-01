@@ -1,38 +1,24 @@
 table {
-    background: white;
     text-align: center;
-    width: 100%;
-    margin: 0;
-    padding: 0;
 }
 
 thead {
     background: orange;
-    border-style: solid;
-}
-
-.card-form {
-    overflow: scroll;
-    height: 300px;
 }
 
 th {
-    padding: 15px;
+    padding: 2px 4px;
+    text-align: center;
     border-style: solid;
     border-color: orange;
     color: white;
     text-transform: capitalize;
 }
 
-.campo-1 {
-    width: 100px;
-}
-
 td {
-    padding: 10px 25px;
     border-style: solid;
     border-color: #dcdcdc;
-    border-width: 0.2px;
+    border-width: 0.1px;
 }
 
 tr:hover {
@@ -40,14 +26,8 @@ tr:hover {
 }
 
 img {
-    border-radius: 3px;
+    border-radius: 30px;
     border-color: #dcdcdc;
     border-width: 0.2px;
     width: 70px;
-}
-
-@media (max-width: 800px) {
-    .dispensavel {
-        display: none;
-    }
 }

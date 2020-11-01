@@ -8,7 +8,8 @@ const Button = {
                              className="btn btn-principal"
                              onAction={props.onAction}
                              text={props.text}
-                             href={props.href}>
+                             href={props.href}
+                             target={props.target}>
             </ButtonStructure>
         );
     },
@@ -18,7 +19,8 @@ const Button = {
                              className="btn btn-secundario"
                              onAction={props.onAction}
                              text={props.text}
-                             href={props.href}>
+                             href={props.href}
+                             target={props.target}>
             </ButtonStructure>
         );
     }
@@ -28,8 +30,9 @@ const ButtonStructure = (props) => {
     return(
         <button type={props.type}
                 className={props.className}
-                onAction={props.onAction} >
-            <a href={props.href}>  
+                onAction={props.onAction}>
+            <a href={props.href}
+                target={props.target === undefined ? "" : props.target}>  
                 {props.text} 
             </a>         
         </button>
