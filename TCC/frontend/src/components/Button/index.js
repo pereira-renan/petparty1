@@ -31,7 +31,7 @@ const ButtonStructure = (props) => {
         <button type={props.type}
                 className={props.className}
                 onAction={props.onAction}>
-            <a href={props.href}
+            <a className="a-auth" href={props.href}
                 target={props.target === undefined ? "" : props.target}>  
                 {props.text} 
             </a>         

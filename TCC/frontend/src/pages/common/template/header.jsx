@@ -27,13 +27,13 @@ export default function Header(props) {
                     <ul className="nav navbar-nav">
                         <li className="dropdown user user-menu">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                <img src="https://avatars0.githubusercontent.com/u/44417337?s=460&v=4" className="user-image" alt="User Image"/>
+                                <img src={props.urlImg} className="user-image" alt="User Image"/>
                                 <span className="hidden-xs">{props.userName}</span>
                             </a>
                             <ul className="dropdown-menu">
     
                             <li className="user-header">
-                                <img src="https://avatars0.githubusercontent.com/u/44417337?s=460&v=4" className="img-circle" alt="User Image"/>
+                                <img src={props.urlImg} className="img-circle" alt="User Image"/>
     
                                 <p>
                                 {props.userName}

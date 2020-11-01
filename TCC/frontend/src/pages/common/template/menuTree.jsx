@@ -2,7 +2,7 @@ import React from 'react'
 
 export default props => (
     //<li className='active treeview menu-open'>
-    <li className='active treeview'>
+    <li className='treeview'>
         <a href>
             <i className={`fa fa-${props.icon}`}></i> <span>{props.label}</span>
             <span className="pull-right-container">

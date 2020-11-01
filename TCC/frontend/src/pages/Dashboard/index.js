@@ -16,7 +16,7 @@ import "./styles.css";
 export default function Dashboard() {
   const history = useHistory();
 
-  const [distancia, setDistancia] = useState("5");
+  const [distancia, setDistancia] = useState("50");
 
   const [infoUser, setInfo] = useState([]);
   const [usersList, setUsersList] = useState([]);
@@ -61,7 +61,7 @@ export default function Dashboard() {
 
   return (
     <div>
-    <Header userName={infoUser.nome} userCuidador={infoUser.user_cuidador} createdAt={infoUser.createdAt === undefined ? '' : infoUser.createdAt.slice(0, 10)}/>
+    <Header userName={infoUser.nome} userCuidador={infoUser.user_cuidador} createdAt={infoUser.createdAt === undefined ? '' : infoUser.createdAt.slice(0, 10)} urlImg={infoUser.url}/>
     <SideBar/>
     <Content title="Dashboard">
       <div className="row">
@@ -89,7 +89,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="box-body table-responsive no-padding">
-              <UsuariosList lista={usersList}/>
+              <UsuariosList lista={usersList} nomeUsuario={infoUser.nome}/>
             </div>
             <div className="box-footer clearfix">
               <ul className="pagination pagination-sm no-margin pull-right">

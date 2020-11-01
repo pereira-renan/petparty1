@@ -24,14 +24,14 @@ body, button, a {
   padding: 15px 15px;
   gap: 20px;
 }
-a {
+.a-auth {
   text-decoration: none;
   vertical-align: middle;
 }
-a:hover {
+.a-auth:hover {
   opacity: 0.95;
 }
-a:active {
+.a-auth:active {
   color: var(--cor-fundo-body);
 }
 
@@ -130,4 +130,23 @@ a:active {
   width: 100%;
   margin-right: 0px;
   margin-left: 0px;
+}
+
+.slimScrollDiv {
+  position: relative;
+  overflow: hidden;
+  width: auto;
+  height: 919px;
+}
+
+.main-sidebar section {
+ display: block;
+ justify-content: start;
+ padding: 0px;
+}
+
+.sidebar {
+  overflow: hidden;
+  width: auto;
+  height: 919px;
 }

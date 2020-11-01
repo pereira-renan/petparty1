@@ -55,7 +55,7 @@ export default function Login() {
               <label htmlFor="lembrarUsuario">Lembrar meu usuário</label>
             </div>
             <div>
-              <a href={"/remember"}>Esqueceu a senha?</a>
+              <a className="a-auth" href={"/remember"}>Esqueceu a senha?</a>
             </div>
           </div>
           <div className="grid">
