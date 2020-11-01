@@ -20,6 +20,7 @@ export default function Dashboard() {
 
   const [infoUser, setInfo] = useState([]);
   const [usersList, setUsersList] = useState([]);
+  let paginasUsersList = 0;
 
   const [location, setLocation] = useState([]);
 
@@ -49,6 +50,11 @@ export default function Dashboard() {
      }
     }).then(response => {
       setUsersList(response.data);
+
+      if(response.data.length > 0) {
+        paginasUsersList = (response.data.length / 3) + 0.99;
+      }
+      console.log(paginasUsersList)
       //console.log(response.data)
     })
   }, [distancia, location])
@@ -84,6 +90,22 @@ export default function Dashboard() {
             </div>
             <div className="box-body table-responsive no-padding">
               <UsuariosList lista={usersList}/>
+            </div>
+            <div className="box-footer clearfix">
+              <ul className="pagination pagination-sm no-margin pull-right">
+                {
+                  
+                }
+                <li>
+                  <a href="#">1</a>
+                </li>
+                <li>
+                  <a href="#">2</a>
+                </li>
+                <li>
+                  <a href="#">3</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
