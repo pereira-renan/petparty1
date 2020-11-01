@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom'
 import api from '../../services/api';
 
-import logoImg from '../../assets/images/logo.svg';
-import landingImg from '../../assets/images/landing.svg';
+import logoImg from '../../assets/images/Logopet.png';
+import landingImg from '../../assets/images/logosempp.png';
 
 import studyIcon from '../../assets/images/icons/study.svg';
 import giveClassesIcon from '../../assets/images/icons/give-classes.svg';
-import purpleHeartIcon from '../../assets/images/icons/purple-heart.svg';
+import purpleHeartIcon from '../../assets/images/icons/red-heart2.png';
 
 import './styles.css';
 
@@ -27,24 +27,24 @@ function Landing(){
      <div id="page-landing">
          <div id="page-landing-content" className="container">
              <div className="logo-container">
-                 <img src={logoImg} alt="Proffy"/>
-                 <h2>Sua plataforma de estudos online</h2>
+                 <img src={logoImg} alt="PetParty"/>
+                 <h2> A plataforma para te ajudar</h2>
              </div>
 
              <img 
                 src={landingImg} 
-                alt="Plataforma de estudos" 
+                alt="Plataforma de auxilio" 
                 className="hero-image"/>
 
             <div className="buttons-container">
-                <Link to="/study" className="study">
-                    <img src={studyIcon} alt="Estudar"/>
-                    Estudar
+                <Link to="/login" className="login">
+                    <img src={studyIcon} alt="Entrar"/>
+                    Entrar
                 </Link>
 
-                <Link to="/give-classes" className="give-classes">
-                    <img src={giveClassesIcon} alt="Dar aulas"/>
-                    Dar aulas
+                <Link to="/register" className="register">
+                    <img src={giveClassesIcon} alt="Cadastrar"/>
+                    Cadastrar
                 </Link>
                 
             </div>

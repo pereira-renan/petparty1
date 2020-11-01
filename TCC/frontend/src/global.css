@@ -1,11 +1,43 @@
 :root {
+  font-size: 60%;
   --cor-fundo-body: #ecf0f5;
   --cor-fundo-body2: #ffae1a;
   --cor-fundo-form: #FFFAFA;
   --cor-borda: #D3D3D3;
   --cor-texto: #2F4F4F;
   --cor-fundo-btn-hover: #ffa500;
+  
+  --color-background: #f6f7f0;
+  --color-primary-lighter: #fcad1a;
+  --color-primary-light: #fdba3d;
+  --color-primary: #ffa500;
+  --color-primary-dark: #e77c02ea;
+  --color-primary-darker:#8f4d03ea;
+  --color-secundary: #f8b12c;
+  --color-secundary-dark:  #d6900e;
+  --color-title-in-primary: #FFFFFF;
+  --color-text-in-primary: #ffddc2;
+  --color-text-title: #4d3c26;
+  --color-text-complement: #a6a098;
+  --color-text-base: #807261;
+  --color-line-in-white: #f0eee6;
+  --color-input-background: #fcfcf8;
+  --color-button-text: #FFFFFF;
+  --color-box-base: #FFFFFF;
+  --color-box-footer: #fcfbfa;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100vh;
+  background-color: var(--color-primary);
+}
+
 body {
   margin: 0 auto;
   background-color: var(--cor-fundo-body);
@@ -16,6 +48,35 @@ body {
 body, button, a {
   margin: 0;
   padding: 0;
+}
+
+body {
+  background: var(--color-background);
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body,
+input,
+button,
+textarea {
+  font: 500 1.6rem Poppins;
+  color: var(--color-text-base);
+}
+
+.container {
+  width: 90vw;
+  max-width: 700px;
+}
+
+@media (min-width: 700px) {
+  :root {
+      font-size: 62.5%;
+  }
 }
 
 .grid {
