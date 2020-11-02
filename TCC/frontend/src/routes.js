@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Cadastro from "./pages/Cadastrar";
 import Profile from "./pages/Profile";
+import Pets from "./pages/Pets";
 import EsqueceuSenha from "./pages/EsqueceuSenha";
 import Landing from './pages/Landing';
 import TeacherList from './pages/TeacherList';
@@ -19,6 +20,7 @@ export default function Routes() {
         <Route path="/dashboard" component={Dashboard} />
         <Route exact path="/register" component={Cadastro} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/pets" component={Pets} />
         <Route exact path="/remember" component={EsqueceuSenha} />
       </Switch>
     </BrowserRouter>

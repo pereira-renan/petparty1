@@ -21,7 +21,7 @@ td {
     border-width: 0.1px;
 }
 
-tr:hover {
+tbody tr:hover {
     background: #dcdcdc;
 }
 

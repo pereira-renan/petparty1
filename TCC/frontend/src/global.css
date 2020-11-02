@@ -105,16 +105,22 @@ body, button, a {
 }
 
 .skin-blue .main-header li.user-footer {
-  background-color:#A9A9A9 !important;
+  background-color:#C0C0C0 !important;
 }
 
 .skin-blue .main-header li.user-footer a {
-  background-color:#A9A9A9 !important;
+  background-color: #C0C0C0 !important;
   color: white !important;
+  font-weight: bold;
   padding: 6px 18px;
 }
 
-.box-header {
+.skin-blue .main-header .btn {
+  width: 100%;
+}
+
+.box-header,
+.box-footer {
   background: #DCDCDC;
 }
 
@@ -139,10 +145,19 @@ body, button, a {
   height: 919px;
 }
 
+.main-header {
+  position: fixed;
+  width: 100%;
+}
+
+.main-sidebar {
+  position: fixed;
+}
+
 .main-sidebar section {
- display: block;
- justify-content: start;
- padding: 0px;
+  display: block;
+  justify-content: start;
+  padding: 0px;
 }
 
 .sidebar {

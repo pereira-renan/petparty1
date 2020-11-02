@@ -29,8 +29,7 @@ const Button = {
 const ButtonStructure = (props) => {
     return(
         <button type={props.type}
-                className={props.className}
-                onAction={props.onAction}>
+                className={props.className}>
             <a className="a-auth" href={props.href}
                 target={props.target === undefined ? "" : props.target}>  
                 {props.text} 

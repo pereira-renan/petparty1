@@ -14,11 +14,13 @@ const UsuariosList = (props) => {
     return(
         <table className="table table-hover">
             <thead>
-                <th className="campo-1">Foto</th>
-                <th>Nome</th>
-                <th>Telefone</th>
-                <th className="dispensavel">Distância</th>
-                <th>Ação</th>
+                <tr>
+                    <th className="campo-1">Foto</th>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th className="dispensavel">Distância</th>
+                    <th>Ação</th>
+                </tr>
             </thead>
             <tbody>
                 { listaProviders.map(user => 

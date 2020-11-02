@@ -19,7 +19,7 @@ export default function Header(props) {
                 </span>        
             </a>
             <nav className='navbar navbar-static-top'>
-                <a href className='sidebar-toggle' data-toggle='push-menu' role='button'>
+                <a href="#" className='sidebar-toggle' data-toggle='push-menu' role='button'>
                     <span className="sr-only">Toggle navigation</span>
                 </a>
     
@@ -44,11 +44,11 @@ export default function Header(props) {
                             </li>
                             
                             <li className="user-footer">
-                                <div class="pull-left">
+                                <div className="pull-left">
                                 <a href="/profile" className="btn btn-default btn-flat">Perfil</a>
                                 </div>
-                                <div class="pull-right">
-                                <a href onClick={handleLogout} className="btn btn-default btn-flat">Sair</a>
+                                <div className="pull-right">
+                                <a href="#" onClick={handleLogout} className="btn btn-default btn-flat">Sair</a>
                                 </div>
                             </li>
                             </ul>

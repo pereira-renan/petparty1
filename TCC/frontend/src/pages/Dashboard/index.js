@@ -22,7 +22,7 @@ export default function Dashboard() {
   const [usersList, setUsersList] = useState([]);
   let paginasUsersList = 0;
 
-  const [location, setLocation] = useState([]);
+  const [location, setLocation] = useState([0, 0]);
 
   const token = localStorage.getItem("token");
 
@@ -70,7 +70,7 @@ export default function Dashboard() {
             <div className="titulo-card form-user">
               <h4>Mapa</h4>
             </div> 
-            <iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3646.502958300999!2d-${location[0]}!3d-${location[1]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce024465fa95bf%3A0x1e411e16e8228ce3!2sFatec%20Rubens%20Lara!5e0!3m2!1spt-BR!2sbr!4v1604246662323!5m2!1spt-BR!2sbr`}>
+            <iframe frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3646.502958300999!2d-${location[0]}!3d-${location[1]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce024465fa95bf%3A0x1e411e16e8228ce3!2sFatec%20Rubens%20Lara!5e0!3m2!1spt-BR!2sbr!4v1604246662323!5m2!1spt-BR!2sbr`}>
             </iframe>
           </div>   
         </div>
