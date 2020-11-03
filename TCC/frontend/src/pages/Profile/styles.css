@@ -1,0 +1,35 @@
+.box-profile img {
+    width: 100%;
+    max-width: 340px;
+    text-align: center;
+    border-radius: 0;
+    margin: 0 auto;
+    display: block;
+    border-radius: 200px;
+    margin-bottom: 20px;
+}
+
+.box-profile .foto-profile, .form-profile {
+    padding: 20px;
+}
+
+.foto-profile span {
+    display: block;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.foto-profile input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.form-profile input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.resetPadding {
+    padding: 2px;
+}

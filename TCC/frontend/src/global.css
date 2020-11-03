@@ -84,6 +84,11 @@ body, button, a {
   background-color: #F08080;
 }
 
+.bg-NovoPet {
+  background-color: #ffae1a;
+  min-height: 181px;
+}
+
 .titulo-card {
   background-color: #DCDCDC;
   text-align: left !important;
@@ -163,5 +168,4 @@ body, button, a {
 .sidebar {
   overflow: hidden;
   width: auto;
-  height: 919px;
 }

@@ -5,8 +5,12 @@ export default props => (
     <Grid cols={props.cols}>
         <div className={`small-box bg-${props.color}`}>
             <div className='inner'>
+                {props.children}
                 <h3>{props.value}</h3>
-                <p>{props.text}</p>
+                <p>Tipo: {props.tipo}</p>
+                <p>Raça: </p>
+                <p>Porte: {props.porte}</p>
+                <p>Idade: {props.idade} {props.idade > 1 ? "anos" : "ano"}</p>
             </div>
             <div className='icon'>
                 <i className={`fa fa-${props.icon}`}></i>

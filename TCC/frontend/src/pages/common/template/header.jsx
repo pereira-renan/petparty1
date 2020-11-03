@@ -9,6 +9,7 @@ export default function Header(props) {
         localStorage.clear("token");
         history.push("/");
     }
+
     return(
         <header className='main-header'>
             <a href='/dashboard' className='logo'>

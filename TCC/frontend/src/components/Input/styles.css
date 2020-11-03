@@ -26,6 +26,13 @@
     flex-direction: column;
     width: 80%;
 }
+.input-combobox {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    flex-direction: column;
+    width: 80%;
+}
 .input {
     padding: 10px;
     border-radius: 5px;
