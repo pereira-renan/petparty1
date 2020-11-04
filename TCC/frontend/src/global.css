@@ -114,7 +114,8 @@ body, button, a {
 }
 
 .skin-blue .main-header li.user-footer a {
-  background-color: #C0C0C0 !important;
+  background-color: #222d32 !important;
+  opacity: 0.6;
   color: white !important;
   font-weight: bold;
   padding: 6px 18px;
@@ -168,4 +169,10 @@ body, button, a {
 .sidebar {
   overflow: hidden;
   width: auto;
+}
+
+@media (max-width: 767px) {
+  .small-box {
+      text-align: left;
+  }
 }

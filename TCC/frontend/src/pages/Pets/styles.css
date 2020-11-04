@@ -33,17 +33,24 @@
     width: 100%;
 }
 
+.box-newPet input,label {
+    color: black;
+}
+
+.box-newPet input,label:hover {
+    color: black;
+}
+
 .box-newPet select {
     display: block;
     margin: 0 auto;
     margin-bottom: 3px;
     flex-direction: column;
     width: 80%;
-    color: black;
     height: 30px;
     padding: 5px;
+    color: black;
 }
 
 .box-newPet select:hover {
-    color: black;
 }

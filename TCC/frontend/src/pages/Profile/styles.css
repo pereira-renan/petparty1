@@ -1,12 +1,14 @@
 .box-profile img {
-    width: 100%;
-    max-width: 340px;
+    max-width: 300px;
     text-align: center;
     border-radius: 0;
     margin: 0 auto;
     display: block;
     border-radius: 200px;
     margin-bottom: 20px;
+
+    width: 250px;
+    height: 250px;
 }
 
 .box-profile .foto-profile, .form-profile {
@@ -25,6 +27,10 @@
     margin-bottom: 10px;
 }
 
+.foto-profile #uploadFoto {
+    
+}
+
 .form-profile input {
     width: 100%;
     margin-bottom: 10px;
@@ -32,4 +38,8 @@
 
 .resetPadding {
     padding: 2px;
+}
+
+.perfil-terceiro button {
+    width: 100%;
 }

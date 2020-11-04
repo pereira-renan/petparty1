@@ -46,10 +46,10 @@ export default function Header(props) {
                             
                             <li className="user-footer">
                                 <div className="pull-left">
-                                <a href="/profile" className="btn btn-default btn-flat">Perfil</a>
+                                    <a href="/profile" className="btn btn-default btn-flat">Perfil</a>
                                 </div>
                                 <div className="pull-right">
-                                <a href="#" onClick={handleLogout} className="btn btn-default btn-flat">Sair</a>
+                                    <a href="#" onClick={handleLogout} className="btn btn-default btn-flat">Sair</a>
                                 </div>
                             </li>
                             </ul>

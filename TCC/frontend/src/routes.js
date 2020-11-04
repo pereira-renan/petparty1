@@ -14,12 +14,13 @@ export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/landing" exact component={Landing} />
-        <Route path="/study" component={TeacherList} />
+        <Route exact path="/landing" exact component={Landing} />
+        <Route exact path="/study" component={TeacherList} />
         <Route exact path="/" component={Login} />
-        <Route path="/dashboard" component={Dashboard} />
+        <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/register" component={Cadastro} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/profile/:id" component={Profile} />
         <Route exact path="/pets" component={Pets} />
         <Route exact path="/remember" component={EsqueceuSenha} />
       </Switch>
