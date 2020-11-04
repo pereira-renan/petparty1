@@ -13,6 +13,9 @@ const UserSchema =  new mongoose.Schema(
       required: true,
       lowercase: true,
     },
+     descricao: {
+      type: String,
+    },
     telefone: {
       type: String,
       unique: true,
@@ -21,6 +24,7 @@ const UserSchema =  new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
 
     passwordresetoken: {

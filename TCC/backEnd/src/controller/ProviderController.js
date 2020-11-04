@@ -29,6 +29,9 @@ class ProviderController {
         },
       });
 
+      var teste = calcKM(-23.944806,-46.855806,-23.9426486,-46.3285584);
+      console.log("-->"+teste);
+
       let providersList = providers.slice()
       let List = [];
       for (var i = 0; i < providersList.length; i++) {

@@ -35,7 +35,7 @@ class FileController {
     const { originalname: name, filename: path } = req.file;
     
     if(objeto == "User"){
-     user = await User.findOne({ _id: req.userId });
+     user = await User.findOne({ _id: id });
     }
     else if(objeto == "Pet"){
      user = await Pet.findOne({ _id: idpet });

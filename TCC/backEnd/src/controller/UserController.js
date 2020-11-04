@@ -16,7 +16,7 @@ class UserController {
         return res.status(400).send({ error: "Email já cadastrado no Banco!" });
       }
 
-      const { nome, email, cpf, user_cuidador, password, telefone, latitude, longitude } = req.body;
+      const { nome, email, cpf, descricao, user_cuidador, password, telefone, latitude, longitude } = req.body;
       const location = {
         type: 'Point',
         coordinates: [longitude, latitude],
@@ -30,6 +30,7 @@ class UserController {
         password,
         telefone,
         location,
+        descricao
       })
 
       return res.json(user);
@@ -82,6 +83,14 @@ class UserController {
     console.log("User-->" + user);
     return res.json(user);
   }
+  async infoCuidador(req, res) {
+    const id = req.header("_id");
+    console.log(id);
+    const user = await User.findById(id);
+    console.log("Cuidador" + user);
+    return res.json(user);
+  }
+
 }
 
 export default new UserController();

@@ -6,12 +6,12 @@ import crypto from "crypto";
 import mailer from "../config/mailer";
 
 class SessionController {
-  
-   // LOGIN
+
+  // LOGIN
   async store(req, res) {
-   
+
     const { email, pass } = await req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
       return res.status(400).json({ error: "Email não cadastrado!" });
@@ -38,6 +38,7 @@ class SessionController {
   async forgotPassword(req, res) {
     const { email } = req.body;
     const emailreset = await User.findOne({ email });
+
     console.log("result -->" + emailreset);
 
     try {
@@ -110,6 +111,23 @@ class SessionController {
       return res.status(400).json({ error: "Error ao resetar a senha " } + err);
     }
   }
+
+
+  // LOGIN
+  async QtdUser(req, res) {
+
+    try {
+      const qtd = await User.find().countDocuments();
+      return res.json(qtd);
+      
+    } catch (err) {
+      return res.json(103);
+    }
+  }
+
+
+
+
 }
 
 export default new SessionController();
