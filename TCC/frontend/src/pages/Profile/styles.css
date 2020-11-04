@@ -43,3 +43,7 @@
 .perfil-terceiro button {
     width: 100%;
 }
+
+.small-box p {
+    font-size: 19px;
+}

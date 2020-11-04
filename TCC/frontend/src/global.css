@@ -74,14 +74,17 @@ body, button, a {
 
 .bg-Cachorro {
   background-color: #17a2b8;
+  min-height: 181px;
 }
 
 .bg-Gato {
-  background-color: #3d9970
+  background-color: #3d9970;
+  min-height: 181px;
 }
 
 .bg-Peixe {
   background-color: #F08080;
+  min-height: 181px;
 }
 
 .bg-NovoPet {

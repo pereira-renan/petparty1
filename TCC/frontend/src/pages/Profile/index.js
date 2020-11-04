@@ -208,7 +208,7 @@ export default function Profile(props) {
                   </div> 
                   {infoPets.map((value, index) => {
                     return <ValueBox cols='12 12 4' key={index} idPet={value._id} color={value.tipo_pet} icon='paw'
-                        value={`${value.nome}`} tipo={value.tipo_pet} porte={value.porte} idade={value.idade}>
+                        value={`${value.nome}`} tipo={value.tipo_pet} raca={value.raca} porte={value.porte} idade={value.idade}>
                       </ValueBox>
                   })}
                 </div>  

@@ -25,7 +25,7 @@ export default function Profile() {
   const [nome, setNome] = useState("");
   const [idade, setIdade] = useState("");
   const [raca, setRaca] = useState("");
-  const [tipo_pet, setTipoPet] = useState("");
+  const [tipo_pet, setTipoPet] = useState("NovoPet");
   const [porte, setPorte] = useState("");
 
   const [atualiza, setAtualiza] = useState(true);
@@ -94,7 +94,21 @@ export default function Profile() {
                 <h4>Meus Pets</h4>
               </div> 
               {infoPets.map((value, index) => {
-                return <ValueBox cols='12 12 6' onMouseEnter={e => setPetSelecionado(value._id)} key={index} idPet={value._id} color={value.tipo_pet} icon='paw'
+                let icon;
+                switch(value.tipo_pet) {
+                  case 'Cachorro':
+                    icon = 'fa fa-paw';
+                    break;
+                  case 'Gato':
+                    icon = 'fa fa-paw';
+                    break;
+                  case 'Peixe':
+                    icon = 'fa fa-paw';
+                    break;
+                  default:
+                    icon = 'fa fa-paw';
+                }
+                return <ValueBox cols='12 12 6' onMouseEnter={e => setPetSelecionado(value._id)} key={index} url={value.url} idPet={value._id} color={value.tipo_pet} icon={icon}
                     value={`${value.nome}`} tipo={value.tipo_pet} raca={value.raca} porte={value.porte} idade={value.idade}>
                       <button id="delete-valuebox" onClick={deletePet} >X</button>
                   </ValueBox>
@@ -108,7 +122,7 @@ export default function Profile() {
                 <h4>Novo Pet</h4>
               </div> 
               <Grid cols="12 12 6">
-                <div className={`small-box bg-NovoPet`}>
+                <div className={`small-box bg-${tipo_pet}`}>
                     <div className='inner'>
                         <form id="form-novo-pet" onSubmit="adicionaPet()">
                             <div className="col-xs-2">
@@ -122,7 +136,7 @@ export default function Profile() {
                                 <Input.text value={nome} type="text" onChange={e => setNome(e.target.value)} />
                                 <div className="formGroup" >
                                     <select className="form-control" onChange={e => setTipoPet(e.target.value)} value={tipo_pet}>
-                                        <option>Selecione o tipo</option>
+                                        <option value="NovoPet">Selecione o tipo</option>
                                         <option value="Cachorro">Cachorro</option>
                                         <option value="Gato">Gato</option>
                                         <option value="Peixe">Peixe</option>

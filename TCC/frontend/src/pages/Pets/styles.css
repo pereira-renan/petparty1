@@ -54,3 +54,22 @@
 
 .box-newPet select:hover {
 }
+
+.box-pets img {
+    border-radius: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-style: solid;
+    border-width: 2px;
+}
+
+.small-box .icon {
+    font-size: 150px;
+    right: 20px;
+}
+
+.small-box:hover .icon {
+    font-size: 150px;
+    transform: rotate(7deg);
+}

@@ -3,11 +3,18 @@ import Button from '../../components/Button/index';
 
 import './styles.css';
 
-
 const lista = []
 
-
 const UsuariosList = (props) => {
+
+    function setLocationAlvo(e) {
+        window.location.reload();
+    }
+
+    function updateLocationAlvo(locationAlvo) {
+        localStorage.setItem('locationAlvo', locationAlvo);
+        setLocationAlvo();
+    }
 
     const listaProviders = props.lista === undefined? [] : props.lista;
 
@@ -24,7 +31,7 @@ const UsuariosList = (props) => {
             </thead>
             <tbody>
                 { listaProviders.map(user => 
-                    <tr key={user._id}>
+                    <tr key={user._id} onClick={e => updateLocationAlvo(user.coordinates)}>
                         <td>
                             <img src={user.url}/>
                         </td>
@@ -33,7 +40,7 @@ const UsuariosList = (props) => {
                         <td className="dispensavel">{user.km} Km</td>
                         <td>
                             <Button.secundario type="button" name="chamar" text="Chamar" 
-                            href={`https://api.whatsapp.com/send?phone=${user.telefone}&text=Olá!%20Encontrei%20seu%20contato%20pelo%20PetParty!%20Me%20chamo%20${props.nomeUsuario},%20podemos%20conversar?`} 
+                            href={`/profile/${user._id}`} 
                             target="_blank"/>
                         </td>
                     </tr>
