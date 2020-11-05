@@ -7,6 +7,7 @@ import SideBar from '../common/template/sideBar';
 import Content from '../common/template/content';
 import Input from '../../components/Input/index';
 import Row from '../common/layout/row'
+import Mapa from '../../components/Mapa/index';
 
 import UsuariosList from '../../components/UsuariosList/index';
 
@@ -16,16 +17,16 @@ import "./styles.css";
 export default function Dashboard() {
   const history = useHistory();
 
+  const [estadoMapa, setEstadoMapa] = useState(false);
+  const [temDestino, setTemDestino] = useState(false);
   const [distancia, setDistancia] = useState("5000");
+  const [location, setLocation] = useState([]);
 
   const [infoUser, setInfo] = useState([]);
   const [usersList, setUsersList] = useState([]);
   let paginasUsersList = 0;
 
-  const [location, setLocation] = useState([0, 0]);
-
   const token = sessionStorage.getItem("token");
-  sessionStorage.removeItem("locationAlvo");
 
   useEffect(() => {
     api.get("info", {
@@ -35,7 +36,6 @@ export default function Dashboard() {
     }).then(response => {
       setInfo(response.data);
       setLocation(response.data.location.coordinates);
-      sessionStorage.setItem("location", response.data.location.coordinates);
       //console.log(response.data);
     })
   }, [sessionStorage.getItem("token")])
@@ -52,13 +52,10 @@ export default function Dashboard() {
      }
     }).then(response => {
       setUsersList(response.data);
-      console.log(response.data)
 
       if(response.data.length > 0) {
         paginasUsersList = (response.data.length / 3) + 0.99;
       }
-      console.log(paginasUsersList)
-      //console.log(response.data)
     })
   }, [distancia, location])
 
@@ -73,7 +70,12 @@ export default function Dashboard() {
             <div className="titulo-card form-user">
               <h4>Mapa</h4>
             </div> 
-            <div id="map_canvas"/>
+            <Mapa 
+              estadoMapa={estadoMapa}
+              coordinates={location}
+              distancia={distancia}
+              >
+            </Mapa>
           </div>   
         </div>
 
@@ -91,7 +93,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="box-body table-responsive no-padding">
-              <UsuariosList lista={usersList} listaCoordenadas={usersList.location} nomeUsuario={infoUser.nome} />
+              <UsuariosList lista={usersList} listaCoordenadas={usersList.location} nomeUsuario={infoUser.nome} atualizaEstadoMapa={e => setEstadoMapa(!estadoMapa)} />
             </div>
             <div className="box-footer clearfix">
               <ul className="pagination pagination-sm no-margin pull-right">

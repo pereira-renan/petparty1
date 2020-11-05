@@ -43,7 +43,7 @@ const UsuariosList = (props) => {
             </thead>
             <tbody>
                 { listaProviders.map(user => 
-                    <tr key={user._id} onClick={e => updateLocationAlvo(user.coordinates)}>
+                    <tr key={user._id} onMouseDown={e => updateLocationAlvo(user.coordinates)} onMouseUp={props.atualizaEstadoMapa}>
                         <td>
                             <img src={user.url}/>
                         </td>

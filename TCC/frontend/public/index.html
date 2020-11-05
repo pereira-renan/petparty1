@@ -56,49 +56,5 @@
     <script src="%PUBLIC_URL%/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS -->
     <script src="%PUBLIC_URL%/bower_components/Chart.js/Chart.js"></script>
-
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTiJt25rmCY2qjSzNaZ1t3XM34HrZJ-i0" >
-    </script>
-    <script type="text/javascript">
-      function initialize() {
-        const directionsService = new google.maps.DirectionsService();
-        const directionsRenderer = new google.maps.DirectionsRenderer();
-
-        const location = sessionStorage.getItem("location").split(','); 
-        const locationAlvo = sessionStorage.getItem("locationAlvo").split(',');
-
-        var mapOptions = {
-          center: new google.maps.LatLng(location[1],location[0]),
-          zoom: 18,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-        directionsRenderer.setMap(map);
-
-        var myLatlng = new google.maps.LatLng(location[1],location[0]);
-        var LatlngAlvo = new google.maps.LatLng(locationAlvo[1],locationAlvo[0]);
-        
-        calculateAndDisplayRoute(directionsService, directionsRenderer);
-
-        function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-          directionsService.route(
-            {
-              origin: myLatlng,
-              destination: LatlngAlvo,
-              travelMode: google.maps.TravelMode.DRIVING,
-              provideRouteAlternatives: true
-            },
-            (response, status) => {
-              if (status === "OK") {
-                directionsRenderer.setDirections(response);
-              } else {
-                window.alert("Directions request failed due to " + status);
-              }
-            }
-          );
-        }
-      }
-    </script>
   </body>
 </html>
