@@ -38,7 +38,7 @@ export default function Profile(props) {
 
   const [validacaoTipo, setValidacaoTipo] = useState(true);
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   let flagPerfilPessoal = true;
   if(props.match.params.id !== undefined) {
@@ -48,7 +48,7 @@ export default function Profile(props) {
   useEffect(() => {
     api.get("info", {
       headers: {
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       }
     }).then(response => {
       setInfo(response.data);
@@ -72,7 +72,7 @@ export default function Profile(props) {
     if(!flagPerfilPessoal) {
       api.get("pets", {
         headers: {
-          token: localStorage.getItem("token")
+          token: sessionStorage.getItem("token")
         }
       }).then(response => {
         setInfoPets(response.data);

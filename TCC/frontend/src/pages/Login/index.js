@@ -29,7 +29,7 @@ export default function Login() {
       const response = await api.post("login", credenciais);
 
       const { token } = response.data;
-      localStorage.setItem('token', token);
+      sessionStorage.setItem('token', token);
 
       history.push("/dashboard");
     } catch (error) {

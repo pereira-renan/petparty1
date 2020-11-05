@@ -24,25 +24,26 @@ export default function Dashboard() {
 
   const [location, setLocation] = useState([0, 0]);
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
+  sessionStorage.removeItem("locationAlvo");
 
   useEffect(() => {
     api.get("info", {
       headers: {
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       }
     }).then(response => {
       setInfo(response.data);
       setLocation(response.data.location.coordinates);
-      localStorage.setItem("location", response.data.location.coordinates);
+      sessionStorage.setItem("location", response.data.location.coordinates);
       //console.log(response.data);
     })
-  }, [localStorage.getItem("token")])
+  }, [sessionStorage.getItem("token")])
 
   useEffect(() => {
     api.get("searchProviders", {
       headers: {
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       params: {
         latitude: '' + location[0],

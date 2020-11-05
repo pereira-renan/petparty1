@@ -7,13 +7,25 @@ const lista = []
 
 const UsuariosList = (props) => {
 
+    let estadoBotao = false;
+
     function setLocationAlvo(e) {
         window.location.reload();
     }
 
     function updateLocationAlvo(locationAlvo) {
-        localStorage.setItem('locationAlvo', locationAlvo);
-        setLocationAlvo();
+        sessionStorage.setItem('locationAlvo', locationAlvo);
+        if(estadoBotao) {
+            setLocationAlvo();
+        }
+    }
+
+    function setaEstadoBotaoTrue() {
+        estadoBotao = true;
+    }
+
+    function setaEstadoBotaoFalse() {
+        estadoBotao = false;
     }
 
     const listaProviders = props.lista === undefined? [] : props.lista;
@@ -40,6 +52,7 @@ const UsuariosList = (props) => {
                         <td className="dispensavel">{user.km} Km</td>
                         <td>
                             <Button.secundario type="button" name="chamar" text="Chamar" 
+                            onMouseEnter={e => setaEstadoBotaoTrue()} onMouseLeave={e => setaEstadoBotaoFalse()}
                             href={`/profile/${user._id}`} 
                             target="_blank"/>
                         </td>

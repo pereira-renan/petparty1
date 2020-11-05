@@ -31,12 +31,12 @@ export default function Profile() {
   const [atualiza, setAtualiza] = useState(true);
   const [petSelecionado, setPetSelecionado] = useState([]);
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     api.get("info", {
       headers: {
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       }
     }).then(response => {
       console.log(response.data)
@@ -47,7 +47,7 @@ export default function Profile() {
   useEffect(() => {
     api.get("pets", {
       headers: {
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       }
     }).then(response => {
       setInfoPets(response.data);
@@ -60,7 +60,7 @@ export default function Profile() {
     try {
         const response = await api.post("pet/create", infos, {
             headers: {
-                    token: localStorage.getItem("token")
+                    token: sessionStorage.getItem("token")
                 }
         });
         console.log(response)
@@ -73,7 +73,7 @@ export default function Profile() {
   async function deletePet() {
     api.delete("pet/delete", {
       headers: {
-        token: localStorage.getItem("token"),
+        token: sessionStorage.getItem("token"),
         id_pet: petSelecionado
       }
     }).then(response => {

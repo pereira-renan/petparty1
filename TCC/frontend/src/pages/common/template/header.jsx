@@ -6,7 +6,7 @@ export default function Header(props) {
     const history = useHistory();
 
     async function handleLogout(e) {
-        localStorage.clear("token");
+        sessionStorage.clear("token");
         history.push("/");
     }
 

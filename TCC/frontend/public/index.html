@@ -65,8 +65,8 @@
         const directionsService = new google.maps.DirectionsService();
         const directionsRenderer = new google.maps.DirectionsRenderer();
 
-        const location = localStorage.getItem("location").split(','); 
-        const locationAlvo = localStorage.getItem("locationAlvo").split(',');
+        const location = sessionStorage.getItem("location").split(','); 
+        const locationAlvo = sessionStorage.getItem("locationAlvo").split(',');
 
         var mapOptions = {
           center: new google.maps.LatLng(location[1],location[0]),
