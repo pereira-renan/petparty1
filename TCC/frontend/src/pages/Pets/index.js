@@ -47,7 +47,6 @@ export default function Profile() {
         token: sessionStorage.getItem("token")
       }
     }).then(response => {
-      console.log(response.data)
       setInfo(response.data);
     })
   }, [localStorage.getItem("token")])
@@ -59,7 +58,6 @@ export default function Profile() {
       }
     }).then(response => {
       setInfoPets(response.data);
-      console.log(response.data)
     })
   }, [atualiza])
 
@@ -77,7 +75,6 @@ export default function Profile() {
           setPorte("");
           setIdade("");
         });
-        console.log(response)
         setAtualiza(!atualiza);
     } catch (error) {
         console.log(error)
@@ -91,12 +88,11 @@ export default function Profile() {
         id_pet: petSelecionado
       }
     }).then(response => {
-      console.log(response.data)
       setAtualiza(!atualiza);
     })
   }
 
-  async function updatePet() {
+  function updatePet() {
     setEditPetSelecionado(petSelecionado);
     setFlagSetStatesNewInfos(true);
   }
@@ -109,14 +105,12 @@ export default function Profile() {
       tipo_pet: newTipo_pet, 
       porte: newPorte 
     };
-    console.log(infos)
     api.put("pet/update", infos, {
       headers: {
         //token: sessionStorage.getItem("token"),
         id_pet: petSelecionado
       }
     }).then(response => {
-      console.log('ALTEROU')
       setEditPetSelecionado([]);
       setAtualiza(!atualiza);
     })
@@ -147,7 +141,7 @@ export default function Profile() {
                             <div className="col-xs-10">
                                 <Input.text value={nome} type="text" onChange={e => setNome(e.target.value)} />
                                 <div className="formGroup" >
-                                    <select className="form-control" onChange={e => setTipoPet(e.target.value)} value={tipo_pet}>
+                                    <select className="form-control" onChange={e => setTipoPet(e.target.value)} value={tipo_pet} required>
                                         <option value="NovoPet">Selecione o tipo</option>
                                         <option value="Cachorro">Cachorro</option>
                                         <option value="Gato">Gato</option>
@@ -206,9 +200,8 @@ export default function Profile() {
 
                     setFlagSetStatesNewInfos(false);
                   }
-                  console.log(value)
-                  return <Grid cols="12 12 6" onMouseEnter={e => setPetSelecionado(value._id)} key={index}>
-                    <div className={`small-box box-atualizaPet bg-${value.tipo_pet}`}>
+                  return <Grid cols="12 12 6" key={index}>
+                    <div className={`small-box box-atualizaPet bg-${value.tipo_pet}`} onMouseEnter={e => setPetSelecionado(value._id)}>
                         <div className='inner'>
                             <button id="confirmUpdate-valuebox" className="col-xs-1" onClick={confirmUpdatePet}>
                               <i className='fa fa-check'></i>
@@ -223,15 +216,15 @@ export default function Profile() {
                                 </div>
                                 <div className="col-xs-9">
                                     <Input.text value={newNome} type="text" onChange={e => setNewNome(e.target.value)} />
-                                    <div className="formGroup" >
-                                        <select className="form-control" onChange={e => setNewTipoPet(e.target.value)} value={newTipo_pet}>
+                                    <div className="formGroup">
+                                        <select className="form-control" value={newTipo_pet} disabled>
                                             <option value="NovoPet">Selecione o tipo</option>
                                             <option value="Cachorro">Cachorro</option>
                                             <option value="Gato">Gato</option>
                                             <option value="Peixe">Peixe</option>
                                         </select>
                                     </div>
-                                    <Input.text value={newRaca} type="text" onChange={e => setNewRaca(e.target.value)}/>
+                                    <Input.text value={newRaca} type="text" disabled/>
                                     <div className="formGroup">
                                         <select className="form-control" onChange={e => setNewPorte(e.target.value)} value={newPorte}>
                                             <option>Selecione o porte</option>

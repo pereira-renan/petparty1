@@ -90,8 +90,8 @@ function Mapa2(props) {
                             strokeColor: 'transparent',
                             strokeOpacity: 0,
                             strokeWeight: 5,
-                            fillColor: '#FF0000',
-                            fillOpacity: 0.1
+                            fillColor: '#FFC0CB',
+                            fillOpacity: 0.3
                         }}
                     />
 
