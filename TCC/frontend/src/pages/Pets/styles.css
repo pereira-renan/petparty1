@@ -17,7 +17,7 @@
     margin-right: 7px;
 }
 
-#delete-valuebox:hover, #update-valuebox:hover, #confirmUpdate-valuebox {
+#delete-valuebox:hover, #update-valuebox:hover, #confirmUpdate-valuebox:hover {
     color: orange;
     opacity: 0.8;
 }
