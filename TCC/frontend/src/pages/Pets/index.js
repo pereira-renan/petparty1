@@ -28,8 +28,16 @@ export default function Profile() {
   const [tipo_pet, setTipoPet] = useState("NovoPet");
   const [porte, setPorte] = useState("");
 
+  const [newNome, setNewNome] = useState("");
+  const [newIdade, setNewIdade] = useState("");
+  const [newRaca, setNewRaca] = useState("");
+  const [newTipo_pet, setNewTipoPet] = useState("NovoPet");
+  const [newPorte, setNewPorte] = useState("");
+
   const [atualiza, setAtualiza] = useState(true);
   const [petSelecionado, setPetSelecionado] = useState([]);
+  const [editPetSelecionado, setEditPetSelecionado] = useState([]);
+  const [flagSetStatesNewInfos, setFlagSetStatesNewInfos] = useState(false);
 
   const token = sessionStorage.getItem("token");
 
@@ -59,9 +67,15 @@ export default function Profile() {
     const infos = { nome, idade, raca, tipo_pet, porte };
     try {
         const response = await api.post("pet/create", infos, {
-            headers: {
-                    token: sessionStorage.getItem("token")
-                }
+          headers: {
+            token: sessionStorage.getItem("token")
+          }
+        }).then(() => {
+          setNome("");
+          setTipoPet("NovoPet");
+          setRaca("");
+          setPorte("");
+          setIdade("");
         });
         console.log(response)
         setAtualiza(!atualiza);
@@ -82,49 +96,47 @@ export default function Profile() {
     })
   }
 
+  async function updatePet() {
+    setEditPetSelecionado(petSelecionado);
+    setFlagSetStatesNewInfos(true);
+  }
+
+  async function confirmUpdatePet() {
+    const infos = { 
+      nome: newNome, 
+      idade: newIdade, 
+      raca: newRaca, 
+      tipo_pet: newTipo_pet, 
+      porte: newPorte 
+    };
+    console.log(infos)
+    api.put("pet/update", infos, {
+      headers: {
+        //token: sessionStorage.getItem("token"),
+        id_pet: petSelecionado
+      }
+    }).then(response => {
+      console.log('ALTEROU')
+      setEditPetSelecionado([]);
+      setAtualiza(!atualiza);
+    })
+  }
+
   return (
     <div>
       <Header userName={infoUser.nome} userCuidador={infoUser.user_cuidador} createdAt={infoUser.createdAt === undefined ? '' : infoUser.createdAt.slice(0, 10)} urlImg={infoUser.url}/>
       <SideBar/>
       <Content title="Pets">
         <div className="row">
-          <div className="col-xs-12">
-            <div className="box box-pets">
-              <div className="titulo-card">
-                <h4>Meus Pets</h4>
-              </div> 
-              {infoPets.map((value, index) => {
-                let icon;
-                switch(value.tipo_pet) {
-                  case 'Cachorro':
-                    icon = 'fa fa-paw';
-                    break;
-                  case 'Gato':
-                    icon = 'fa fa-paw';
-                    break;
-                  case 'Peixe':
-                    icon = 'fa fa-paw';
-                    break;
-                  default:
-                    icon = 'fa fa-paw';
-                }
-                return <ValueBox cols='12 12 6' onMouseEnter={e => setPetSelecionado(value._id)} key={index} url={value.url} idPet={value._id} color={value.tipo_pet} icon={icon}
-                    value={`${value.nome}`} tipo={value.tipo_pet} raca={value.raca} porte={value.porte} idade={value.idade}>
-                      <button id="delete-valuebox" onClick={deletePet} >X</button>
-                  </ValueBox>
-              })}
-            </div>
-          </div>
-
-          <div className="col-xs-12">
+        <div className="col-xs-12">
             <div className="box box-newPet">
               <div className="titulo-card">
                 <h4>Novo Pet</h4>
               </div> 
               <Grid cols="12 12 6">
-                <div className={`small-box bg-${tipo_pet}`}>
+                <div className={`small-box box-NovoPet bg-${tipo_pet}`}>
                     <div className='inner'>
-                        <form id="form-novo-pet" onSubmit="adicionaPet()">
+                        <form id="form-novo-pet">
                             <div className="col-xs-2">
                                 <label>Nome:</label>
                                 <label>Tipo:</label>
@@ -163,6 +175,94 @@ export default function Profile() {
               </Grid>
             </div>
           </div>
+
+          <div className="col-xs-12">
+            <div className="box box-pets">
+              <div className="titulo-card">
+                <h4>Meus Pets</h4>
+              </div> 
+              {infoPets.map((value, index) => {
+                let icon;
+                switch(value.tipo_pet) {
+                  case 'Cachorro':
+                    icon = 'fa fa-paw';
+                    break;
+                  case 'Gato':
+                    icon = 'fa fa-paw';
+                    break;
+                  case 'Peixe':
+                    icon = 'fa fa-paw';
+                    break;
+                  default:
+                    icon = 'fa fa-paw';
+                }
+                if(editPetSelecionado === value._id) {
+                  if(flagSetStatesNewInfos) {
+                    setNewNome(value.nome);
+                    setNewTipoPet(value.tipo_pet);
+                    setNewRaca(value.raca);
+                    setNewPorte(value.porte);
+                    setNewIdade(value.idade);
+
+                    setFlagSetStatesNewInfos(false);
+                  }
+                  console.log(value)
+                  return <Grid cols="12 12 6" onMouseEnter={e => setPetSelecionado(value._id)} key={index}>
+                    <div className={`small-box box-atualizaPet bg-${value.tipo_pet}`}>
+                        <div className='inner'>
+                            <button id="confirmUpdate-valuebox" className="col-xs-1" onClick={confirmUpdatePet}>
+                              <i className='fa fa-check'></i>
+                            </button>
+                            <form id="form-atualiza-pet">
+                                <div className="col-xs-2">
+                                    <label>Nome:</label>
+                                    <label>Tipo:</label>
+                                    <label>Raça:</label>
+                                    <label>Porte:</label>
+                                    <label>Idade:</label>
+                                </div>
+                                <div className="col-xs-9">
+                                    <Input.text value={newNome} type="text" onChange={e => setNewNome(e.target.value)} />
+                                    <div className="formGroup" >
+                                        <select className="form-control" onChange={e => setNewTipoPet(e.target.value)} value={newTipo_pet}>
+                                            <option value="NovoPet">Selecione o tipo</option>
+                                            <option value="Cachorro">Cachorro</option>
+                                            <option value="Gato">Gato</option>
+                                            <option value="Peixe">Peixe</option>
+                                        </select>
+                                    </div>
+                                    <Input.text value={newRaca} type="text" onChange={e => setNewRaca(e.target.value)}/>
+                                    <div className="formGroup">
+                                        <select className="form-control" onChange={e => setNewPorte(e.target.value)} value={newPorte}>
+                                            <option>Selecione o porte</option>
+                                            <option value="Grande">Grande</option>
+                                            <option value="Médio">Médio</option>
+                                            <option value="Pequeno">Pequeno</option>
+                                        </select>
+                                    </div>
+                                    <Input.text value={newIdade} type="text" onChange={e => setNewIdade(e.target.value)}/>
+                                </div>
+                            </form>
+                        </div>
+                        <div className='icon'>
+                            <i className={`fa fa-`}></i>
+                        </div>
+                    </div>
+                  </Grid>
+                }
+                return <ValueBox cols='12 12 6' onMouseEnter={e => setPetSelecionado(value._id)} key={index} url={value.url} idPet={value._id} color={value.tipo_pet} icon={icon}
+                    value={`${value.nome}`} tipo={value.tipo_pet} raca={value.raca} porte={value.porte} idade={value.idade}>
+                      <button id="delete-valuebox" onClick={deletePet} >
+                        <i className='fa fa-times'></i>
+                      </button>
+                      <button id="update-valuebox" onClick={updatePet} >
+                        <i className='fa fa-edit'></i>
+                      </button>
+                  </ValueBox>
+              })}
+            </div>
+          </div>
+
         </div>
       </Content>
   </div>

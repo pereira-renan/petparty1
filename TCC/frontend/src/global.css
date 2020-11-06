@@ -87,6 +87,10 @@ body, button, a {
   min-height: 181px;
 }
 
+.box-NovoPet {
+  margin-bottom: 5px;
+}
+
 .bg-NovoPet {
   background-color: #ffae1a;
   min-height: 181px;

@@ -74,7 +74,8 @@ function Mapa2(props) {
             >
                 <GoogleMap
                     mapContainerStyle={containerStyle}
-                    zoom={11}
+                    defaultZoom = { 16 }
+                    
                     onLoad={onLoad}
                     onUnmount={onUnmount}
                 >

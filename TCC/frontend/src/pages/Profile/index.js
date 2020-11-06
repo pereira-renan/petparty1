@@ -52,7 +52,7 @@ export default function Profile(props) {
       } 
     }).then(response => {
       setInfo(response.data);
-      if(!flagPerfilPessoal) {
+      if(flagPerfilPessoal) {
         setId(response.data.id);
         setUrl(response.data.url);
         setNome(response.data.nome);
@@ -110,6 +110,18 @@ export default function Profile(props) {
   function setTipo(isCuidador) {
     setCuidador(isCuidador);
     setDono(!isCuidador);
+  }
+
+  function updateInfoProfile() {
+    console.log('aaaaaaaaaaaaaa')
+    const infos = { nome, email, cuidador, telefone };
+    api.put("user/update", infos, {
+      headers: {
+        token: sessionStorage.getItem("token")
+      } 
+    }).then(response => {
+      console.log(response)
+    })
   }
 
   return (
@@ -195,7 +207,7 @@ export default function Profile(props) {
                         <Input.radio id="usuario" name="tipo" value={dono} onClick={e => validaTipo(false)} htmlFor="usuario" text="Usuário" />
                       </div>
                       <span>Cuidadores terão seu contato e sua descrição disponíveis no site para o acesso de todos!</span>
-                      <input id="btnAtualizar" name="btnAtualizar" type="submit" value="Atualizar"></input>
+                      <input id="btnAtualizar" name="btnAtualizar" type="submit" value="Atualizar" onClick={e => updateInfoProfile()}></input>
                     </div>
                   </>
                   :

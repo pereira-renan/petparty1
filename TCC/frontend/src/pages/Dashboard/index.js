@@ -35,6 +35,7 @@ export default function Dashboard() {
     }).then(response => {
       setInfo(response.data);
       setLocation(response.data.location.coordinates);
+      setKey(Math.random())
       //console.log(response.data);
     })
   }, [sessionStorage.getItem("token")])

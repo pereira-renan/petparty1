@@ -5,6 +5,11 @@ export default function Header(props) {
 
     const history = useHistory();
 
+    if(sessionStorage.getItem("token") === null) {
+        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        history.push("/");
+    }
+
     async function handleLogout(e) {
         sessionStorage.clear("token");
         history.push("/");

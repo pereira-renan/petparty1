@@ -2,7 +2,7 @@
     margin: 0px;
 }
 
-#delete-valuebox {
+#delete-valuebox, #update-valuebox, #confirmUpdate-valuebox {
     position: relative;
     float: right;
     z-index: 1;
@@ -10,20 +10,25 @@
     opacity: 0.5;
     padding: 4px 8px;
     font-size: bold;
+    max-width: 33px;
 }
 
-#delete-valuebox:hover {
+#update-valuebox {
+    margin-right: 7px;
+}
+
+#delete-valuebox:hover, #update-valuebox:hover, #confirmUpdate-valuebox {
     color: orange;
     opacity: 0.8;
 }
 
-.box-newPet label {
+.box-newPet label, .box-atualizaPet label {
     display: block;
     padding: 5px;
     margin-bottom: 3px;
 }
 
-.box-newPet input {
+.box-newPet input, .box-atualizaPet input {
     display: block;
     padding: 3px;
     margin-bottom: 3px;
@@ -31,17 +36,18 @@
 
 .box-newPet #btnAdicionar {
     width: 100%;
+    margin-bottom: 20px;
 }
 
-.box-newPet input,label {
+.box-newPet input,label, .box-atualizaPet input,label {
     color: black;
 }
 
-.box-newPet input,label:hover {
+.box-newPet input,label:hover, .box-atualizaPet input,label:hover {
     color: black;
 }
 
-.box-newPet select {
+.box-newPet select, .box-atualizaPet select {
     display: block;
     margin: 0 auto;
     margin-bottom: 3px;
@@ -50,9 +56,6 @@
     height: 30px;
     padding: 5px;
     color: black;
-}
-
-.box-newPet select:hover {
 }
 
 .box-pets img {
