@@ -7,7 +7,7 @@ import SideBar from '../common/template/sideBar';
 import Content from '../common/template/content';
 import Input from '../../components/Input/index';
 import Row from '../common/layout/row'
-import Mapa from '../../components/Mapa/index';
+import Mapa2 from '../../components/Mapa2/index';
 
 import UsuariosList from '../../components/UsuariosList/index';
 
@@ -17,9 +17,8 @@ import "./styles.css";
 export default function Dashboard() {
   const history = useHistory();
 
-  const [estadoMapa, setEstadoMapa] = useState(false);
-  const [temDestino, setTemDestino] = useState(false);
-  const [distancia, setDistancia] = useState("5000");
+  const [key, setKey] = useState();
+  const [distancia, setDistancia] = useState("3");
   const [location, setLocation] = useState([]);
 
   const [infoUser, setInfo] = useState([]);
@@ -46,11 +45,12 @@ export default function Dashboard() {
         token: sessionStorage.getItem("token")
       },
       params: {
-        latitude: '' + location[0],
-        longitude: '' + location[1],
+        latitude: '' + location[1],
+        longitude: '' + location[0],
         distancia: distancia * 1000
      }
     }).then(response => {
+      console.log(response.data)
       setUsersList(response.data);
 
       if(response.data.length > 0) {
@@ -70,12 +70,12 @@ export default function Dashboard() {
             <div className="titulo-card form-user">
               <h4>Mapa</h4>
             </div> 
-            <Mapa 
-              estadoMapa={estadoMapa}
+            <Mapa2 
               coordinates={location}
               distancia={distancia}
+              key={key}
               >
-            </Mapa>
+            </Mapa2>
           </div>   
         </div>
 
@@ -93,7 +93,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="box-body table-responsive no-padding">
-              <UsuariosList lista={usersList} listaCoordenadas={usersList.location} nomeUsuario={infoUser.nome} atualizaEstadoMapa={e => setEstadoMapa(!estadoMapa)} />
+              <UsuariosList lista={usersList} listaCoordenadas={usersList.location} nomeUsuario={infoUser.nome} onMouseUp={e => setKey(Math.random())} />
             </div>
             <div className="box-footer clearfix">
               <ul className="pagination pagination-sm no-margin pull-right">

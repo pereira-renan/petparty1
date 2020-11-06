@@ -43,7 +43,7 @@ const UsuariosList = (props) => {
             </thead>
             <tbody>
                 { listaProviders.map(user => 
-                    <tr key={user._id} onMouseDown={e => updateLocationAlvo(user.coordinates)} onMouseUp={props.atualizaEstadoMapa}>
+                    <tr key={user._id} onMouseDown={e => updateLocationAlvo(user.coordinates)} onMouseUp={props.onMouseUp}>
                         <td>
                             <img src={user.url}/>
                         </td>
@@ -51,7 +51,7 @@ const UsuariosList = (props) => {
                         <td>{user.telefone || "-"}</td>
                         <td className="dispensavel">{user.km} Km</td>
                         <td>
-                            <Button.secundario type="button" name="chamar" text="Chamar" 
+                            <Button.secundario type="button" name="chamar" text="Perfil" 
                             onMouseEnter={e => setaEstadoBotaoTrue()} onMouseLeave={e => setaEstadoBotaoFalse()}
                             href={`/profile/${user._id}`} 
                             target="_blank"/>

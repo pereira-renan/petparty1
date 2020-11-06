@@ -49,24 +49,40 @@ export default function Profile(props) {
     api.get("info", {
       headers: {
         token: sessionStorage.getItem("token")
-      }
+      } 
     }).then(response => {
       setInfo(response.data);
-      console.log(response.data)
-
-      setId(response.data.id);
-      setUrl(response.data.url);
-      setNome(response.data.nome);
-      setEmail(response.data.email);
-      setCpf(response.data.cpf);
-      setTelefone(response.data.telefone);
-      setCuidador(response.data.user_cuidador);
-      setCriadoEm(response.data.createdAt);
-      setLatitude(response.data.location.coordinates[0]);
-      setLongitude(response.data.location.coordinates[1]);
+      if(!flagPerfilPessoal) {
+        setId(response.data.id);
+        setUrl(response.data.url);
+        setNome(response.data.nome);
+        setEmail(response.data.email);
+        setCpf(response.data.cpf);
+        setTelefone(response.data.telefone);
+        setCuidador(response.data.user_cuidador);
+        setLatitude(response.data.location.coordinates[0]);
+        setLongitude(response.data.location.coordinates[1]);
+      }
       //setInfo(response.data);
-    })
+    }) 
   }, [localStorage.getItem("token")])
+
+  useEffect(() => {
+    if(!flagPerfilPessoal) {
+      api.get("info/cuidador", {
+        headers: {
+          _id: props.match.params.id
+        } 
+      }).then(response => {
+        setId(response.data.id);
+        setUrl(response.data.url);
+        setNome(response.data.nome);
+        setTelefone(response.data.telefone);
+        setLatitude(response.data.location.coordinates[0]);
+        setLongitude(response.data.location.coordinates[1]);
+      })
+    }
+  })
 
   useEffect(() => {
     if(!flagPerfilPessoal) {
