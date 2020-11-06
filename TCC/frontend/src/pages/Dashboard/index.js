@@ -97,20 +97,7 @@ export default function Dashboard() {
               <UsuariosList lista={usersList} listaCoordenadas={usersList.location} nomeUsuario={infoUser.nome} onMouseUp={e => setKey(Math.random())} />
             </div>
             <div className="box-footer clearfix">
-              <ul className="pagination pagination-sm no-margin pull-right">
-                {
-                  
-                }
-                <li>
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-              </ul>
+
             </div>
           </div>
         </div>

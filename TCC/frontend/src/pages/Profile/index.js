@@ -235,7 +235,7 @@ export default function Profile(props) {
                     <h4>Pets</h4>
                   </div> 
                   {infoPets.map((value, index) => {
-                    return <ValueBox cols='12 12 4' key={index} idPet={value._id} color={value.tipo_pet} icon='paw'
+                    return <ValueBox cols='12 12 4' key={index} idPet={value._id} color={value.tipo_pet} icon='fa fa-paw'
                         value={`${value.nome}`} tipo={value.tipo_pet} raca={value.raca} porte={value.porte} idade={value.idade}>
                       </ValueBox>
                   })}
