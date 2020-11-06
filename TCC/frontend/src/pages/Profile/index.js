@@ -53,13 +53,14 @@ export default function Profile(props) {
     }).then(response => {
       setInfo(response.data);
       if(flagPerfilPessoal) {
+        console.log(response.data)
         setId(response.data.id);
         setUrl(response.data.url);
         setNome(response.data.nome);
         setEmail(response.data.email);
         setCpf(response.data.cpf);
         setTelefone(response.data.telefone);
-        setCuidador(response.data.user_cuidador);
+        setTipo(response.data.user_cuidador)
         setLatitude(response.data.location.coordinates[0]);
         setLongitude(response.data.location.coordinates[1]);
       }
