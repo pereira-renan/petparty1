@@ -35,6 +35,7 @@ routes.delete("/pet/delete", PetController.delete);
 
 // Pesquisa
 routes.get("/searchProviders", ProviderController.index);
+routes.get("/endereco", ProviderController.maps);
 
 //routes.use(authMiddleware); // midleware de verificação do token do usuario 
 //todas as rotas que estão abaixo passará pela autenticação
@@ -42,12 +43,5 @@ routes.get("/searchProviders", ProviderController.index);
 routes.get("/providers", ProviderController.mostrarCuidadores);
 routes.put("/user/update", UserController.update);
 routes.post("/files", upload.single("file"), FileController.store);
-
-routes.post("/filess", upload.single("file") ,(req,res) =>{
-  return res.json({ok: true});
-})
-
-
-
 
 export default routes;

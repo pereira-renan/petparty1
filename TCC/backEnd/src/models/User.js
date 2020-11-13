@@ -26,7 +26,7 @@ const UserSchema =  new mongoose.Schema(
       required: true,
       select: false,
     },
-
+   
     passwordresetoken: {
       type: String,
       select: false,
@@ -45,7 +45,6 @@ const UserSchema =  new mongoose.Schema(
     user_cuidador: {
       type: Boolean,
     },
-    matchId: [ {id_user: String, id_anfitriao: String, status: String}],
     avatar: {
       nome: {
         type: String,
@@ -53,6 +52,30 @@ const UserSchema =  new mongoose.Schema(
       },
       path: { type: String, default: "default.png" },
     },
+    endereco: {
+          rua: {
+            type: String,
+          },
+          numero: {
+            type: String,
+          }, 
+          cep: {
+            type: String,
+          },
+          cidade: {
+             type: String,
+          },
+          estado:{
+            type: String,
+          },
+          bairro:{
+            type: String,
+          },
+          
+
+
+        },
+
     location:{
       type: PointSchema,
       index: '2dsphere',

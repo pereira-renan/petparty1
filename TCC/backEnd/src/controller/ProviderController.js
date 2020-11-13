@@ -1,4 +1,6 @@
 import User from "../models/User";
+import jwt from "jsonwebtoken";
+import axios from "axios";
 
 class ProviderController {
 
@@ -9,7 +11,7 @@ class ProviderController {
   }
 
   async index(req, res) {
-
+    const { id } = jwt.decode(req.header("token"));
     try {
 
       const { latitude, longitude, distancia } = req.query;
@@ -39,6 +41,11 @@ class ProviderController {
         providersList[i].km = numero;
         List.push({ "nome": providersList[i].nome, "km": numero, "_id": providersList[i]._id, "url": providersList[i].url, "telefone": providersList[i].telefone });
       }
+      if( providersList[0]._id = id) {
+
+
+      }
+      
       return res.json(List);
     }
 
@@ -73,9 +80,20 @@ class ProviderController {
 
   }
 
+  async maps(req, res) {
+    try {
+      const end = req.header("endereco");
+      const apiResponse = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${end}&key=AIzaSyBTiJt25rmCY2qjSzNaZ1t3XM34HrZJ-i0`);
+      const {results} = apiResponse.data;
+      
+    
+      return res.json(results);
 
-
-
+    } catch (err) {
+      return res.json(103);
+    }
+  }
+  
 
 
 

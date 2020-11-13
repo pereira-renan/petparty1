@@ -1,4 +1,4 @@
-import * as Yup from "yup";
+
 import User from "../models/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -40,7 +40,6 @@ class UserController {
         .send({ error: "Falha ao Cadastrar Usuario" } + err);
     }
   }
-
   // METODO ATUALIZACAO DE DADOS
   async update(req, res) {
 
@@ -72,9 +71,6 @@ class UserController {
     const retorno = await User.findOne({ email: req.body.email });
     return res.json(retorno);
   }
-
-
-
   // Buscando Infomações do Usuario
   async infoUser(req, res) {
     const { id } = jwt.decode(req.header("token"));
