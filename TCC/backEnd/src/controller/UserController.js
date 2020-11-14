@@ -52,35 +52,57 @@ class UserController {
   }
   // METODO ATUALIZACAO DE DADOS
   async update(req, res) {
-
-    /// Verificacao email existente
-    const { email, oldpassword } = req.body;
-    console.log(email);
-    const user = await User.findOne({ email });
-    console.log(user.email);
-    if (email != user.email) {
-      const userExists = await User.findOne({ email });
-      // valida se o email já esta cadastrado
-      if (userExists) {
-        return res.status(400).json("Bad request.  email invalido ");
-      }
-    }
-    // verificação da senha no banco
-    if (
-      oldpassword &&
-      !bcrypt.compareSync(req.body.oldpassword, user.password)
-    ) {
-      return res.status(400).json("Bad request. Password don't match ");
-    }
-    // transformando a nova senha em hash para enviar para o banco
-    const salt = bcrypt.genSaltSync(10);
-    const hash = await bcrypt.hash(req.body.password, salt);
-    req.body.password = hash;
-    // ATUALIZANDO O
-    await User.updateOne(req.body);
-    const retorno = await User.findOne({ email: req.body.email });
+  try{
+    const { id } = jwt.decode(req.header("token"));
+    const user = await User.findById({_id: id});
+    console.log(user);
+    await user.updateOne(req.body);
+    const retorno = await User.findById({_id:id});
     return res.json(retorno);
+  } 
+  catch (err) {
+    return res
+      .status(400)
+      .send({ error: "Falha ao atualizar o  Usuario" } + err);
   }
+  }
+
+
+
+  async resetSenha(req,res){
+    try {
+      const { id } = jwt.decode(req.header("token"));
+      const user = await User.findById({_id: id}).select('+password');
+      console.log(user);
+
+    // verificação da senha no banco
+      const { oldpassword} = req.body;
+      if (
+        oldpassword &&
+        !bcrypt.compareSync(req.body.oldpassword, user.password)
+      ) {
+          return res.status(400).json("Bad request. Password don't match ");
+      }
+      console.log("-->"+oldpassword);
+      console.log("teste");
+     
+      // Transformando a nova senha em hash para enviar para o banco
+      const salt = bcrypt.genSaltSync(10);
+      const hash = await bcrypt.hash(req.body.password, salt);
+      req.body.password = hash;
+
+      await user.updateOne(req.body);
+      return res.json("Senha Trocada!");
+    } catch (error) {
+      return res
+      .status(400)
+      .send({ error: "Falha ao Resetar a senha" } + error);
+  }
+    
+   
+  }
+
+
   // Buscando Infomações do Usuario
   async infoUser(req, res) {
     const { id } = jwt.decode(req.header("token"));
@@ -89,6 +111,8 @@ class UserController {
     console.log("User-->" + user);
     return res.json(user);
   }
+
+
   async infoCuidador(req, res) {
     const id = req.header("_id");
     console.log(id);

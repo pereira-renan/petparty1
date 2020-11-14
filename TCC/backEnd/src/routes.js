@@ -42,6 +42,7 @@ routes.get("/endereco", ProviderController.maps);
 
 routes.get("/providers", ProviderController.mostrarCuidadores);
 routes.put("/user/update", UserController.update);
+routes.put("/user/update/password", UserController.resetSenha);
 routes.post("/files", upload.single("file"), FileController.store);
 
 export default routes;
