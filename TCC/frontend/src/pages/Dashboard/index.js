@@ -62,7 +62,7 @@ export default function Dashboard() {
 
   return (
     <div>
-    <Header userName={infoUser.nome} userCuidador={infoUser.user_cuidador} createdAt={infoUser.createdAt === undefined ? '' : infoUser.createdAt.slice(0, 10)} urlImg={infoUser.url}/>
+    <Header/>
     <SideBar/>
     <Content title="Dashboard">
       <div className="row">
@@ -95,9 +95,6 @@ export default function Dashboard() {
             </div>
             <div className="box-body table-responsive no-padding">
               <UsuariosList lista={usersList} listaCoordenadas={usersList.location} nomeUsuario={infoUser.nome} onMouseUp={e => setKey(Math.random())} />
-            </div>
-            <div className="box-footer clearfix">
-
             </div>
           </div>
         </div>

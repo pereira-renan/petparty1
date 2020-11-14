@@ -1,16 +1,3 @@
-:root {
-    --btn-principal: #ffae1a;
-    --btn-principal-hover: #ffa500;
-    --borda-principal: #ffa500;
-    --txt-principal: #FFFAFA;
-
-    --btn-secundario: #e9e9e9;
-    --btn-secundario-hover: #c08457;
-    --borda-secundario: #D3D3D3;
-    --txt-secundario: #2F4F4F;
-    --txt-secundario-hover: #FFFAFA;
-}
-
 .btn {
     width: 90%;
     cursor: pointer;
@@ -22,20 +9,20 @@
 }
   
 .btn-principal {
-    background: var(--btn-principal);
-    border: var(--borda-principal);
-    color: var(--txt-principal);
+    background: var(--cor-btn-primaria);
+    border: var(--cor-borda-primaria);
+    color: var(--cor-txt-primaria);
 }
 
 .btn-principal:hover {
     transition-duration: 0.1s;
-    background: var(--btn-principal-hover);
+    background: var(--cor-btn-primaria-hover);
 }
 
 .btn-secundario {
-    background: var(--btn-secundario);
-    border-color: var(--borda-secundario);
-    color: var(--txt-secundario);
+    background: var(--cor-btn-secundaria);
+    border-color: var(--cor-borda-secundaria);
+    color: var(--cor-txt-secundaria);
 }
 
 .btn-secundario a {
@@ -48,9 +35,9 @@
 
 .btn-secundario:hover {
     transition-duration: 0.1s;
-    background: var(--btn-secundario-hover);
-    border-color: var(--btn-secundario-hover);
-    color: var(--txt-secundario-hover)
+    background: var(--cor-btn-secundaria-hover);
+    border-color: var(--cor-btn-secundaria-hover);
+    color: var(--cor-txt-secundaria-hover)
 }
 
 button a {

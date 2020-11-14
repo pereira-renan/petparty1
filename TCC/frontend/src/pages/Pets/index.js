@@ -6,6 +6,7 @@ import ContentHeader from '../common/template/contentHeader';
 import SideBar from '../common/template/sideBar';
 import Content from '../common/template/content';
 import Input from '../../components/Input/index';
+import Button from '../../components/Button/index';
 import Grid from '../common/layout/grid';
 
 import ValueBox from '../common/widget/valueBox'
@@ -19,7 +20,6 @@ import "./styles.css";
 export default function Profile() {
   const history = useHistory();
 
-  const [infoUser, setInfo] = useState([]);
   const [infoPets, setInfoPets] = useState([]);
 
   const [nome, setNome] = useState("");
@@ -40,16 +40,6 @@ export default function Profile() {
   const [flagSetStatesNewInfos, setFlagSetStatesNewInfos] = useState(false);
 
   const token = sessionStorage.getItem("token");
-
-  useEffect(() => {
-    api.get("info", {
-      headers: {
-        token: sessionStorage.getItem("token")
-      }
-    }).then(response => {
-      setInfo(response.data);
-    })
-  }, [localStorage.getItem("token")])
 
   useEffect(() => {
     api.get("pets", {
@@ -118,7 +108,7 @@ export default function Profile() {
 
   return (
     <div>
-      <Header userName={infoUser.nome} userCuidador={infoUser.user_cuidador} createdAt={infoUser.createdAt === undefined ? '' : infoUser.createdAt.slice(0, 10)} urlImg={infoUser.url}/>
+      <Header/>
       <SideBar/>
       <Content title="Pets">
         <div className="row">
@@ -165,7 +155,7 @@ export default function Profile() {
                         <i className={`fa fa-`}></i>
                     </div>
                 </div>
-                <input id="btnAdicionar" name="btnAdicionar" type="submit" value="Adicionar" onClick={adicionaPet}></input>
+                <Button.secundario id="btnAdicionar" type="submit" name="btnAdicionar" text="Adicionar" onClick={adicionaPet}/>
               </Grid>
             </div>
           </div>

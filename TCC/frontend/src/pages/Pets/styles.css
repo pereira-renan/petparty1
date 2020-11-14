@@ -18,7 +18,7 @@
 }
 
 #delete-valuebox:hover, #update-valuebox:hover, #confirmUpdate-valuebox:hover {
-    color: orange;
+    color: var(--cor-btn-primaria-hover);
     opacity: 0.8;
 }
 

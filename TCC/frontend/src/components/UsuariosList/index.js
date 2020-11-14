@@ -14,6 +14,7 @@ const UsuariosList = (props) => {
     }
 
     function updateLocationAlvo(locationAlvo) {
+        console.log('LOCATION: ' + locationAlvo);
         sessionStorage.setItem('locationAlvo', locationAlvo);
         if(estadoBotao) {
             setLocationAlvo();
@@ -43,7 +44,7 @@ const UsuariosList = (props) => {
             </thead>
             <tbody>
                 { listaProviders.map(user => 
-                    <tr key={user._id} onMouseDown={e => updateLocationAlvo(user.coordinates)} onMouseUp={props.onMouseUp}>
+                    <tr key={user._id} onMouseDown={e => updateLocationAlvo(user.coordinates.coordinates)} onMouseUp={props.onMouseUp}>
                         <td>
                             <img src={user.url}/>
                         </td>

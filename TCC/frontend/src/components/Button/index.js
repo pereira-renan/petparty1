@@ -9,7 +9,9 @@ const Button = {
                              onAction={props.onAction}
                              text={props.text}
                              href={props.href}
-                             target={props.target}>
+                             target={props.target}
+                             onClick={props.onClick}
+                             id={props.id}>
             </ButtonStructure>
         );
     },
@@ -20,7 +22,9 @@ const Button = {
                              onAction={props.onAction}
                              text={props.text}
                              href={props.href}
-                             target={props.target}>
+                             target={props.target}
+                             onClick={props.onClick}
+                             id={props.id}>
             </ButtonStructure>
         );
     }
@@ -29,7 +33,9 @@ const Button = {
 const ButtonStructure = (props) => {
     return(
         <button type={props.type}
-                className={props.className}>
+                className={props.className}
+                onClick={props.onClick}
+                id={props.id}>
             <a className="a-auth" href={props.href}
                 target={props.target === undefined ? "" : props.target}>  
                 {props.text} 
