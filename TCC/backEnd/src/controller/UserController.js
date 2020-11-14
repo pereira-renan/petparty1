@@ -16,10 +16,19 @@ class UserController {
         return res.status(400).send({ error: "Email já cadastrado no Banco!" });
       }
 
-      const { nome, email, cpf, descricao, user_cuidador, password, telefone, latitude, longitude } = req.body;
+      const { nome, email, cpf, descricao, user_cuidador, password, telefone, latitude, longitude, rua,numero,cep,cidade, estado, bairro } = req.body;
       const location = {
         type: 'Point',
         coordinates: [longitude, latitude],
+      };
+      const endereco =
+      {
+        rua,
+        numero,
+        cep,
+        estado,
+        bairro,
+        cidade,
       };
       // criar usuário s
       const user = await User.create({
@@ -30,7 +39,8 @@ class UserController {
         password,
         telefone,
         location,
-        descricao
+        descricao,
+        endereco,
       })
 
       return res.json(user);

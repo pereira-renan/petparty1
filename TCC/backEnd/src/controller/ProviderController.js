@@ -85,12 +85,10 @@ class ProviderController {
       const end = req.header("endereco");
       const apiResponse = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${end}&key=AIzaSyBTiJt25rmCY2qjSzNaZ1t3XM34HrZJ-i0`);
       const {results} = apiResponse.data;
-      
-    
       return res.json(results);
-
+   
     } catch (err) {
-      return res.json(103);
+      return res.json("Nao foi possivel realizar o calculo no maps");
     }
   }
   
