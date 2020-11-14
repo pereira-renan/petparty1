@@ -10,6 +10,7 @@ import addUserIcon from '../../assets/images/icons/adduser.svg';
 import redHeartIcon from '../../assets/images/icons/red-heart2.png';
 
 import './styles.css';
+import PageHeader from '../../components/PageHeader';
 
 
 function Landing(){
@@ -25,10 +26,14 @@ function Landing(){
 
     return (
      <div id="page-landing">
+         <header>
+        <Link to="/about">Sobre</Link>
+        <Link to="/contact">contato</Link>
+         </header>
          <div id="page-landing-content" className="container">
              <div className="logo-container">
                  <img src={logoImg} alt="PetParty"/>
-                 <h2> A plataforma para ajudar você e seus pets</h2>
+                 <h2> O lugar onde nenhum pet fica de fora da festa!</h2>
              </div>
 
              <img 
@@ -50,7 +55,7 @@ function Landing(){
             </div>
 
             <span className="total-connections">
-                Total de {totalConnections} conexões já realisadas <img src={redHeartIcon} alt="Coração roxo"/>
+                 Um Total de {totalConnections} usuarios cadastrados  <img src={redHeartIcon} alt="Coração roxo"/>
 
             </span>
          </div>
