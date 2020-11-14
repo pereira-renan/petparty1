@@ -15,8 +15,8 @@ function About() {
                 </Link>
                 <div className="links">
                     <Link to="/contact">Contato</Link>
-                    <Link to="/about">Cadastrar</Link>
-                    <Link to="/contact">Entrar</Link>
+                    <Link to="/register">Cadastrar</Link>
+                    <Link to="/login">Entrar</Link>
                 </div>
 
             </header>
