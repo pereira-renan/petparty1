@@ -39,11 +39,14 @@ class ProviderController {
       for (var i = 0; i < providersList.length; i++) {
         let numero = parseInt(calcKM(latitude, longitude, providersList[i].location.coordinates[1], providersList[i].location.coordinates[0]));
         providersList[i].km = numero;
-        List.push({ "nome": providersList[i].nome, "km": numero, "_id": providersList[i]._id, "url": providersList[i].url, "telefone": providersList[i].telefone });
+        List.push({ "nome": providersList[i].nome, "km": numero, "_id": providersList[i]._id, "url": providersList[i].url, "telefone": providersList[i].telefone,"coordinates": providersList[i].location });
       }
-      if( providersList[0]._id = id) {
-
-
+     
+     console.log(providersList[0]._id, "--", id);
+     
+      if( providersList[0]._id == id) {
+          List.shift();
+          console.log("removido o primeiro ");
       }
       
       return res.json(List);

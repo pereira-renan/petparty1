@@ -29,9 +29,9 @@ const UserSchema =  new mongoose.Schema(
    
     passwordresetoken: {
       type: String,
-      select: false,
+      select: true,
     },
-    passwordexpires: {
+    passwordtokensexpires: {
       type: Date,
       select: false,
     },

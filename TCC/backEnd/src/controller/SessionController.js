@@ -11,14 +11,14 @@ class SessionController {
   async store(req, res) {
 
     const { email, pass } = await req.body;
-    const user = await User.findOne({ email }).select('+password');
+    const user = await (await User.findOne({ email }).select('+password'));
 
     if (!user) {
       return res.status(400).json({ error: "Email não cadastrado!" });
     }
-
+    console.log(user.passwordresetoken);
     //cryptografa a senha que o usuario digitou e compara com a do usuario
-
+  
     let result = bcrypt.compareSync(pass, user.password);
 
     if (!result) {
@@ -39,8 +39,6 @@ class SessionController {
     const { email } = req.body;
     const emailreset = await User.findOne({ email });
 
-    console.log("result -->" + emailreset);
-
     try {
       if (!emailreset) {
         return res.status(402).json({ error: " Email Invalido" });
@@ -49,11 +47,10 @@ class SessionController {
 
         // tempo de expiração do token de recuperacao;
         const now = new Date();
-        console.log("hora atual" + now.getHours());
-        now.setHours(now.getHours() + 1);
+        now.setMinutes(now.getMinutes() + 1);
         console.log("" + now);
         var _id = emailreset._id;
-        const update = { passwordresetoken: token, passwordresetexpires: now };
+        const update = { passwordresetoken: token,   passwordtokensexpires: now };
         const filter = { _id };
         await User.updateOne(filter, update);
 
@@ -80,13 +77,13 @@ class SessionController {
         .send({ error: "Erro ao recuperar a senha" } + error);
     }
   }
-  // RESET PASSWORD
+  // RESET PASSWORD quando o usuario for trocar a senha com o token
   async resetPassword(req, res) {
     const { email, token, password } = req.body;
 
     try {
       const user = await User.findOne({ email }).select(
-        "+passwordresetoken passwordresetexpires"
+        "+passwordresetoken passwordtokensexpires"
       );
 
       if (!user) {
@@ -97,25 +94,24 @@ class SessionController {
         return res.status(400).send({ error: " Tokenee invalido!" });
 
       const now = new Date();
-
-      if (now > user.passwordresetexpires)
+      console.log("-->"+ now);
+      console.log("-->"+user.passwordtokensexpires)
+      if (now >   user.passwordtokensexpires)
         return res
           .status(400)
           .send({ error: " Token expirado, favor fazer uma nova requisição" });
 
       user.password = password;
-
+      user.passwordtokensexpires = null;
       await user.save();
-      res.send();
+      return res.json("Senha Atualizada");
+
     } catch (err) {
       return res.status(400).json({ error: "Error ao resetar a senha " } + err);
     }
   }
-
-
   // LOGIN
   async QtdUser(req, res) {
-
     try {
       const qtd = await User.find().countDocuments();
       return res.json(qtd);
