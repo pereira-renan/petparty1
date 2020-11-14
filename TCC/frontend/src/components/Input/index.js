@@ -34,7 +34,7 @@ const InputTextStructure = (props) => {
     return(
         <input type={props.type}
                name={props.name}
-               placeHolder={props.placeHolder}
+               placeholder={props.placeHolder}
                value={props.value}
                onBlur={props.onBlur}
                onChange={props.onChange}

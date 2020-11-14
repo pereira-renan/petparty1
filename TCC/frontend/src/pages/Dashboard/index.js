@@ -7,6 +7,7 @@ import SideBar from '../common/template/sideBar';
 import Content from '../common/template/content';
 import Input from '../../components/Input/index';
 import Row from '../common/layout/row'
+import Mapa2 from '../../components/Mapa2/index';
 
 import UsuariosList from '../../components/UsuariosList/index';
 
@@ -16,46 +17,52 @@ import "./styles.css";
 export default function Dashboard() {
   const history = useHistory();
 
-  const [distancia, setDistancia] = useState("5");
+  const [key, setKey] = useState();
+  const [distancia, setDistancia] = useState("3");
+  const [location, setLocation] = useState([]);
 
   const [infoUser, setInfo] = useState([]);
   const [usersList, setUsersList] = useState([]);
+  let paginasUsersList = 0;
 
-  const [location, setLocation] = useState([]);
-
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     api.get("info", {
       headers: {
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       }
     }).then(response => {
       setInfo(response.data);
       setLocation(response.data.location.coordinates);
+      setKey(Math.random())
       //console.log(response.data);
     })
-  }, [localStorage.getItem("token")])
+  }, [sessionStorage.getItem("token")])
 
   useEffect(() => {
     api.get("searchProviders", {
       headers: {
-        token: localStorage.getItem("token")
+        token: sessionStorage.getItem("token")
       },
       params: {
-        latitude: '' + location[0],
-        longitude: '' + location[1],
+        latitude: '' + location[1],
+        longitude: '' + location[0],
         distancia: distancia * 1000
      }
     }).then(response => {
+      console.log(response.data)
       setUsersList(response.data);
-      //console.log(response.data)
+
+      if(response.data.length > 0) {
+        paginasUsersList = (response.data.length / 3) + 0.99;
+      }
     })
   }, [distancia, location])
 
   return (
     <div>
-    <Header userName={infoUser.nome} userCuidador={infoUser.user_cuidador} createdAt={infoUser.createdAt === undefined ? '' : infoUser.createdAt.slice(0, 10)}/>
+    <Header/>
     <SideBar/>
     <Content title="Dashboard">
       <div className="row">
@@ -64,8 +71,12 @@ export default function Dashboard() {
             <div className="titulo-card form-user">
               <h4>Mapa</h4>
             </div> 
-            <iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3646.502958300999!2d-${location[0]}!3d-${location[1]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce024465fa95bf%3A0x1e411e16e8228ce3!2sFatec%20Rubens%20Lara!5e0!3m2!1spt-BR!2sbr!4v1604246662323!5m2!1spt-BR!2sbr`}>
-            </iframe>
+            <Mapa2 
+              coordinates={location}
+              distancia={distancia}
+              key={key}
+              >
+            </Mapa2>
           </div>   
         </div>
 
@@ -83,7 +94,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="box-body table-responsive no-padding">
-              <UsuariosList lista={usersList}/>
+              <UsuariosList lista={usersList} listaCoordenadas={usersList.location} nomeUsuario={infoUser.nome} onMouseUp={e => setKey(Math.random())} />
             </div>
           </div>
         </div>

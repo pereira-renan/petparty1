@@ -21,13 +21,17 @@ td {
     border-width: 0.1px;
 }
 
-tr:hover {
+tbody tr:hover {
     background: #dcdcdc;
 }
 
 img {
-    border-radius: 30px;
+    border-radius: 50px;
     border-color: #dcdcdc;
     border-width: 0.2px;
-    width: 70px;
+    width: 50px;
+}
+
+.selecionado {
+    background: orange;
 }

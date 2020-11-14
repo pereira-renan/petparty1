@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
+import axios from 'axios';
 
 import CardCentral from '../../components/CardCentral/index';
 import FormHeader from '../../components/FormHeader/index';
@@ -20,8 +21,18 @@ export default function Register() {
   const [telefone, setTelefone] = useState("");
   const [user_cuidador, setUserCuidador] = useState("");
   const [user_normal, setUserNormal] = useState("");
+  const [descricao, setDescricao] = useState("");
+
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+
+  const [cep, setCep] = useState("");
+  const [estado, setEstado] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [rua, setRua] = useState("");
+  const [numero, setNumero] = useState("");
+
   let usuario_validado = false;
 
   const [validacaoNome, setValidacaoNome] = useState(true);
@@ -31,8 +42,17 @@ export default function Register() {
   const [validacaoCpf, setValidacaoCpf] = useState(true);
   const [validacaoTelefone, setValidacaoTelefone] = useState(true);
   const [validacaoTipo, setValidacaoTipo] = useState(true);
+  const [validacaoDescricao, setValidacaoDescricao] = useState(true);
+
   const [validacaoLatitude, setValidacaoLatitude] = useState(true);
   const [validacaoLongitude, setValidacaoLongitude] = useState(true);
+
+  const [validacaoCep, setValidacaoCep] = useState(true);
+  const [validacaoEstado, setValidacaoEstado] = useState(true);
+  const [validacaoCidade, setValidacaoCidade] = useState(true);
+  const [validacaoBairro, setValidacaoBairro] = useState(true);
+  const [validacaoRua, setValidacaoRua] = useState(true);
+  const [validacaoNumero, setValidacaoNumero] = useState(true);
 
   const [catchSuccess, setCatchSuccess] = useState(false);
   const [catchError, setCatchError] = useState(false);
@@ -41,6 +61,21 @@ export default function Register() {
 
   async function handleRegister(e) {
     e.preventDefault();
+
+    api.get("endereco", {
+      headers: {
+        endereco: `${cep}+${estado}+${cidade}+${bairro}+${rua}+${numero}`
+      }
+    }).then(response => {
+      console.log(response.data[0]);
+      try {
+        setLatitude(response.data[0].geometry.location.lat);
+        setLongitude(response.data[0].geometry.location.lng);
+      } catch(e) {
+        console.log(e);
+      }
+      
+    })
 
     let valido = true;
 
@@ -54,9 +89,10 @@ export default function Register() {
 
     usuario_validado = valido;
 
-    const data = { nome, email, password, cpf, usuario_validado, user_cuidador, telefone, latitude, longitude };
-
     if(usuario_validado) {
+      const data = { nome, email, password, cpf, usuario_validado, user_cuidador, telefone, latitude, longitude, descricao, cep, estado, cidade, bairro, rua, numero };
+      console.log('LOCATION: ' + latitude, longitude);
+      
       try {
         console.log(data);
         setCatchSuccess(false);
@@ -74,6 +110,7 @@ export default function Register() {
       validacaoTipo,
       validacaoPassword,
       validacaoConfirmPassword,
+      validacaoCep,
       usuario_validado);
 
       setCatchError(true);
@@ -148,6 +185,10 @@ export default function Register() {
     return validacaoTelefone;
   }
 
+  function validaDescricao(descricao) {
+    return true;
+  }
+
   function validaTipo(userCuidador) {
     if(userCuidador === '') {
       setValidacaoTipo(false);
@@ -185,6 +226,65 @@ export default function Register() {
     return true;
   }
 
+  function validaCep(cep) {
+    capturaInfosEndereco(cep);
+
+    api.get("endereco", {
+      headers: {
+        endereco: `${cep}+Brasil`
+      }
+    }).then(response => {
+      console.log(response.data[0]);
+      try {
+        setLatitude(response.data[0].geometry.location.lat);
+        setLongitude(response.data[0].geometry.location.lng);
+      }
+      catch(e) {
+        console.log(e);
+      }
+      setValidacaoCep(!!cep.match(/^[0-9]{5}-[0-9]{3}$/));
+    })
+  }
+
+  function capturaInfosEndereco(cep) {
+    const response = axios.get(`https://viacep.com.br/ws/${cep}//json/`)
+    .then(response => {
+      console.log(response.data)
+      try {
+        setEstado(response.data.uf);
+        setCidade(response.data.localidade);
+        setBairro(response.data.bairro);
+        setRua(response.data.logradouro);
+        setNumero(response.data.complemento);
+  
+        //setBairro(endereco.substring(0, endereco.indexOf(',')));
+      } catch(e) {
+        console.log(e);
+      }
+    });
+  }
+  
+
+  function validaEstado(estado) {
+    return true;
+  }
+
+  function validaCidade(cidade) {
+    return true;
+  }
+
+  function validaBairro(bairro) {
+    return true;
+  }
+
+  function validaRua(rua) {
+    return true;
+  }
+
+  function validaNumero(numero) {
+    return true;
+  }
+
   return (
     <main>
       <CardCentral>
@@ -206,11 +306,38 @@ export default function Register() {
           <Input.text value={telefone} validado={validacaoTelefone} onBlur={e => validaTelefone(telefone)} onChange={e => setTelefone(e.target.value)} type="text" placeHolder="Telefone" id="telefone" name="telefone" />
           <DivAviso.validacao value={!validacaoTelefone && telefone !== ''} text="Por favor, digite um telefone válido no padrão +99 (99) 9999-9999." />
 
+          <Input.text value={cep} validado={validacaoCep} onBlur={e => validaCep(cep)} onChange={e => setCep(e.target.value)} type="text" placeHolder="CEP" id="cep" name="cep" />
+          <DivAviso.validacao value={!validacaoCep && cep !== ''} text="Você deve digitar seu CEP acima no formato 99999-999." />
+
+          <Input.text value={latitude} validado={validacaoLatitude} onBlur={e => validaLatitude(latitude)} onChange={e => setLatitude(e.target.value)} type="hidden" placeHolder="Latitude" id="latitude" name="latitude" />
+          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua latitude no campo acima." />
+
+          <Input.text value={longitude} validado={validacaoLongitude} onBlur={e => validaLongitude(longitude)} onChange={e => setLongitude(e.target.value)} type="hidden" placeHolder="Longitude" id="longitude" name="longitude" />
+          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua longitude no campo acima." />
+
+          <Input.text value={estado} validado={validacaoEstado} onBlur={e => validaEstado(estado)} onChange={e => setEstado(e.target.value)} type="text" placeHolder="Estado" id="estado" name="estado" />
+          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar seu Estado acima." />
+
+          <Input.text value={cidade} validado={validacaoCidade} onBlur={e => validaCidade(cidade)} onChange={e => setCidade(e.target.value)} type="text" placeHolder="Cidade" id="cidade" name="cidade" />
+          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua Cidade acima." />
+
+          <Input.text value={bairro} validado={validacaoBairro} onBlur={e => validaBairro(bairro)} onChange={e => setBairro(e.target.value)} type="text" placeHolder="Bairro" id="bairro" name="bairro" />
+          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar seu Bairro acima." />
+
+          <Input.text value={rua} validado={validacaoRua} onBlur={e => validaRua(rua)} onChange={e => setRua(e.target.value)} type="text" placeHolder="Rua" id="rua" name="rua" />
+          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua Rua acima." />
+
+          <Input.text value={numero} validado={validacaoNumero} onBlur={e => validaNumero(numero)} onChange={e => setNumero(e.target.value)} type="text" placeHolder="Numero" id="numero" name="numero" />
+          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar o Número da sua residência acima." />
+
           <span className="desc-checkbox-tipo">Você quer se cadastrar como:</span>
           <div className="grid">
             <Input.radio id="cuidador" name="tipo" value={user_cuidador} onClick={e => validaTipo(true)} htmlFor="cuidador" text="Cuidador" />
             <Input.radio id="usuario" name="tipo" value={user_normal} onClick={e => validaTipo(false)} htmlFor="usuario" text="Usuário" />
           </div>
+
+          <Input.text value={descricao} validado={validacaoDescricao} onBlur={e => validaDescricao(descricao)} onChange={e => setDescricao(e.target.value)} type="text" placeHolder="Descricao" id="descricao" name="descricao" />
+          <DivAviso.validacao value={!validacaoPassword && password !== ''} text="Você deve digitar uma Descrição acima." />
           
           <Input.text value={password} validado={validacaoPassword} onBlur={e => validaSenha(password)} onChange={e => setPassword(e.target.value)} type="password" placeHolder="Senha" id="senha" name="senha" />
           <DivAviso.validacao value={!validacaoPassword && password !== ''} text="Sua senha deve ter no mínimo 8 caracteres, pelo menos 1 letra, 1 número e 1 caractere especial." />
@@ -218,11 +345,6 @@ export default function Register() {
           <Input.text value={confirmPassword} validado={validacaoConfirmPassword} onBlur={e => validaConfirmSenha(password)} onChange={e => setConfirmPassword(e.target.value)} type="password" placeHolder="Confirme sua Senha" id="confirmSenha" name="confirmSenha" />
           <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar a mesma senha digitada no campo acima." />
 
-          <Input.text value={latitude} validado={validacaoLatitude} onBlur={e => validaLatitude(latitude)} onChange={e => setLatitude(e.target.value)} type="latitude" placeHolder="Latitude" id="latitude" name="latitude" />
-          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua latitude no campo acima." />
-
-          <Input.text value={longitude} validado={validacaoLongitude} onBlur={e => validaLongitude(longitude)} onChange={e => setLongitude(e.target.value)} type="longitude" placeHolder="Longitude" id="longitude" name="longitude" />
-          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua longitude no campo acima." />
           <div></div>
           <div className="grid">
             <Button.secundario type="button" name="login" text="Já possui cadastro?" href={"/"}/>

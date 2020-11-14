@@ -13,15 +13,16 @@ import "./styles.css";
 
 export default function Login() {
 
+  const [lembrarUser, setLembrarUser] = useState(localStorage.getItem("lembrarUser") === "true")
   const [pass, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(lembrarUser ? localStorage.getItem("email") : "");
   const [catchError, setCatchError] = useState(false);
 
   const history = useHistory();
 
   async function handleLogin(e) {
     e.preventDefault();
-
+    
     const credenciais = { email, pass };
 
     try {
@@ -29,7 +30,13 @@ export default function Login() {
       const response = await api.post("login", credenciais);
 
       const { token } = response.data;
-      localStorage.setItem('token', token);
+      sessionStorage.setItem('token', token);
+      if(lembrarUser) {
+        localStorage.setItem("email", email);
+      }
+
+      setTimeout(() => {
+			}, 2000);
 
       history.push("/dashboard");
     } catch (error) {
@@ -37,6 +44,14 @@ export default function Login() {
       setTimeout(() => {
 				setCatchError(false);
 			}, 4000);
+    }
+  }
+
+  function setLembrarUserStorage(value) {
+    localStorage.setItem("lembrarUser", value)
+    setLembrarUser(value)
+    if(!value) {
+      localStorage.removeItem("email")
     }
   }
 
@@ -51,11 +66,11 @@ export default function Login() {
           <Input.text value={pass} onChange={e => setPassword(e.target.value)} type="password" placeHolder="Senha"/>
           <div className="grid">
             <div>
-              <input type="checkbox" name="lembrarUsuario"/>
+              <input checked={lembrarUser} id="lembrarUsuario" type="checkbox" name="lembrarUsuario" onClick={e => setLembrarUserStorage(e.target.checked)}/>
               <label htmlFor="lembrarUsuario">Lembrar meu usuário</label>
             </div>
             <div>
-              <a href={"/remember"}>Esqueceu a senha?</a>
+              <a className="a-auth" href={"/remember"}>Esqueceu a senha?</a>
             </div>
           </div>
           <div className="grid">

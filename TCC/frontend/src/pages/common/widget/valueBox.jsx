@@ -3,13 +3,17 @@ import Grid from '../layout/grid'
 
 export default props => (
     <Grid cols={props.cols}>
-        <div className={`small-box bg-${props.color}`}>
+        <div className={`small-box bg-${props.color}`} onMouseEnter={props.onMouseEnter}>
             <div className='inner'>
+                {props.children}
                 <h3>{props.value}</h3>
-                <p>{props.text}</p>
+                <p><b>Tipo: </b>{props.tipo}</p>
+                <p><b>Raça: </b>{props.raca}</p>
+                <p><b>Porte: </b>{props.porte}</p>
+                <p><b>Idade: </b>{props.idade} {props.idade > 1 ? "anos" : "ano"}</p>
             </div>
             <div className='icon'>
-                <i className={`fa fa-${props.icon}`}></i>
+                <i className={props.icon}></i>
             </div>
         </div>
     </Grid>

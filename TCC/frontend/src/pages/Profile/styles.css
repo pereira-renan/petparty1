@@ -1,0 +1,49 @@
+.box-profile img {
+    max-width: 300px;
+    text-align: center;
+    border-radius: 0;
+    margin: 0 auto;
+    display: block;
+    border-radius: 200px;
+    margin-bottom: 20px;
+
+    width: 250px;
+    height: 250px;
+}
+
+.box-profile .foto-profile, .form-profile {
+    padding: 20px;
+}
+
+.foto-profile span {
+    display: block;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.foto-profile input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.foto-profile #uploadFoto {
+    
+}
+
+.form-profile input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.resetPadding {
+    padding: 2px;
+}
+
+.perfil-terceiro button {
+    width: 100%;
+}
+
+.small-box p {
+    font-size: 19px;
+}

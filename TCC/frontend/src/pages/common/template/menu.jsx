@@ -4,12 +4,9 @@ import MenuItem from './menuItem'
 import MenuTree from './menuTree'
 
 export default props => (
-    <ul className='sidebar-menu' data-widget="tree">
-        <MenuItem path='/dashboard' label='Início' icon='home'/>
+    <ul className='sidebar-menu tree' data-widget="tree">
+        <MenuItem path='/dashboard' label='Dashboard' icon='home'/>
         <MenuItem path='/profile' label='Perfil' icon='user'/>
-        <MenuTree label='Cadastro' icon='edit'>
-            <MenuItem path='/profile'
-                label='Registrar um pet' icon='paw'/>
-        </MenuTree>
+        <MenuItem path='/pets' label='Pets' icon='paw'/>
     </ul>
 )

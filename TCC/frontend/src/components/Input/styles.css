@@ -1,11 +1,3 @@
-:root {
-    --cor-fundo-valido: #93bf85;
-    --cor-fundo-invalido: #ff9e81;
-
-    --cor-fundo-radio: #e9e9e9;
-    --cor-fundo-radio-checked: #c08457; 
-}
-
 .input-radio {
     display: block;
     background: var(--cor-fundo-radio);
@@ -16,10 +8,17 @@
 }
 
 .input-radio-checked {
-    background: var(--cor-fundo-radio-checked);
+    background: var(--cor-btn-secundaria-hover);
 }
 
 .input-texto {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    flex-direction: column;
+    width: 80%;
+}
+.input-combobox {
     display: block;
     margin: 0 auto;
     margin-bottom: 15px;
@@ -30,7 +29,7 @@
     padding: 10px;
     border-radius: 5px;
     border-style: solid;
-    border-color: var(--cor-borda);
+    border-color: var(--cor-borda-primaria);
     outline: none;
 }
 

@@ -6,6 +6,9 @@ import ContentHeader from '../common/template/contentHeader';
 import SideBar from '../common/template/sideBar';
 import Content from '../common/template/content';
 import Input from '../../components/Input/index';
+import Button from '../../components/Button/index';
+import DivAviso from '../../components/DivAviso/index';
+import axios from 'axios'
 
 import ValueBox from '../common/widget/valueBox'
 import Row from '../common/layout/row'
@@ -15,92 +18,395 @@ import UsuariosList from '../../components/UsuariosList/index';
 import api from "../../services/api";
 
 import "./styles.css";
-export default function Profile() {
+import Axios from "axios";
+export default function Profile(props) {
   const history = useHistory();
-
-  const [distancia, setDistancia] = useState("");
 
   const [infoUser, setInfo] = useState([]);
   const [infoPets, setInfoPets] = useState([]);
+  const [locationResponse, setLocationResponse] = useState([]);
 
-  const token = localStorage.getItem("token");
+  const [id, setId] = useState([]);
+  const [url, setUrl] = useState([]);
+  const [nome, setNome] = useState([]);
+  const [email, setEmail] = useState([]);
+  const [cpf, setCpf] = useState([]);
+  const [telefone, setTelefone] = useState([]);
+  const [endereco, setEndereco] = useState([]);
+  const [descricao, setDescricao] = useState([]);
+  const [cuidador, setCuidador] = useState([]);
+  const [dono, setDono] = useState([]);
+  const [criadoEm, setCriadoEm] = useState([]);
+
+  const [latitude, setLatitude] = useState([]);
+  const [longitude, setLongitude] = useState([]);
+  const [cep, setCep] = useState("");
+  const [estado, setEstado] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [rua, setRua] = useState("");
+  const [numero, setNumero] = useState("");
+
+  const [validacaoTipo, setValidacaoTipo] = useState(true);
+
+  const [validacaoLatitude, setValidacaoLatitude] = useState(true);
+  const [validacaoLongitude, setValidacaoLongitude] = useState(true);
+
+  const [validacaoCep, setValidacaoCep] = useState(true);
+  const [validacaoEstado, setValidacaoEstado] = useState(true);
+  const [validacaoCidade, setValidacaoCidade] = useState(true);
+  const [validacaoBairro, setValidacaoBairro] = useState(true);
+  const [validacaoRua, setValidacaoRua] = useState(true);
+  const [validacaoNumero, setValidacaoNumero] = useState(true);
+
+  const token = sessionStorage.getItem("token");
+
+  let flagPerfilPessoal = true;
+  if(props.match.params.id !== undefined) {
+    flagPerfilPessoal = false;
+  }
 
   useEffect(() => {
     api.get("info", {
       headers: {
-        token: localStorage.getItem("token")
-      }
+        token: sessionStorage.getItem("token")
+      } 
     }).then(response => {
       setInfo(response.data);
-    })
+      setLocationResponse(response.data.location)
+      if(flagPerfilPessoal) {
+        console.log(response.data)
+        try {
+          setId(response.data.id);
+          setUrl(response.data.url);
+          setNome(response.data.nome);
+          setEmail(response.data.email);
+          setCpf(response.data.cpf);
+          setTelefone(response.data.telefone);
+          setTipo(response.data.user_cuidador)
+          setLatitude(response.data.location.coordinates[0]);
+          setLongitude(response.data.location.coordinates[1]);
+          setCep(response.data.endereco.cep);
+          setEstado(response.data.endereco.estado);
+          setCidade(response.data.endereco.cidade);
+          setBairro(response.data.endereco.bairro);
+          setRua(response.data.endereco.rua);
+          setNumero(response.data.endereco.numero);
+          setDescricao(response.data.descricao);
+        } catch(e) {
+          console.log(e)
+        }
+        
+      }
+      //setInfo(response.data);
+    }) 
   }, [localStorage.getItem("token")])
 
   useEffect(() => {
-    api.get("pets", {
+    if(!flagPerfilPessoal) {
+      api.get("info/cuidador", {
+        headers: {
+          _id: props.match.params.id
+        } 
+      }).then(response => {
+        try {
+          setId(response.data.id);
+          setUrl(response.data.url);
+          setNome(response.data.nome);
+          setTelefone(response.data.telefone);
+          setLatitude(response.data.location.coordinates[0]);
+          setLongitude(response.data.location.coordinates[1]);
+        } catch(e) {
+          console.log(e)
+        }
+        
+      })
+    }
+  })
+
+  useEffect(() => {
+    if(!flagPerfilPessoal) {
+      api.get("pets", {
+        headers: {
+          token: sessionStorage.getItem("token")
+        }
+      }).then(response => {
+        setInfoPets(response.data);
+        console.log(response.data)
+      })
+    }
+  }, infoPets)
+
+  function validaTipo(userCuidador) {
+    if(userCuidador === '') {
+      setValidacaoTipo(false);
+      return false;
+    }
+    setTipo(userCuidador)
+    setValidacaoTipo(true);
+    return true;
+  }
+
+  function setTipo(isCuidador) {
+    setCuidador(isCuidador);
+    setDono(!isCuidador);
+  }
+
+  function validaCep(cep) {
+    capturaInfosEndereco(cep);
+
+    api.get("endereco", {
       headers: {
-        token: localStorage.getItem("token")
+        endereco: `${cep}+Brasil`
       }
     }).then(response => {
-      setInfoPets(response.data);
-      console.log(response.data)
+      console.log(response.data[0]);
+      try {
+        setLatitude(response.data[0].geometry.location.lat);
+        setLongitude(response.data[0].geometry.location.lng);
+      }
+      catch(e) {
+        console.log(e);
+      }
     })
-  }, distancia)
-
-  /*
-  useEffect(() => {
-    api.get("providers").then(response => {
-      console('a');
-      console(response.data);
-      setUsersList(response.data);
+  }
+  
+  function capturaInfosEndereco(cep) {
+    const response = axios.get(`https://viacep.com.br/ws/${cep}//json/`)
+    .then(response => {
+      console.log(response.data)
+      try {
+        setEstado(response.data.uf);
+        setCidade(response.data.localidade);
+        setBairro(response.data.bairro);
+        setRua(response.data.logradouro);
+        setNumero("");
+  
+        //setBairro(endereco.substring(0, endereco.indexOf(',')));
+      } catch(e) {
+        console.log(e);
+      }
     });
-  }, [id]);
-  */
-  //const usersList = await api.get("providers");
+  }
+
+  function validaEstado(estado) {
+    return true;
+  }
+
+  function validaCidade(cidade) {
+    return true;
+  }
+
+  function validaBairro(bairro) {
+    return true;
+  }
+
+  function validaRua(rua) {
+    return true;
+  }
+
+  function validaNumero(numero) {
+    return true;
+  }
+
+  function updateInfoProfile() {
+    setaCoordenadas(`${cep}+${estado}+${cidade}+${bairro}+${rua}+${numero}`)
+    const endereco = {
+      cep: cep,
+      estado: estado,
+      cidade: cidade,
+      bairro: bairro,
+      rua: rua,
+      numero: numero,
+    }
+    const location = {
+      coordinates: [longitude, latitude],
+      _id: locationResponse._id,
+      type: locationResponse.type
+    }
+    const infos = { 
+      nome: nome, 
+      email: email, 
+      user_cuidador: cuidador, 
+      telefone: telefone,
+      descricao: descricao,
+      endereco: endereco,
+      location: location
+    };
+    api.put("user/update", infos, {
+      headers: {
+        token: sessionStorage.getItem("token")
+      } 
+    }).then(response => {
+      console.log(response)
+      console.log('aaaaaaaaaaaaaa')
+    })
+  }
+
+  function setaCoordenadas(address) {
+
+    api.get("endereco", {
+      headers: {
+        endereco: address
+      }
+    }).then(response => {
+      try {
+        setLatitude(response.data[0].geometry.location.lat);
+        setLongitude(response.data[0].geometry.location.lng);
+      }
+      catch(e) {
+        console.log(e);
+      }
+    })
+  }
 
   return (
     <div>
-      <Header userName={infoUser.nome} userCuidador={infoUser.user_cuidador} createdAt={infoUser.createdAt === undefined ? '' : infoUser.createdAt.slice(0, 10)}/>
+      <Header/>
       <SideBar/>
       <Content title="Perfil">
         <div className="row">
-          <div className="col-xs-8 col-md-6">
-            <div className="box">
+          <div className="col-xs-12">
+            <div className="box box-profile">
               <div className="titulo-card form-user">
                 <h4>Informações</h4>
               </div> 
-              <form name="formUsuario">
-                <input id="id" name="id" type="hidden" value={infoUser._id}></input>
-                <br/>
-                <label htmlFor="name">Nome</label><br/>
-                <input id="nome" name="nome" type="text" value={infoUser.nome}></input>
-                <br/>
-                <label htmlFor="email">Email</label><br/>
-                <input id="email" name="email" type="text" value={infoUser.email}></input>
-                <br/>
-                <label htmlFor="cpf">Cpf</label><br/>
-                <input id="cpf" name="cpf" type="text" value={infoUser.cpf}></input>
-                <br/>
-                <label htmlFor="telefone">Telefone</label><br/>
-                <input id="telefone" name="telefone" type="text" value={infoUser.telefone}></input>
-                <br/>
-                <label htmlFor="cuidador">Cuidador?</label><br/>
-                <input id="cuidador" name="cuidador" type="text" value={infoUser.user_cuidador}></input>
-                <br/>
-                <input id="btnAtualizar" name="btnAtualizar" type="submit" value="Atualizar"></input>
-              </form>
+              <div className="col-xs-12 col-lg-7 form-profile">
+                {flagPerfilPessoal ?
+                  <>
+                    <form name="formUsuario">
+                      <input id="id" name="id" type="hidden" value={id}></input>
+                      <label htmlFor="name">Nome Completo</label><br/>
+                      <Input.text value={nome} onChange={e => setNome(e.target.value)} type="text" placeHolder="Nome" />
+                      <label htmlFor="email">Email</label><br/>
+                      <Input.text value={email} onChange={e => setEmail(e.target.value)} type="email" placeHolder="Email" />
+                      <label htmlFor="cpf">Cpf</label><br/>
+                      <Input.text value={cpf} type="text" placeHolder="Cpf" disabled/>
+                      <label htmlFor="telefone">Telefone</label><br/>
+                      <Input.text value={telefone} onChange={e => setTelefone(e.target.value)} type="text" placeHolder="Telefone" />
+                      <label htmlFor="cep">CEP</label><br/>
+                      <Input.text value={cep} validado={validacaoCep} onBlur={e => validaCep(cep)} onChange={e => setCep(e.target.value)} type="text" placeHolder="CEP" id="cep" name="cep" />
+                      <DivAviso.validacao value={false} text="Você deve digitar seu CEP acima." />
+                      <label htmlFor="estado">Estado</label><br/>
+                      <Input.text value={estado} validado={validacaoEstado} onBlur={e => validaEstado(estado)} onChange={e => setEstado(e.target.value)} type="text" placeHolder="Estado" id="estado" name="estado" />
+                      <DivAviso.validacao value={false} text="Você deve digitar seu Estado acima." />
+                      <label htmlFor="cidade">Cidade</label><br/>
+                      <Input.text value={cidade} validado={validacaoCidade} onBlur={e => validaCidade(cidade)} onChange={e => setCidade(e.target.value)} type="text" placeHolder="Cidade" id="cidade" name="cidade" />
+                      <DivAviso.validacao value={false} text="Você deve digitar sua Cidade acima." />
+                      <label htmlFor="bairro">Bairro</label><br/>
+                      <Input.text value={bairro} validado={validacaoBairro} onBlur={e => validaBairro(bairro)} onChange={e => setBairro(e.target.value)} type="text" placeHolder="Bairro" id="bairro" name="bairro" />
+                      <DivAviso.validacao value={false} text="Você deve digitar seu Bairro acima." />
+                      <label htmlFor="rua">Rua</label><br/>
+                      <Input.text value={rua} validado={validacaoRua} onBlur={e => validaRua(rua)} onChange={e => setRua(e.target.value)} type="text" placeHolder="Rua" id="rua" name="rua" />
+                      <DivAviso.validacao value={false} text="Você deve digitar sua Rua acima." />
+                      <label htmlFor="numero">Número</label><br/>
+                      <Input.text value={numero} validado={validacaoNumero} onBlur={e => validaNumero(numero)} onChange={e => setNumero(e.target.value)} type="text" placeHolder="Numero" id="numero" name="numero" />
+                      <DivAviso.validacao value={false} text="Você deve digitar o Número da sua residência acima." />
+                      <div className="col-xs-6 resetPadding">
+                        <Input.text value={latitude} onChange={e => setLatitude(e.target.value)} type="hidden" placeHolder="Latitude" />
+                      </div>
+                      <div className="col-xs-6 resetPadding">
+                        <Input.text value={longitude} onChange={e => setLongitude(e.target.value)} type="hidden" placeHolder="Longitude" />
+                      </div>
+                      <label htmlFor="descricao">Descrição</label><br/>
+                      <Input.text value={descricao} onChange={e => setDescricao(e.target.value)} type="text" placeHolder="Descrição" />
+                    </form>
+                  </>
+                  :
+                  <>
+                    <form name="formUsuario">
+                      <input id="id" name="id" type="hidden" value={id}></input>
+                      <label htmlFor="name">Nome Completo</label><br/>
+                      <Input.text value={nome} type="text" placeHolder="Nome" disabled/>
+                      <label htmlFor="telefone">Telefone</label><br/>
+                      <Input.text value={telefone}  type="text" placeHolder="Telefone" disabled/>
+                      <label htmlFor="cep">CEP</label><br/>
+                      <Input.text value={cep} type="text" placeHolder="CEP" id="cep" name="cep" disabled/>
+                      <DivAviso.validacao value={false} text="Você deve digitar seu CEP acima." />
+                      <label htmlFor="estado">Estado</label><br/>
+                      <Input.text value={estado} type="text" placeHolder="Estado" id="estado" name="estado" disabled/>
+                      <DivAviso.validacao value={false} text="Você deve digitar seu Estado acima." />
+                      <label htmlFor="cidade">Cidade</label><br/>
+                      <Input.text value={cidade} type="text" placeHolder="Cidade" id="cidade" name="cidade" disabled/>
+                      <DivAviso.validacao value={false} text="Você deve digitar sua Cidade acima." />
+                      <label htmlFor="bairro">Bairro</label><br/>
+                      <Input.text value={bairro} type="text" placeHolder="Bairro" id="bairro" name="bairro" disabled/>
+                      <DivAviso.validacao value={false} text="Você deve digitar seu Bairro acima." />
+                      <label htmlFor="rua">Rua</label><br/>
+                      <Input.text value={rua} type="text" placeHolder="Rua" id="rua" name="rua" disabled/>
+                      <DivAviso.validacao value={false} text="Você deve digitar sua Rua acima." />
+                      <label htmlFor="numero">Número</label><br/>
+                      <Input.text value={numero} type="text" placeHolder="Numero" id="numero" name="numero" disabled/>
+                      <DivAviso.validacao value={false} text="Você deve digitar o Número da sua residência acima." />
+                      <div className="col-xs-6 resetPadding">
+                        <Input.text value={latitude} type="hidden" placeHolder="Latitude" disabled/>
+                      </div>
+                      <div className="col-xs-6 resetPadding">
+                        <Input.text value={longitude} type="hidden" placeHolder="Longitude" disabled/>
+                      </div>
+                      <label htmlFor="descricao">Descrição</label><br/>
+                      <Input.text value={descricao} type="text" placeHolder="Descrição" disabled/>
+                    </form>
+                  </>
+                }
+              </div>
+
+              <div className="col-xs-12 col-lg-5 foto-profile">
+                <span>Foto</span>
+                {flagPerfilPessoal ?
+                  <>
+                    <input id="uploadFoto" type="file"></input>
+                  </>
+                  :
+                  <>
+                  </>
+                }
+                <img src={url} />
+                {flagPerfilPessoal ?
+                  <>
+                    <div className="perfil-pessoal">
+                      <span>Como você se considera?</span>
+                      <div className="grid">
+                        <Input.radio id="cuidador" name="tipo" value={cuidador} onClick={e => validaTipo(true)} htmlFor="cuidador" text="Cuidador" />
+                        <Input.radio id="usuario" name="tipo" value={dono} onClick={e => validaTipo(false)} htmlFor="usuario" text="Usuário" />
+                      </div>
+                      <span>Cuidadores terão seu contato e sua descrição disponíveis no site para o acesso de todos!</span>
+                      <input id="btnAtualizar" name="btnAtualizar" type="submit" value="Atualizar" onClick={e => updateInfoProfile()}></input>
+                    </div>
+                  </>
+                  :
+                  <>
+                    <div className="perfil-terceiro">
+                      <span>Que tal baterem um papo? Clique aqui para ir até o Whatsapp!</span>
+                      <Button.secundario type="button" name="chamar" text="Chamar" 
+                        href={`https://api.whatsapp.com/send?phone=${telefone}&text=Olá%20${nome}!%20Encontrei%20seu%20contato%20pelo%20PetParty!%20Me%20chamo%20${infoUser.nome},%20podemos%20conversar?`} 
+                        target="_blank"/>
+                    </div>
+                  </>
+                }
+              </div>
             </div>
           </div>
-          <div className="col-xs-12 col-md-6">
-            <div className="box">
-              <div className="titulo-card">
-                <h4>Pets</h4>
-              </div> 
-              {infoPets.map((value, index) => {
-                return <ValueBox cols='12 6' key={index} idPet={value._id} color={value.tipo_pet} icon='paw'
-                  value={`${value.nome}`} text={value.tipo_pet}/>
-              })}
-            </div>
-          </div>
+
+          {flagPerfilPessoal ?
+            <>
+            </>
+            :
+            <>
+              <div className="col-xs-12">
+                <div className="box box-pets">
+                  <div className="titulo-card">
+                    <h4>Pets</h4>
+                  </div> 
+                  {infoPets.map((value, index) => {
+                    return <ValueBox cols='12 12 4' key={index} idPet={value._id} color={value.tipo_pet} icon='fa fa-paw'
+                        value={`${value.nome}`} tipo={value.tipo_pet} raca={value.raca} porte={value.porte} idade={value.idade}>
+                      </ValueBox>
+                  })}
+                </div>  
+              </div>
+            </>
+          }
         </div>
       </Content>
   </div>
