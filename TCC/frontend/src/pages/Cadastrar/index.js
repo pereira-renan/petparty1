@@ -111,6 +111,11 @@ export default function Register() {
       validacaoPassword,
       validacaoConfirmPassword,
       validacaoCep,
+      validacaoEstado,
+      validacaoCidade,
+      validacaoBairro,
+      validacaoRua,
+      validacaoNumero,
       usuario_validado);
 
       setCatchError(true);
@@ -122,7 +127,7 @@ export default function Register() {
 
 
   function validaNome(nome) {
-    setValidacaoNome(!!nome.match(/[A-Z][a-z]* [A-Z][a-z]*/));
+    setValidacaoNome(!!nome.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/));
     if (nome === '') return false;
     return validacaoNome;
   }
@@ -180,7 +185,7 @@ export default function Register() {
   }
 
   function validaTelefone(telefone) {
-    setValidacaoTelefone(!!telefone.match(/\+\d{2}\s\(\d{2}\)\s\d{4,5}-?\d{4}/g));
+    setValidacaoTelefone(!!telefone.match(/\+\d{2}\s\(\d{2}\)\s\d{4,5}-?\d{4}/));
     if (telefone === '') return false;
     return validacaoTelefone;
   }
@@ -229,6 +234,8 @@ export default function Register() {
   function validaCep(cep) {
     capturaInfosEndereco(cep);
 
+    setValidacaoCep(!!cep.match(/^[0-9]{5}-[0-9]{3}$/));
+
     api.get("endereco", {
       headers: {
         endereco: `${cep}+Brasil`
@@ -242,7 +249,7 @@ export default function Register() {
       catch(e) {
         console.log(e);
       }
-      setValidacaoCep(!!cep.match(/^[0-9]{5}-[0-9]{3}$/));
+      
     })
   }
 
@@ -255,9 +262,6 @@ export default function Register() {
         setCidade(response.data.localidade);
         setBairro(response.data.bairro);
         setRua(response.data.logradouro);
-        setNumero(response.data.complemento);
-  
-        //setBairro(endereco.substring(0, endereco.indexOf(',')));
       } catch(e) {
         console.log(e);
       }
@@ -266,23 +270,28 @@ export default function Register() {
   
 
   function validaEstado(estado) {
-    return true;
+    setValidacaoEstado(!!estado.match(/^[A-Z]{2}$/));
+    return validacaoEstado;
   }
 
   function validaCidade(cidade) {
-    return true;
+    setValidacaoCidade(!!cidade.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/));
+    return validacaoCidade;
   }
 
   function validaBairro(bairro) {
-    return true;
+    setValidacaoBairro(!!bairro.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/));
+    return bairro;
   }
 
   function validaRua(rua) {
-    return true;
+    setValidacaoRua(!!rua.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/));
+    return rua;
   }
 
   function validaNumero(numero) {
-    return true;
+    setValidacaoNumero(!(numero < 0));
+    return numero;
   }
 
   return (
@@ -295,40 +304,40 @@ export default function Register() {
           </FormHeader>
 
           <Input.text value={nome} validado={validacaoNome} onBlur={e => validaNome(nome)} onChange={e => setNome(e.target.value)} type="text" placeHolder="Nome Completo" id="nome" name="nome" />
-          <DivAviso.validacao value={!validacaoNome && nome !== ''} text="Por favor, digite seu nome completo." />
+          <DivAviso.validacao value={!validacaoNome && nome !== ''} text="Por favor, digite seu NOME COMPLETO." />
 
           <Input.text value={email} validado={validacaoEmail} onBlur={e => validaEmail(email)} onChange={e => setEmail(e.target.value)} type="email" placeHolder="Email" id="email" name="email" />
-          <DivAviso.validacao value={!validacaoEmail && email !== ''} text="Por favor, digite um email válido." />
+          <DivAviso.validacao value={!validacaoEmail && email !== ''} text="Por favor, digite um EMAIL válido." />
 
           <Input.text value={cpf} validado={validacaoCpf} onBlur={e => validaCpf(cpf)} onChange={e => setCpf(e.target.value)} type="text" placeHolder="CPF" id="cpf" name="cpf" />
           <DivAviso.validacao value={!validacaoCpf && cpf !== ''} text="Por favor, digite um CPF válido." />
 
           <Input.text value={telefone} validado={validacaoTelefone} onBlur={e => validaTelefone(telefone)} onChange={e => setTelefone(e.target.value)} type="text" placeHolder="Telefone" id="telefone" name="telefone" />
-          <DivAviso.validacao value={!validacaoTelefone && telefone !== ''} text="Por favor, digite um telefone válido no padrão +99 (99) 9999-9999." />
+          <DivAviso.validacao value={!validacaoTelefone && telefone !== ''} text="Por favor, digite um TELEFONE válido no padrão +99 (99) 9999-9999." />
 
           <Input.text value={cep} validado={validacaoCep} onBlur={e => validaCep(cep)} onChange={e => setCep(e.target.value)} type="text" placeHolder="CEP" id="cep" name="cep" />
           <DivAviso.validacao value={!validacaoCep && cep !== ''} text="Você deve digitar seu CEP acima no formato 99999-999." />
 
           <Input.text value={latitude} validado={validacaoLatitude} onBlur={e => validaLatitude(latitude)} onChange={e => setLatitude(e.target.value)} type="hidden" placeHolder="Latitude" id="latitude" name="latitude" />
-          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua latitude no campo acima." />
+          <DivAviso.validacao value={!validacaoLatitude && latitude !== ''} text="Você deve digitar sua LATITUDE no campo acima." />
 
           <Input.text value={longitude} validado={validacaoLongitude} onBlur={e => validaLongitude(longitude)} onChange={e => setLongitude(e.target.value)} type="hidden" placeHolder="Longitude" id="longitude" name="longitude" />
-          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua longitude no campo acima." />
+          <DivAviso.validacao value={!validacaoLongitude && longitude !== ''} text="Você deve digitar sua LONGITUDE no campo acima." />
 
           <Input.text value={estado} validado={validacaoEstado} onBlur={e => validaEstado(estado)} onChange={e => setEstado(e.target.value)} type="text" placeHolder="Estado" id="estado" name="estado" />
-          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar seu Estado acima." />
+          <DivAviso.validacao value={!validacaoEstado && estado !== ''} text="Você deve digitar seu ESTADO acima no formato de sigla." />
 
           <Input.text value={cidade} validado={validacaoCidade} onBlur={e => validaCidade(cidade)} onChange={e => setCidade(e.target.value)} type="text" placeHolder="Cidade" id="cidade" name="cidade" />
-          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua Cidade acima." />
+          <DivAviso.validacao value={!validacaoCidade && cidade !== ''} text="Você deve digitar o nome da sua CIDADE acima." />
 
           <Input.text value={bairro} validado={validacaoBairro} onBlur={e => validaBairro(bairro)} onChange={e => setBairro(e.target.value)} type="text" placeHolder="Bairro" id="bairro" name="bairro" />
-          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar seu Bairro acima." />
+          <DivAviso.validacao value={!validacaoBairro && bairro !== ''} text="Você deve digitar o nome de seu BAIRRO acima." />
 
           <Input.text value={rua} validado={validacaoRua} onBlur={e => validaRua(rua)} onChange={e => setRua(e.target.value)} type="text" placeHolder="Rua" id="rua" name="rua" />
-          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar sua Rua acima." />
+          <DivAviso.validacao value={!validacaoRua && rua !== ''} text="Você deve digitar o nome da sua RUA acima." />
 
-          <Input.text value={numero} validado={validacaoNumero} onBlur={e => validaNumero(numero)} onChange={e => setNumero(e.target.value)} type="text" placeHolder="Numero" id="numero" name="numero" />
-          <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar o Número da sua residência acima." />
+          <Input.text value={numero} validado={validacaoNumero} onBlur={e => validaNumero(numero)} onChange={e => setNumero(e.target.value)} type="number" placeHolder="Numero" id="numero" name="numero" />
+          <DivAviso.validacao value={!validacaoNumero && numero !== ''} text="Você deve digitar o NÚMERO da sua residência acima." />
 
           <span className="desc-checkbox-tipo">Você quer se cadastrar como:</span>
           <div className="grid">

@@ -36,6 +36,10 @@ body, button, a {
   padding: 0;
 }
 
+.content-wrapper {
+  min-height: 100vh !important;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

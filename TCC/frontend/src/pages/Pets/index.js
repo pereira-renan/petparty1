@@ -8,6 +8,7 @@ import Content from '../common/template/content';
 import Input from '../../components/Input/index';
 import Button from '../../components/Button/index';
 import Grid from '../common/layout/grid';
+import DivAviso from '../../components/DivAviso/index';
 
 import ValueBox from '../common/widget/valueBox'
 import Row from '../common/layout/row'
@@ -39,6 +40,8 @@ export default function Profile() {
   const [editPetSelecionado, setEditPetSelecionado] = useState([]);
   const [flagSetStatesNewInfos, setFlagSetStatesNewInfos] = useState(false);
 
+  const [validacaoNome, setValidacaoNome] = useState(true);
+
   const token = sessionStorage.getItem("token");
 
   useEffect(() => {
@@ -53,6 +56,10 @@ export default function Profile() {
 
   async function adicionaPet(e) {
     const infos = { nome, idade, raca, tipo_pet, porte };
+    if(nome === '' || (idade === '' || idade < 0) || (raca === '' || raca === 'Selecione o tipo') || tipo_pet === 'NovoPet' || (porte === '' || porte === 'Selecione o porte')) {
+      alert('PREENCHA TODOS OS CAMPOS DO PET A SER ADICIONADO');
+      return;
+    }
     try {
         const response = await api.post("pet/create", infos, {
           headers: {
@@ -95,6 +102,11 @@ export default function Profile() {
       tipo_pet: newTipo_pet, 
       porte: newPorte 
     };
+    console.log(infos)
+    if(newNome === '' || (newIdade === '' || newIdade < 0) || (newPorte === '' || newPorte === 'Selecione o porte')) {
+      alert('PREENCHA TODOS OS CAMPOS DO PET A SER ATUALIZADO');
+      return;
+    }
     api.put("pet/update", infos, {
       headers: {
         //token: sessionStorage.getItem("token"),
@@ -147,7 +159,7 @@ export default function Profile() {
                                         <option value="Pequeno">Pequeno</option>
                                     </select>
                                 </div>
-                                <Input.text value={idade} type="text" onChange={e => setIdade(e.target.value)}/>
+                                <Input.text value={idade} type="number" onChange={e => setIdade(e.target.value)}/>
                             </div>
                         </form>
                     </div>
@@ -223,7 +235,7 @@ export default function Profile() {
                                             <option value="Pequeno">Pequeno</option>
                                         </select>
                                     </div>
-                                    <Input.text value={newIdade} type="text" onChange={e => setNewIdade(e.target.value)}/>
+                                    <Input.text value={newIdade} type="number" onChange={e => setNewIdade(e.target.value)}/>
                                 </div>
                             </form>
                         </div>

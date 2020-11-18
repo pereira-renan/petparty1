@@ -19,6 +19,7 @@ import api from "../../services/api";
 
 import "./styles.css";
 import Axios from "axios";
+import { updateSourceFile } from "typescript";
 export default function Profile(props) {
   const history = useHistory();
 
@@ -47,6 +48,9 @@ export default function Profile(props) {
   const [rua, setRua] = useState("");
   const [numero, setNumero] = useState("");
 
+  const [validacaoNome, setValidacaoNome] = useState(true);
+  const [validacaoEmail, setValidacaoEmail] = useState(true);
+  const [validacaoTelefone, setValidacaoTelefone] = useState(true);
   const [validacaoTipo, setValidacaoTipo] = useState(true);
 
   const [validacaoLatitude, setValidacaoLatitude] = useState(true);
@@ -58,6 +62,8 @@ export default function Profile(props) {
   const [validacaoBairro, setValidacaoBairro] = useState(true);
   const [validacaoRua, setValidacaoRua] = useState(true);
   const [validacaoNumero, setValidacaoNumero] = useState(true);
+
+  const [uploadFoto, setUploadFoto] = useState([]);
 
   const token = sessionStorage.getItem("token");
 
@@ -84,8 +90,8 @@ export default function Profile(props) {
           setCpf(response.data.cpf);
           setTelefone(response.data.telefone);
           setTipo(response.data.user_cuidador)
-          setLatitude(response.data.location.coordinates[0]);
-          setLongitude(response.data.location.coordinates[1]);
+          setLatitude(response.data.location.coordinates[1]);
+          setLongitude(response.data.location.coordinates[0]);
           setCep(response.data.endereco.cep);
           setEstado(response.data.endereco.estado);
           setCidade(response.data.endereco.cidade);
@@ -114,8 +120,8 @@ export default function Profile(props) {
           setUrl(response.data.url);
           setNome(response.data.nome);
           setTelefone(response.data.telefone);
-          setLatitude(response.data.location.coordinates[0]);
-          setLongitude(response.data.location.coordinates[1]);
+          //setLatitude(response.data.location.coordinates[0]);
+          //setLongitude(response.data.location.coordinates[1]);
         } catch(e) {
           console.log(e)
         }
@@ -155,6 +161,8 @@ export default function Profile(props) {
   function validaCep(cep) {
     capturaInfosEndereco(cep);
 
+    setValidacaoCep(!!cep.match(/^[0-9]{5}-[0-9]{3}$/));
+
     api.get("endereco", {
       headers: {
         endereco: `${cep}+Brasil`
@@ -189,27 +197,51 @@ export default function Profile(props) {
     });
   }
 
+  function validaNome(nome) {
+    setValidacaoNome(!!nome.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/));
+    if (nome === '') return false;
+    return validacaoNome;
+  }
+
+  function validaEmail(email) {
+    setValidacaoEmail(!!email.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi));
+    if (email === '') return false;
+    return validacaoEmail;
+  }
+
+  function validaTelefone(telefone) {
+    setValidacaoTelefone(!!telefone.match(/\+\d{2}\s\(\d{2}\)\s\d{4,5}-?\d{4}/));
+    if (telefone === '') return false;
+    return validacaoTelefone;
+  }
+
   function validaEstado(estado) {
-    return true;
+    setValidacaoEstado(!!estado.match(/^[A-Z]{2}$/));
+    return validacaoEstado;
   }
 
   function validaCidade(cidade) {
-    return true;
+    setValidacaoCidade(!!cidade.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/));
+    return validacaoCidade;
   }
 
   function validaBairro(bairro) {
-    return true;
+    setValidacaoBairro(!!bairro.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/));
+    return bairro;
   }
 
   function validaRua(rua) {
-    return true;
+    setValidacaoRua(!!rua.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/));
+    return rua;
   }
 
   function validaNumero(numero) {
-    return true;
+    setValidacaoNumero(!(numero < 0));
+    return numero;
   }
 
   function updateInfoProfile() {
+    updateFile();
     setaCoordenadas(`${cep}+${estado}+${cidade}+${bairro}+${rua}+${numero}`)
     const endereco = {
       cep: cep,
@@ -260,6 +292,24 @@ export default function Profile(props) {
     })
   }
 
+  function updateFile() {
+    console.log(uploadFoto)
+    api.post("files", {'file': uploadFoto}, {
+      headers: {
+        token: sessionStorage.getItem("token"),
+        objeto: 'User'
+      } 
+    }).then(response => {
+      try {
+        setLatitude(response.data[0].geometry.location.lat);
+        setLongitude(response.data[0].geometry.location.lng);
+      }
+      catch(e) {
+        console.log(e);
+      }
+    })
+  }
+
   return (
     <div>
       <Header/>
@@ -277,31 +327,34 @@ export default function Profile(props) {
                     <form name="formUsuario">
                       <input id="id" name="id" type="hidden" value={id}></input>
                       <label htmlFor="name">Nome Completo</label><br/>
-                      <Input.text value={nome} onChange={e => setNome(e.target.value)} type="text" placeHolder="Nome" />
+                      <Input.text value={nome} validado={validacaoNome} onBlur={e => validaNome(nome)} onChange={e => setNome(e.target.value)} type="text" placeHolder="Nome" />
+                      <DivAviso.validacao value={!validacaoNome && nome !== ''} text="Por favor, digite seu NOME COMPLETO." />
                       <label htmlFor="email">Email</label><br/>
-                      <Input.text value={email} onChange={e => setEmail(e.target.value)} type="email" placeHolder="Email" />
+                      <Input.text value={email} validado={validacaoEmail} onBlur={e => validaEmail(email)} onChange={e => setEmail(e.target.value)} type="email" placeHolder="Email" />
+                      <DivAviso.validacao value={!validacaoEmail && email !== ''} text="Por favor, digite um EMAIL válido." />
                       <label htmlFor="cpf">Cpf</label><br/>
                       <Input.text value={cpf} type="text" placeHolder="Cpf" disabled/>
                       <label htmlFor="telefone">Telefone</label><br/>
-                      <Input.text value={telefone} onChange={e => setTelefone(e.target.value)} type="text" placeHolder="Telefone" />
+                      <Input.text value={telefone} validado={validacaoTelefone} onBlur={e => validaTelefone(telefone)} onChange={e => setTelefone(e.target.value)} type="text" placeHolder="Telefone" />
+                      <DivAviso.validacao value={!validacaoTelefone && telefone !== ''} text="Por favor, digite um TELEFONE válido no padrão +99 (99) 9999-9999." />
                       <label htmlFor="cep">CEP</label><br/>
                       <Input.text value={cep} validado={validacaoCep} onBlur={e => validaCep(cep)} onChange={e => setCep(e.target.value)} type="text" placeHolder="CEP" id="cep" name="cep" />
-                      <DivAviso.validacao value={false} text="Você deve digitar seu CEP acima." />
+                      <DivAviso.validacao value={!validacaoCep && cep !== ''} text="Você deve digitar seu CEP acima." />
                       <label htmlFor="estado">Estado</label><br/>
                       <Input.text value={estado} validado={validacaoEstado} onBlur={e => validaEstado(estado)} onChange={e => setEstado(e.target.value)} type="text" placeHolder="Estado" id="estado" name="estado" />
-                      <DivAviso.validacao value={false} text="Você deve digitar seu Estado acima." />
+                      <DivAviso.validacao value={!validacaoEstado && estado !== ''} text="Você deve digitar seu Estado acima." />
                       <label htmlFor="cidade">Cidade</label><br/>
                       <Input.text value={cidade} validado={validacaoCidade} onBlur={e => validaCidade(cidade)} onChange={e => setCidade(e.target.value)} type="text" placeHolder="Cidade" id="cidade" name="cidade" />
-                      <DivAviso.validacao value={false} text="Você deve digitar sua Cidade acima." />
+                      <DivAviso.validacao value={!validacaoCidade && cidade !== ''} text="Você deve digitar sua Cidade acima." />
                       <label htmlFor="bairro">Bairro</label><br/>
                       <Input.text value={bairro} validado={validacaoBairro} onBlur={e => validaBairro(bairro)} onChange={e => setBairro(e.target.value)} type="text" placeHolder="Bairro" id="bairro" name="bairro" />
-                      <DivAviso.validacao value={false} text="Você deve digitar seu Bairro acima." />
+                      <DivAviso.validacao value={!validacaoBairro && bairro !== ''} text="Você deve digitar seu Bairro acima." />
                       <label htmlFor="rua">Rua</label><br/>
                       <Input.text value={rua} validado={validacaoRua} onBlur={e => validaRua(rua)} onChange={e => setRua(e.target.value)} type="text" placeHolder="Rua" id="rua" name="rua" />
-                      <DivAviso.validacao value={false} text="Você deve digitar sua Rua acima." />
+                      <DivAviso.validacao value={!validacaoRua && rua !== ''} text="Você deve digitar sua Rua acima." />
                       <label htmlFor="numero">Número</label><br/>
-                      <Input.text value={numero} validado={validacaoNumero} onBlur={e => validaNumero(numero)} onChange={e => setNumero(e.target.value)} type="text" placeHolder="Numero" id="numero" name="numero" />
-                      <DivAviso.validacao value={false} text="Você deve digitar o Número da sua residência acima." />
+                      <Input.text value={numero} validado={validacaoNumero} onBlur={e => validaNumero(numero)} onChange={e => setNumero(e.target.value)} type="number" placeHolder="Numero" id="numero" name="numero" />
+                      <DivAviso.validacao value={!validacaoNumero && numero !== ''} text="Você deve digitar o Número da sua residência acima." />
                       <div className="col-xs-6 resetPadding">
                         <Input.text value={latitude} onChange={e => setLatitude(e.target.value)} type="hidden" placeHolder="Latitude" />
                       </div>
@@ -355,7 +408,7 @@ export default function Profile(props) {
                 <span>Foto</span>
                 {flagPerfilPessoal ?
                   <>
-                    <input id="uploadFoto" type="file"></input>
+                    <input value={uploadFoto} onChange={e => setUploadFoto(e.target.value)} id="uploadFoto" type="file"></input>
                   </>
                   :
                   <>
