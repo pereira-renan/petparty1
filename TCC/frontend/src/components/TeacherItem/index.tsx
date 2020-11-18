@@ -48,7 +48,7 @@ const TeacherItem: React.FC<TeacherItemPros> = ( {teacher} ) => {
                         <a  
                         target="blank"
                         onClick={createNewConnection} 
-                        href={`https://wa.me/${teacher.whatsapp}` }>
+                        href={`https://api.whatsapp.com/send?phone=${teacher.whatsapp}&text=Olá!%20Encontrei%20seu%20contato%20pelo%20PetParty!%20Me%20chamo%20,%20podemos%20conversar`}>
                             <img src={whatsappIcon} alt="Whatsapp"/>
                             Entrar em contato
                         </a>                    
