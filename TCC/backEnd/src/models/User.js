@@ -31,6 +31,13 @@ const UserSchema =  new mongoose.Schema(
       type: String,
       select: true,
     },
+    avatar: {
+      nome: {
+        type: String,
+        default: "default.png",
+      },
+      path: { type: String, default: "default.png" },
+    },
     passwordtokensexpires: {
       type: Date,
       select: false,
@@ -45,13 +52,7 @@ const UserSchema =  new mongoose.Schema(
     user_cuidador: {
       type: Boolean,
     },
-    avatar: {
-      nome: {
-        type: String,
-        default: "default.png",
-      },
-      path: { type: String, default: "default.png" },
-    },
+    
     endereco: {
           rua: {
             type: String,
