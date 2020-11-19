@@ -1,5 +1,6 @@
 
 import User from "../models/User";
+import Pet from "../models/Pet";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -67,14 +68,11 @@ class UserController {
   }
   }
 
-
-
   async resetSenha(req,res){
     try {
       const { id } = jwt.decode(req.header("token"));
       const user = await User.findById({_id: id}).select('+password');
       console.log(user);
-
     // verificação da senha no banco
       const { oldpassword} = req.body;
       if (
@@ -82,21 +80,17 @@ class UserController {
         !bcrypt.compareSync(req.body.oldpassword, user.password)
       ) {
           return res.status(400).json("Bad request. Password don't match ");
-      }
-      console.log("-->"+oldpassword);
-      console.log("teste");
-     
+      }    
       // Transformando a nova senha em hash para enviar para o banco
       const salt = bcrypt.genSaltSync(10);
       const hash = await bcrypt.hash(req.body.password, salt);
       req.body.password = hash;
-
       await user.updateOne(req.body);
       return res.json("Senha Trocada!");
     } catch (error) {
       return res
       .status(400)
-      .send({ error: "Falha ao Resetar a senha" } + error);
+      .send({ error: "Falha ao Trocar a senha" } + error);
   }
     
    
@@ -117,8 +111,9 @@ class UserController {
     const id = req.header("_id");
     console.log(id);
     const user = await User.findById(id);
+    const pets = await Pet.find({ id_dono: id });
     console.log("Cuidador" + user);
-    return res.json(user);
+    return res.json({user,pets});
   }
 
 }
