@@ -23,14 +23,7 @@
   --cor-fundo-invalido: #ff9e81;
 
   --cor-fundo-radio: #e9e9e9;
-  font-size: 60%;
-  --cor-fundo-body: #ecf0f5;
-  --cor-fundo-body2: #ffae1a;
-  --cor-fundo-form: #FFFAFA;
-  --cor-borda: #D3D3D3;
-  --cor-texto: #2F4F4F;
-  --cor-fundo-btn-hover: #ffa500;
-  
+
   --color-background: #f6f7f0;
   --color-primary-lighter: #fcad1a;
   --color-primary-light: #fdba3d;
@@ -50,17 +43,6 @@
   --color-box-base: #FFFFFF;
   --color-box-footer: #fcfbfa;
 }
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body, #root {
-  height: 100vh;
-  background-color: var(--color-primary);
-}
 body {
   margin: 0 auto;
   background-color: var(--cor-fundo-secundaria);
@@ -71,41 +53,6 @@ body {
 body, button, a {
   margin: 0;
   padding: 0;
-}
-
-.content-wrapper {
-  min-height: 100vh !important;
-}
-
-body {
-  background: var(--color-background);
-}
-
-/*
-#root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-*/
-
-body,
-input,
-button,
-textarea {
-  font: 500 1.6rem Poppins;
-  color: var(--color-text-base);
-}
-
-.container {
-  width: 90vw;
-  max-width: 700px;
-}
-
-@media (min-width: 700px) {
-  :root {
-      font-size: 62.5%;
-  }
 }
 
 .grid {
@@ -145,7 +92,7 @@ a {
 }
 
 .form-auth {
-  width: 480px;
+  width: 420px;
   border-radius: 5px;
   background-color: var(--cor-fundo-secundaria);
   border-style: solid;
@@ -181,17 +128,17 @@ a {
 
 .bg-Cachorro {
   background-color: #17a2b8;
-  min-height: 197px;
+  min-height: 181px;
 }
 
 .bg-Gato {
   background-color: #3d9970;
-  min-height: 197px;
+  min-height: 181px;
 }
 
 .bg-Peixe {
   background-color: #F08080;
-  min-height: 197px;
+  min-height: 181px;
 }
 
 .box-NovoPet {
@@ -200,7 +147,7 @@ a {
 
 .bg-NovoPet {
   background-color: var(--cor-fundo-primaria);
-  min-height: 197px;
+  min-height: 181px;
 }
 
 .titulo-card {
@@ -297,17 +244,4 @@ a {
     padding-right: 0px;
     padding-left: 0px;
   }
-}
-
-.user-header {
-  height: 185px !important;
-}
-
-.txtAreaDescricao {
-  width: 100%;
-  padding: 10px;
-}
-
-.txtAreaDescricao:click {
-  background: pink;
 }

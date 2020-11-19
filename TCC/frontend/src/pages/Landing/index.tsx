@@ -16,19 +16,18 @@ import PageHeader from '../../components/PageHeader';
 function Landing(){
     const [totalConnections, setTotalConnections] = useState(0);
 
+  
     useEffect(() => {
-        api.get('userQtd').then(response => {
-            const total = response.data;
-
-            setTotalConnections(total);
+        api.get("userQtd").then(response => {
+            setTotalConnections(response.data);
         })
-    }, [])
+      }, [])
 
     return (
      <div id="page-landing">
          <header>
         <Link to="/about">Sobre</Link>
-        <Link to="/contact">contato</Link>
+        <Link to="/contact">Contato</Link>
          </header>
          <div id="page-landing-content" className="container">
              <div className="logo-container">
@@ -55,7 +54,7 @@ function Landing(){
             </div>
 
             <span className="total-connections">
-                 Um total de {totalConnections} usuários cadastrados  <img src={redHeartIcon} alt="Coração roxo"/>
+                 Um Total de {totalConnections} usuarios cadastrados  <img src={redHeartIcon} alt="Coração roxo"/>
 
             </span>
          </div>

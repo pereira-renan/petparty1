@@ -11,6 +11,7 @@ import DivAviso from '../../components/DivAviso/index';
 
 
 import "./styles.css";
+import PageHeader from "../../components/PageHeader";
 
 export default function Register() {
   const [nome, setNome] = useState("");
@@ -302,6 +303,8 @@ export default function Register() {
 
   return (
     <main>
+       <PageHeader button1="Sobre" button2="Contato" button3="Entrar"
+            link1="/about" link2="/contact" link3="/login"/>
       <CardCentral>
         <form className="form-auth" onSubmit={handleRegister} id="form">
           <FormHeader nomeArea="cadastro">

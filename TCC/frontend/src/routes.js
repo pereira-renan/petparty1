@@ -8,16 +8,18 @@ import Profile from "./pages/Profile";
 import Pets from "./pages/Pets";
 import EsqueceuSenha from "./pages/EsqueceuSenha";
 import Landing from './pages/Landing';
-
+import About from './pages/About';
+import Contact from './pages/Contact';
 import Header from './pages/common/template/header';
 
 export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={Landing} />
+        <Route exact path="/" exact component={Landing} />
         <Route exact path="/login" component={Login} />
-        <Route path="/dashboard" component={Dashboard} />
+        <Route exact path="/about" component={About} />
+        <Route exact path="/contact" component={Contact} />
         <Route exact path="/register" component={Cadastro} />
         <Route exact path="/remember" component={EsqueceuSenha} />
         <Route exact path="/dashboard" component={Dashboard} />

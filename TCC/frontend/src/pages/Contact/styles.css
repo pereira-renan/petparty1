@@ -3,9 +3,8 @@
     width: 90vw;
     max-width: 1000rem;
     margin-top: 50px;
-    background-color: var(--color-primary);
 }
-#page-about {
+#page-contact {
     width: 98vw;
     height: 105vh;
     margin: 0;
@@ -19,42 +18,40 @@
 
     background: var(--color-primary);
     font: 700 1.6rem Poppins;
-    
     color: #ffffff;
 }
 
-#page-about h2 {
+#page-contact h2 {
     font-family: Circular, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif!important;
     font-weight: 600;
 }
 
-#page-about-content {
+#page-contact-content {
     width: 90%;
-    
 }
 
-#page-about-content .dois {
-    margin-bottom: 20px;
-    
-    
+#page-contact-content .dois {
+    margin-top: 150px;
+    align-items: center;
+    justify-content: center;
 }
-#page-about-content .dois h2{
-    margin: 0;
-}
-
-#page-about-content .pq h2{
-    margin: 0;
+#page-contact-content .dois h2{
+    font:700 3rem Poppins;
 }
 
 @media(min-width: 1100px) {
-    #page-about{
+    #page-contact{
         height: 110vh;
         overflow: hidden;
 
         display: flex;
     }
+    
 
-    #page-about-content {
+    #page-contact-content {
         width: 70%;
+    }
+    #page-contact-content .dois {
+        margin-left: 30%;
     }
 }

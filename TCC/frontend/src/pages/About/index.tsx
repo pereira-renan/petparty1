@@ -5,21 +5,13 @@ import api from '../../services/api';
 import logoImg from '../../assets/images/Logopet.png';
 
 import './styles.css';
+import PageHeader from '../../components/PageHeader';
 
 function About() {
     return (
         <div id="page-about">
-            <header>
-                <Link to="/">
-                    <img src={logoImg} alt="PetParty" />
-                </Link>
-                <div className="links">
-                    <Link to="/contact">Contato</Link>
-                    <Link to="/about">Cadastrar</Link>
-                    <Link to="/contact">Entrar</Link>
-                </div>
-
-            </header>
+            <PageHeader button1="Contato" button2="Cadastrar" button3="Entrar"
+            link1="/contact" link2="/register" link3="/login"/>
             <div id="page-about-content" className="container">
                 <div className="um">
                     <h2>Olá!</h2>
