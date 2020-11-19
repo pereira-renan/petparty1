@@ -67,7 +67,7 @@ export default function Login() {
           <div className="grid">
             <div>
               <input checked={lembrarUser} id="lembrarUsuario" type="checkbox" name="lembrarUsuario" onClick={e => setLembrarUserStorage(e.target.checked)}/>
-              <label htmlFor="lembrarUsuario">Lembrar meu usuário</label>
+              <label htmlFor="lembrarUsuario">Lembrar email</label>
             </div>
             <div>
               <a className="a-auth" href={"/remember"}>Esqueceu a senha?</a>

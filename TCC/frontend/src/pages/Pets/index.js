@@ -42,6 +42,8 @@ export default function Profile() {
 
   const [validacaoNome, setValidacaoNome] = useState(true);
 
+  const [catchSuccess, setCatchSuccess] = useState(false);
+
   const token = sessionStorage.getItem("token");
 
   useEffect(() => {
@@ -55,6 +57,7 @@ export default function Profile() {
   }, [atualiza])
 
   async function adicionaPet(e) {
+    setCatchSuccess(false);
     const infos = { nome, idade, raca, tipo_pet, porte };
     if(nome === '' || (idade === '' || idade < 0) || (raca === '' || raca === 'Selecione o tipo') || tipo_pet === 'NovoPet' || (porte === '' || porte === 'Selecione o porte')) {
       alert('PREENCHA TODOS OS CAMPOS DO PET A SER ADICIONADO');
@@ -66,6 +69,7 @@ export default function Profile() {
             token: sessionStorage.getItem("token")
           }
         }).then(() => {
+          setCatchSuccess(true);
           setNome("");
           setTipoPet("NovoPet");
           setRaca("");
@@ -73,6 +77,9 @@ export default function Profile() {
           setIdade("");
         });
         setAtualiza(!atualiza);
+        setTimeout(() => {
+					setCatchSuccess(false);
+				}, 4000);
     } catch (error) {
         console.log(error)
     }

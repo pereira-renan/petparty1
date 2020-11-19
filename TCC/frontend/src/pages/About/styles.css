@@ -1,0 +1,83 @@
+.container {
+    height: 100vh;
+    width: 90vw;
+    max-width: 1000rem;
+    margin-top: 50px;
+}
+#page-about {
+    width: 98vw;
+    height: 105vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background: var(--color-primary);
+    font: 700 1.6rem Poppins;
+    color: #000000;
+}
+#page-about header {
+    width: 95%;
+    
+    margin: 0 auto;
+    display: flex;
+
+    align-items: center;
+    padding: 1.6rem 0;
+    justify-content: space-between;
+   
+    font:700 1.8rem Poppins;
+}
+
+#page-about header img {
+    width: 12rem;
+}
+
+#page-about header .links a {
+    color: #FFFFFF;
+    padding-left: 1.2rem;
+    
+}
+
+#page-about header a:hover {
+    color: #c9c3ba;
+}
+
+#page-about-content {
+    width: 90%;
+}
+
+#page-about-content .dois {
+    margin-bottom: 20px;
+}
+#page-about-content .dois h2{
+    margin: 0;
+}
+
+#page-about-content .pq h2{
+    margin: 0;
+}
+
+@media(min-width: 1100px) {
+    #page-about{
+        height: 110vh;
+        overflow: hidden;
+
+        display: flex;
+    }
+    #page-about header{
+        justify-content: space-between;
+        justify-items: end;
+    }
+    #page-about header a{
+        padding-left: 1.2rem;
+    }
+
+    #page-about-content {
+        width: 70%;
+    }
+}

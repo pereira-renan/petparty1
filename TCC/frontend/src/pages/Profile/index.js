@@ -38,6 +38,9 @@ export default function Profile(props) {
   const [cuidador, setCuidador] = useState([]);
   const [dono, setDono] = useState([]);
   const [criadoEm, setCriadoEm] = useState([]);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [latitude, setLatitude] = useState([]);
   const [longitude, setLongitude] = useState([]);
@@ -48,10 +51,14 @@ export default function Profile(props) {
   const [rua, setRua] = useState("");
   const [numero, setNumero] = useState("");
 
+  let usuario_validado = false;
+
   const [validacaoNome, setValidacaoNome] = useState(true);
   const [validacaoEmail, setValidacaoEmail] = useState(true);
   const [validacaoTelefone, setValidacaoTelefone] = useState(true);
   const [validacaoTipo, setValidacaoTipo] = useState(true);
+  const [validacaoNewPassword, setValidacaoNewPassword] = useState(true);
+  const [validacaoConfirmPassword, setValidacaoConfirmPassword] = useState(true);
 
   const [validacaoLatitude, setValidacaoLatitude] = useState(true);
   const [validacaoLongitude, setValidacaoLongitude] = useState(true);
@@ -64,6 +71,7 @@ export default function Profile(props) {
   const [validacaoNumero, setValidacaoNumero] = useState(true);
 
   const [uploadFoto, setUploadFoto] = useState([]);
+  const [atualiza, setAtualiza] = useState(false);
 
   const token = sessionStorage.getItem("token");
 
@@ -106,7 +114,7 @@ export default function Profile(props) {
       }
       //setInfo(response.data);
     }) 
-  }, [localStorage.getItem("token")])
+  }, [atualiza])
 
   useEffect(() => {
     if(!flagPerfilPessoal) {
@@ -116,20 +124,29 @@ export default function Profile(props) {
         } 
       }).then(response => {
         try {
-          setId(response.data.id);
-          setUrl(response.data.url);
-          setNome(response.data.nome);
-          setTelefone(response.data.telefone);
-          //setLatitude(response.data.location.coordinates[0]);
-          //setLongitude(response.data.location.coordinates[1]);
+          console.log(response.data)
+          setId(response.data.user.id);
+          setUrl(response.data.user.url);
+          setNome(response.data.user.nome);
+          setTelefone(response.data.user.telefone);
+          setCep(response.data.user.endereco.cep);
+          setEstado(response.data.user.endereco.estado);
+          setCidade(response.data.user.endereco.cidade);
+          setBairro(response.data.user.endereco.bairro);
+          setRua(response.data.user.endereco.rua);
+          setNumero(response.data.user.endereco.numero);
+          setDescricao(response.data.user.descricao);
+
+          setInfoPets(response.data.pets);
         } catch(e) {
           console.log(e)
         }
         
       })
     }
-  })
+  }, [true])
 
+  /*
   useEffect(() => {
     if(!flagPerfilPessoal) {
       api.get("pets", {
@@ -142,6 +159,7 @@ export default function Profile(props) {
       })
     }
   }, infoPets)
+  */
 
   function validaTipo(userCuidador) {
     if(userCuidador === '') {
@@ -240,39 +258,112 @@ export default function Profile(props) {
     return numero;
   }
 
+  function validaSenha(newPassword) {
+    setNewPassword(newPassword);
+    validaConfirmSenha(newPassword);
+    setValidacaoNewPassword(!!newPassword.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/));
+    if (newPassword === '') return false;
+    return validacaoNewPassword;
+  }
+
+  function validaConfirmSenha(newPassword) {
+    setValidacaoConfirmPassword(confirmPassword === newPassword);
+    if (confirmPassword === '') return false;
+    return validacaoConfirmPassword;
+  }
+
   function updateInfoProfile() {
+    let valido = true;
+
+    valido = validaNome(nome) && valido;
+    valido = validaEmail(email) && valido;
+    valido = validaTelefone(telefone) && valido;
+    valido = validaCep(cep) && valido;
+    valido = validaEstado(estado) && valido;
+    valido = validaCidade(cidade) && valido;
+    valido = validaBairro(bairro) && valido;
+    valido = validaRua(rua) && rua;
+    valido = validaNumero(numero) && valido;
+
+    usuario_validado = valido;
+
+    if(usuario_validado) {
     updateFile();
     setaCoordenadas(`${cep}+${estado}+${cidade}+${bairro}+${rua}+${numero}`)
-    const endereco = {
-      cep: cep,
-      estado: estado,
-      cidade: cidade,
-      bairro: bairro,
-      rua: rua,
-      numero: numero,
+      const endereco = {
+        cep: cep,
+        estado: estado,
+        cidade: cidade,
+        bairro: bairro,
+        rua: rua,
+        numero: numero,
+      }
+      const location = {
+        coordinates: [longitude, latitude],
+        _id: locationResponse._id,
+        type: locationResponse.type
+      }
+      const infos = { 
+        nome: nome, 
+        email: email, 
+        user_cuidador: cuidador, 
+        telefone: telefone,
+        descricao: descricao,
+        endereco: endereco,
+        location: location
+      };
+      api.put("user/update", infos, {
+        headers: {
+          token: sessionStorage.getItem("token")
+        } 
+      }).then(response => {
+        console.log(response)
+        console.log('aaaaaaaaaaaaaa')
+        setInfo(response.data)
+        setAtualiza(!atualiza);
+      })
+    } else {
+      console.log(validacaoNome,
+        validacaoEmail,
+        validacaoTelefone,
+        validacaoTipo,
+        validacaoCep,
+        validacaoEstado,
+        validacaoCidade,
+        validacaoBairro,
+        validacaoRua,
+        validacaoNumero,
+        usuario_validado);
     }
-    const location = {
-      coordinates: [longitude, latitude],
-      _id: locationResponse._id,
-      type: locationResponse.type
+  }
+
+  function updateSenha() {
+    let valido = true;
+
+    valido = validaSenha(newPassword) && valido;
+    valido = validaConfirmSenha(newPassword) && valido;
+
+    usuario_validado = valido;
+
+    if(usuario_validado) {
+      const infos = { 
+        oldpassword: oldPassword, 
+        password: newPassword, 
+      };
+      api.put("user/update/password", infos, {
+        headers: {
+          token: sessionStorage.getItem("token")
+        } 
+      }).then(response => {
+        console.log(response)
+        console.log('aaaaaaaaaaaaaa')
+        setAtualiza(!atualiza);
+      })
+    } else {
+      console.log(validacaoNewPassword,
+        validacaoConfirmPassword,
+        usuario_validado);
     }
-    const infos = { 
-      nome: nome, 
-      email: email, 
-      user_cuidador: cuidador, 
-      telefone: telefone,
-      descricao: descricao,
-      endereco: endereco,
-      location: location
-    };
-    api.put("user/update", infos, {
-      headers: {
-        token: sessionStorage.getItem("token")
-      } 
-    }).then(response => {
-      console.log(response)
-      console.log('aaaaaaaaaaaaaa')
-    })
   }
 
   function setaCoordenadas(address) {
@@ -293,11 +384,16 @@ export default function Profile(props) {
   }
 
   function updateFile() {
+    let photo = document.getElementById("uploadFoto").files[0];
+    let formData = new FormData();
+
+    formData.append("file", photo);
+
     console.log(uploadFoto)
-    api.post("files", {'file': uploadFoto}, {
+    api.post("files", formData, {
       headers: {
         token: sessionStorage.getItem("token"),
-        objeto: 'User'
+        enctype: "multipart/form-data"
       } 
     }).then(response => {
       try {
@@ -312,7 +408,7 @@ export default function Profile(props) {
 
   return (
     <div>
-      <Header/>
+      <Header atualiza={atualiza}/>
       <SideBar/>
       <Content title="Perfil">
         <div className="row">
@@ -332,37 +428,47 @@ export default function Profile(props) {
                       <label htmlFor="email">Email</label><br/>
                       <Input.text value={email} validado={validacaoEmail} onBlur={e => validaEmail(email)} onChange={e => setEmail(e.target.value)} type="email" placeHolder="Email" />
                       <DivAviso.validacao value={!validacaoEmail && email !== ''} text="Por favor, digite um EMAIL válido." />
-                      <label htmlFor="cpf">Cpf</label><br/>
-                      <Input.text value={cpf} type="text" placeHolder="Cpf" disabled/>
-                      <label htmlFor="telefone">Telefone</label><br/>
-                      <Input.text value={telefone} validado={validacaoTelefone} onBlur={e => validaTelefone(telefone)} onChange={e => setTelefone(e.target.value)} type="text" placeHolder="Telefone" />
-                      <DivAviso.validacao value={!validacaoTelefone && telefone !== ''} text="Por favor, digite um TELEFONE válido no padrão +99 (99) 9999-9999." />
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="cpf">Cpf</label><br/>
+                        <Input.text value={cpf} type="text" placeHolder="Cpf" disabled/>
+                      </div>
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="telefone">Telefone</label><br/>
+                        <Input.text value={telefone} validado={validacaoTelefone} onBlur={e => validaTelefone(telefone)} onChange={e => setTelefone(e.target.value)} type="text" placeHolder="Telefone" />
+                        <DivAviso.validacao value={!validacaoTelefone && telefone !== ''} text="Por favor, digite um TELEFONE válido no padrão +99 (99) 9999-9999." />
+                      </div>
                       <label htmlFor="cep">CEP</label><br/>
                       <Input.text value={cep} validado={validacaoCep} onBlur={e => validaCep(cep)} onChange={e => setCep(e.target.value)} type="text" placeHolder="CEP" id="cep" name="cep" />
                       <DivAviso.validacao value={!validacaoCep && cep !== ''} text="Você deve digitar seu CEP acima." />
-                      <label htmlFor="estado">Estado</label><br/>
-                      <Input.text value={estado} validado={validacaoEstado} onBlur={e => validaEstado(estado)} onChange={e => setEstado(e.target.value)} type="text" placeHolder="Estado" id="estado" name="estado" />
-                      <DivAviso.validacao value={!validacaoEstado && estado !== ''} text="Você deve digitar seu Estado acima." />
-                      <label htmlFor="cidade">Cidade</label><br/>
-                      <Input.text value={cidade} validado={validacaoCidade} onBlur={e => validaCidade(cidade)} onChange={e => setCidade(e.target.value)} type="text" placeHolder="Cidade" id="cidade" name="cidade" />
-                      <DivAviso.validacao value={!validacaoCidade && cidade !== ''} text="Você deve digitar sua Cidade acima." />
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="estado">Estado</label><br/>
+                        <Input.text value={estado} validado={validacaoEstado} onBlur={e => validaEstado(estado)} onChange={e => setEstado(e.target.value)} type="text" placeHolder="Estado" id="estado" name="estado" />
+                        <DivAviso.validacao value={!validacaoEstado && estado !== ''} text="Você deve digitar seu Estado acima." />
+                      </div>
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="cidade">Cidade</label><br/>
+                        <Input.text value={cidade} validado={validacaoCidade} onBlur={e => validaCidade(cidade)} onChange={e => setCidade(e.target.value)} type="text" placeHolder="Cidade" id="cidade" name="cidade" />
+                        <DivAviso.validacao value={!validacaoCidade && cidade !== ''} text="Você deve digitar sua Cidade acima." />
+                      </div>
                       <label htmlFor="bairro">Bairro</label><br/>
                       <Input.text value={bairro} validado={validacaoBairro} onBlur={e => validaBairro(bairro)} onChange={e => setBairro(e.target.value)} type="text" placeHolder="Bairro" id="bairro" name="bairro" />
                       <DivAviso.validacao value={!validacaoBairro && bairro !== ''} text="Você deve digitar seu Bairro acima." />
-                      <label htmlFor="rua">Rua</label><br/>
-                      <Input.text value={rua} validado={validacaoRua} onBlur={e => validaRua(rua)} onChange={e => setRua(e.target.value)} type="text" placeHolder="Rua" id="rua" name="rua" />
-                      <DivAviso.validacao value={!validacaoRua && rua !== ''} text="Você deve digitar sua Rua acima." />
-                      <label htmlFor="numero">Número</label><br/>
-                      <Input.text value={numero} validado={validacaoNumero} onBlur={e => validaNumero(numero)} onChange={e => setNumero(e.target.value)} type="number" placeHolder="Numero" id="numero" name="numero" />
-                      <DivAviso.validacao value={!validacaoNumero && numero !== ''} text="Você deve digitar o Número da sua residência acima." />
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="rua">Rua</label><br/>
+                        <Input.text value={rua} validado={validacaoRua} onBlur={e => validaRua(rua)} onChange={e => setRua(e.target.value)} type="text" placeHolder="Rua" id="rua" name="rua" />
+                        <DivAviso.validacao value={!validacaoRua && rua !== ''} text="Você deve digitar sua Rua acima." />
+                      </div>
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="numero">Número</label><br/>
+                        <Input.text value={numero} validado={validacaoNumero} onBlur={e => validaNumero(numero)} onChange={e => setNumero(e.target.value)} type="number" placeHolder="Numero" id="numero" name="numero" />
+                        <DivAviso.validacao value={!validacaoNumero && numero !== ''} text="Você deve digitar o Número da sua residência acima." />
+                      </div>
                       <div className="col-xs-6 resetPadding">
                         <Input.text value={latitude} onChange={e => setLatitude(e.target.value)} type="hidden" placeHolder="Latitude" />
                       </div>
                       <div className="col-xs-6 resetPadding">
                         <Input.text value={longitude} onChange={e => setLongitude(e.target.value)} type="hidden" placeHolder="Longitude" />
                       </div>
-                      <label htmlFor="descricao">Descrição</label><br/>
-                      <Input.text value={descricao} onChange={e => setDescricao(e.target.value)} type="text" placeHolder="Descrição" />
                     </form>
                   </>
                   :
@@ -375,30 +481,36 @@ export default function Profile(props) {
                       <Input.text value={telefone}  type="text" placeHolder="Telefone" disabled/>
                       <label htmlFor="cep">CEP</label><br/>
                       <Input.text value={cep} type="text" placeHolder="CEP" id="cep" name="cep" disabled/>
-                      <DivAviso.validacao value={false} text="Você deve digitar seu CEP acima." />
-                      <label htmlFor="estado">Estado</label><br/>
-                      <Input.text value={estado} type="text" placeHolder="Estado" id="estado" name="estado" disabled/>
-                      <DivAviso.validacao value={false} text="Você deve digitar seu Estado acima." />
-                      <label htmlFor="cidade">Cidade</label><br/>
-                      <Input.text value={cidade} type="text" placeHolder="Cidade" id="cidade" name="cidade" disabled/>
-                      <DivAviso.validacao value={false} text="Você deve digitar sua Cidade acima." />
+                      <DivAviso.validacao value={false} text="Você deve digitar corretamente seu CEP acima." />
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="estado">Estado</label><br/>
+                        <Input.text value={estado} type="text" placeHolder="Estado" id="estado" name="estado" disabled/>
+                        <DivAviso.validacao value={false} text="Você deve digitar corretamente seu Estado acima." />
+                      </div>
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="cidade">Cidade</label><br/>
+                        <Input.text value={cidade} type="text" placeHolder="Cidade" id="cidade" name="cidade" disabled/>
+                        <DivAviso.validacao value={false} text="Você deve digitar corretamente sua Cidade acima." />
+                      </div>
                       <label htmlFor="bairro">Bairro</label><br/>
                       <Input.text value={bairro} type="text" placeHolder="Bairro" id="bairro" name="bairro" disabled/>
-                      <DivAviso.validacao value={false} text="Você deve digitar seu Bairro acima." />
-                      <label htmlFor="rua">Rua</label><br/>
-                      <Input.text value={rua} type="text" placeHolder="Rua" id="rua" name="rua" disabled/>
-                      <DivAviso.validacao value={false} text="Você deve digitar sua Rua acima." />
-                      <label htmlFor="numero">Número</label><br/>
-                      <Input.text value={numero} type="text" placeHolder="Numero" id="numero" name="numero" disabled/>
-                      <DivAviso.validacao value={false} text="Você deve digitar o Número da sua residência acima." />
+                      <DivAviso.validacao value={false} text="Você deve digitar corretamente seu Bairro acima." />
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="rua">Rua</label><br/>
+                        <Input.text value={rua} type="text" placeHolder="Rua" id="rua" name="rua" disabled/>
+                        <DivAviso.validacao value={false} text="Você deve digitar corretamente sua Rua acima." />
+                      </div>
+                      <div className="col-xs-6 resetPadding">
+                        <label htmlFor="numero">Número</label><br/>
+                        <Input.text value={numero} type="text" placeHolder="Numero" id="numero" name="numero" disabled/>
+                        <DivAviso.validacao value={false} text="Você deve digitar corretamente o Número da sua residência acima." />
+                      </div>
                       <div className="col-xs-6 resetPadding">
                         <Input.text value={latitude} type="hidden" placeHolder="Latitude" disabled/>
                       </div>
                       <div className="col-xs-6 resetPadding">
                         <Input.text value={longitude} type="hidden" placeHolder="Longitude" disabled/>
                       </div>
-                      <label htmlFor="descricao">Descrição</label><br/>
-                      <Input.text value={descricao} type="text" placeHolder="Descrição" disabled/>
                     </form>
                   </>
                 }
@@ -408,7 +520,9 @@ export default function Profile(props) {
                 <span>Foto</span>
                 {flagPerfilPessoal ?
                   <>
-                    <input value={uploadFoto} onChange={e => setUploadFoto(e.target.value)} id="uploadFoto" type="file"></input>
+                    <div className="containerUploadFoto">
+                      <input value={uploadFoto} onChange={e => setUploadFoto(e.target.value)} id="uploadFoto" type="file"></input>
+                    </div>
                   </>
                   :
                   <>
@@ -418,6 +532,11 @@ export default function Profile(props) {
                 {flagPerfilPessoal ?
                   <>
                     <div className="perfil-pessoal">
+                      <label htmlFor="descricao">Descrição</label><br/>
+                      <textarea name="textarea" value={descricao} onChange={e => setDescricao(e.target.value)} placeholder="Descrição" className="txtAreaDescricao"
+                        rows="4"
+                        minlength="0" maxlength="200">
+                      </textarea>
                       <span>Como você se considera?</span>
                       <div className="grid">
                         <Input.radio id="cuidador" name="tipo" value={cuidador} onClick={e => validaTipo(true)} htmlFor="cuidador" text="Cuidador" />
@@ -430,6 +549,10 @@ export default function Profile(props) {
                   :
                   <>
                     <div className="perfil-terceiro">
+                      <label htmlFor="descricao">Descrição</label><br/>
+                      <textarea name="textarea" value={descricao} placeholder="Descrição" className="txtAreaDescricao" disabled
+                        rows="4">
+                      </textarea>
                       <span>Que tal baterem um papo? Clique aqui para ir até o Whatsapp!</span>
                       <Button.secundario type="button" name="chamar" text="Chamar" 
                         href={`https://api.whatsapp.com/send?phone=${telefone}&text=Olá%20${nome}!%20Encontrei%20seu%20contato%20pelo%20PetParty!%20Me%20chamo%20${infoUser.nome},%20podemos%20conversar?`} 
@@ -443,6 +566,24 @@ export default function Profile(props) {
 
           {flagPerfilPessoal ?
             <>
+              <div className="col-xs-12">
+                <div className="box box-profile box-trocaSenha">
+                  <div className="titulo-card form-user">
+                    <h4>Trocar a senha</h4>
+                  </div> 
+                  <Input.text value={oldPassword} onChange={e => setOldPassword(e.target.value)} type="password" placeHolder="Senha Atual" id="atualSenha" name="atualSenha" />
+
+                  <div className="col-xs-6 resetPadding">
+                    <Input.text value={newPassword} validado={validacaoNewPassword} onBlur={e => validaSenha(newPassword)} onChange={e => setNewPassword(e.target.value)} type="password" placeHolder="Nova Senha" id="novaSenha" name="novaSenha" />
+                    <DivAviso.validacao value={!validacaoNewPassword && newPassword !== ''} text="Sua senha deve ter no mínimo 8 caracteres, pelo menos 1 letra, 1 número e 1 caractere especial." />
+                  </div>
+                  <div className="col-xs-6 resetPadding">
+                    <Input.text value={confirmPassword} validado={validacaoConfirmPassword} onBlur={e => validaConfirmSenha(newPassword)} onChange={e => setConfirmPassword(e.target.value)} type="password" placeHolder="Confirme sua Nova Senha" id="confirmSenha" name="confirmSenha" />
+                    <DivAviso.validacao value={!validacaoConfirmPassword && confirmPassword !== ''} text="Você deve digitar a mesma senha digitada no campo acima." />
+                  </div>
+                  <input id="btnAtualizar" name="btnAtualizar" type="submit" value="Atualizar" onClick={e => updateSenha()}></input>
+                </div>
+              </div>
             </>
             :
             <>

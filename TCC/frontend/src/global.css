@@ -61,7 +61,6 @@ html, body, #root {
   height: 100vh;
   background-color: var(--color-primary);
 }
-
 body {
   margin: 0 auto;
   background-color: var(--cor-fundo-secundaria);
@@ -82,11 +81,13 @@ body {
   background: var(--color-background);
 }
 
+/*
 #root {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+*/
 
 body,
 input,
@@ -144,7 +145,7 @@ a {
 }
 
 .form-auth {
-  width: 420px;
+  width: 480px;
   border-radius: 5px;
   background-color: var(--cor-fundo-secundaria);
   border-style: solid;
@@ -180,17 +181,17 @@ a {
 
 .bg-Cachorro {
   background-color: #17a2b8;
-  min-height: 181px;
+  min-height: 197px;
 }
 
 .bg-Gato {
   background-color: #3d9970;
-  min-height: 181px;
+  min-height: 197px;
 }
 
 .bg-Peixe {
   background-color: #F08080;
-  min-height: 181px;
+  min-height: 197px;
 }
 
 .box-NovoPet {
@@ -199,7 +200,7 @@ a {
 
 .bg-NovoPet {
   background-color: var(--cor-fundo-primaria);
-  min-height: 181px;
+  min-height: 197px;
 }
 
 .titulo-card {
@@ -296,4 +297,17 @@ a {
     padding-right: 0px;
     padding-left: 0px;
   }
+}
+
+.user-header {
+  height: 185px !important;
+}
+
+.txtAreaDescricao {
+  width: 100%;
+  padding: 10px;
+}
+
+.txtAreaDescricao:click {
+  background: pink;
 }

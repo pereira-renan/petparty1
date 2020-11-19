@@ -67,6 +67,10 @@
     border-width: 2px;
 }
 
+.small-box {
+    color:var(--cor-texto-primaria);
+}
+
 .small-box .icon {
     font-size: 150px;
     right: 20px;

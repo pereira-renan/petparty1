@@ -25,7 +25,7 @@ export default function Header(props) {
         }).then(response => {
             setInfoUser(response.data);
         })
-    }, [localStorage.getItem("token")])
+    }, [props.atualiza])
 
     return(
         <header className='main-header'>

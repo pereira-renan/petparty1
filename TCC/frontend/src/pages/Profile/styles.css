@@ -7,8 +7,12 @@
     border-radius: 200px;
     margin-bottom: 20px;
 
-    width: 250px;
-    height: 250px;
+    width: 230px;
+    height: 230px;
+}
+
+.box-profile .input-radio {
+    width: 100% !important;
 }
 
 .box-profile .foto-profile, .form-profile {
@@ -36,6 +40,10 @@
     margin-bottom: 10px;
 }
 
+.form-profile .validacao {
+    margin-left: 0px;
+}
+
 .resetPadding {
     padding: 2px;
 }
@@ -46,4 +54,19 @@
 
 .small-box p {
     font-size: 19px;
+}
+
+.containerUploadFoto {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#uploadFoto {
+    margin: 0 auto;
+    max-width: 376px;
+}
+
+.box-trocaSenha input {
+    width: 100%;
+    margin-bottom: 10px;
 }

@@ -84,6 +84,12 @@ export default function Register() {
     valido = validaCpf(cpf) && valido;
     valido = validaTelefone(telefone) && valido;
     valido = validaTipo(user_cuidador) && valido;
+    valido = validaCep(cep) && valido;
+    valido = validaEstado(estado) && valido;
+    valido = validaCidade(cidade) && valido;
+    valido = validaBairro(bairro) && valido;
+    valido = validaRua(rua) && rua;
+    valido = validaNumero(numero) && valido;
     valido = validaSenha(password) && valido;
     valido = validaConfirmSenha(confirmPassword) && valido;
 
@@ -345,8 +351,11 @@ export default function Register() {
             <Input.radio id="usuario" name="tipo" value={user_normal} onClick={e => validaTipo(false)} htmlFor="usuario" text="Usuário" />
           </div>
 
-          <Input.text value={descricao} validado={validacaoDescricao} onBlur={e => validaDescricao(descricao)} onChange={e => setDescricao(e.target.value)} type="text" placeHolder="Descricao" id="descricao" name="descricao" />
-          <DivAviso.validacao value={!validacaoPassword && password !== ''} text="Você deve digitar uma Descrição acima." />
+          <textarea name="textarea" value={descricao} validado={validacaoDescricao} onBlur={e => validaDescricao(descricao)} onChange={e => setDescricao(e.target.value)} placeholder="Descrição" className="txtAreaDescricao"
+            rows="4"
+            minlength="0" maxlength="200">
+          </textarea>
+          <DivAviso.validacao value={!validacaoDescricao && descricao !== ''} text="Você deve digitar uma Descrição acima." />
           
           <Input.text value={password} validado={validacaoPassword} onBlur={e => validaSenha(password)} onChange={e => setPassword(e.target.value)} type="password" placeHolder="Senha" id="senha" name="senha" />
           <DivAviso.validacao value={!validacaoPassword && password !== ''} text="Sua senha deve ter no mínimo 8 caracteres, pelo menos 1 letra, 1 número e 1 caractere especial." />
@@ -356,7 +365,7 @@ export default function Register() {
 
           <div></div>
           <div className="grid">
-            <Button.secundario type="button" name="login" text="Já possui cadastro?" href={"/"}/>
+            <Button.secundario type="button" name="login" text="Já possui cadastro?" href={"/login"}/>
             <Button.principal type="submit" name="cadastrar" text="Cadastrar"/>
           </div>
         </form>
