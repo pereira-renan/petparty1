@@ -51,13 +51,9 @@ const PetSchema = mongoose.Schema(
   }
 );
 
-PetSchema.virtual("url").get(function() {
-
-
+PetSchema.virtual("url").get(function () {
+  return `http://localhost:3333/files/${this.avatar.path}`;
 });
-
-// transformando a senha do usuario em hash antes de enviar para o banco
-
 
 
 

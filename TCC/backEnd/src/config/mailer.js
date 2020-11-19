@@ -1,28 +1,26 @@
-
 import nodemailer from "nodemailer";
 const path = require("path");
 const hbs = require("nodemailer-express-handlebars");
 
-
 let transporter = nodemailer.createTransport({
- service:'gmail',
+  service: "gmail",
   auth: {
-    user: "admorais.mateus@gmail.com",
-    pass: "Teste@123"
-  }
+    user: "petpartyhelp@gmail.com",
+    pass: "Pet.2020",
+  },
 });
-
-
 
 transporter.use(
   "compile",
   hbs({
-    viewEngine: "handlebars",
+    viewEngine: {
+      layoutDir: path.resolve("./src/resources/mail/"),
+      partialsDir: path.resolve("./src/resources/mail/"),
+    },
     viewPath: path.resolve("./src/resources/mail/"),
-    extName: ".html"
+
+    extName: ".html",
   })
 );
-
-
 
 export default transporter;
