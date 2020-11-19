@@ -353,6 +353,7 @@ export default function Register() {
             <Input.radio id="cuidador" name="tipo" value={user_cuidador} onClick={e => validaTipo(true)} htmlFor="cuidador" text="Cuidador" />
             <Input.radio id="usuario" name="tipo" value={user_normal} onClick={e => validaTipo(false)} htmlFor="usuario" text="Usuário" />
           </div>
+          <span id="descTipo">Cuidadores terão seu contato e sua descrição disponíveis no site para o acesso de todos!</span>
 
           <textarea name="textarea" value={descricao} validado={validacaoDescricao} onBlur={e => validaDescricao(descricao)} onChange={e => setDescricao(e.target.value)} placeholder="Descrição" className="txtAreaDescricao"
             rows="4"
