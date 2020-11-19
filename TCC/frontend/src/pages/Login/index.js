@@ -63,7 +63,7 @@ export default function Login() {
             link1="/about" link2="/contact" link3="/register"/>
       <CardCentral>
         <form className="form-auth" onSubmit={handleLogin}>
-          <FormHeader nomeArea="login">
+          <FormHeader nomeArea="Login">
             <DivAviso.erro value={catchError} text="Email ou senha estão incorretos"/>
           </FormHeader>
           <Input.text value={email} onChange={e => setEmail(e.target.value)} type="text" placeHolder="Email" />
