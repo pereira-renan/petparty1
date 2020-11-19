@@ -10,6 +10,7 @@ import DivAviso from '../../components/DivAviso/index';
 import api from "../../services/api";
 
 import "./styles.css";
+import PageHeader from "../../components/PageHeader";
 
 export default function Login() {
 
@@ -56,7 +57,10 @@ export default function Login() {
   }
 
   return (
+    
     <main>
+      <PageHeader button1="Sobre" button2="Contato" button3="Cadastrar"
+            link1="/about" link2="/contact" link3="/register"/>
       <CardCentral>
         <form className="form-auth" onSubmit={handleLogin}>
           <FormHeader nomeArea="login">
