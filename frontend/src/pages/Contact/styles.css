@@ -1,0 +1,57 @@
+.container {
+    height: 100vh;
+    width: 90vw;
+    max-width: 1000rem;
+    margin-top: 50px;
+}
+#page-contact {
+    width: 98vw;
+    height: 105vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background: var(--color-primary);
+    font: 700 1.6rem Poppins;
+    color: #ffffff;
+}
+
+#page-contact h2 {
+    font-family: Circular, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif!important;
+    font-weight: 600;
+}
+
+#page-contact-content {
+    width: 90%;
+}
+
+#page-contact-content .dois {
+    margin-top: 150px;
+    align-items: center;
+    justify-content: center;
+}
+#page-contact-content .dois h2{
+    font:700 3rem Poppins;
+}
+
+@media(min-width: 1100px) {
+    #page-contact{
+        height: 110vh;
+        overflow: hidden;
+
+        display: flex;
+    }
+    
+
+    #page-contact-content {
+        width: 70%;
+    }
+    #page-contact-content .dois {
+        margin-left: 30%;
+    }
+}

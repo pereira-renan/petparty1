@@ -1,0 +1,60 @@
+.container {
+    height: 100vh;
+    width: 90vw;
+    max-width: 1000rem;
+    margin-top: 50px;
+    background-color: var(--color-primary);
+}
+#page-about {
+    width: 98vw;
+    height: 105vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background: var(--color-primary);
+    font: 700 1.6rem Poppins;
+    
+    color: #ffffff;
+}
+
+#page-about h2 {
+    font-family: Circular, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif!important;
+    font-weight: 600;
+}
+
+#page-about-content {
+    width: 90%;
+    
+}
+
+#page-about-content .dois {
+    margin-bottom: 20px;
+    
+    
+}
+#page-about-content .dois h2{
+    margin: 0;
+}
+
+#page-about-content .pq h2{
+    margin: 0;
+}
+
+@media(min-width: 1100px) {
+    #page-about{
+        height: 110vh;
+        overflow: hidden;
+
+        display: flex;
+    }
+
+    #page-about-content {
+        width: 70%;
+    }
+}

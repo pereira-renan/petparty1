@@ -1,0 +1,21 @@
+.logo-formulario {
+    width: 100px;
+    display: inline-block;
+}
+
+.cabecalho-formulario {
+    text-align: center;
+    padding: 20px;
+}
+
+.hr-formulario {
+    border-color: var(--cor-fundo-body);
+    opacity: 0.7;
+}
+
+.descricao-formulario {
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    text-align: center;
+}

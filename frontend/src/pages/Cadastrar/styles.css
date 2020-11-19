@@ -1,0 +1,17 @@
+
+.desc-checkbox-tipo {
+    text-align: center;
+    display: block;
+}
+
+body {
+    background-color: var(--cor-fundo-primaria);
+}
+
+.form-auth .txtAreaDescricao {
+    width: 80% !important;
+    display: block;
+    flex-direction: column;
+    margin: 0 auto !important;
+    margin-bottom: 15px !important;
+}

@@ -1,0 +1,35 @@
+:root {
+    --cor-fundo-aviso-erro: #FF6961;
+    --cor-fundo-aviso-sucesso: #77DD77;
+
+    --cor-texto-aviso: #FFFAFA;
+
+    --cor-texto-aviso-validacao: #FF6961;
+}
+
+.aviso{
+    margin: 0 auto;
+    width: 80%;
+    color: var(--cor-texto-aviso);
+    padding: 5px;
+    border-radius: 4px;
+    display: block;
+}
+.visivel {
+    display: block;
+}
+.invisivel {
+    display: none;
+}
+.erro {
+    background: var(--cor-fundo-aviso-erro);
+}
+.sucesso {
+    background: var(--cor-fundo-aviso-sucesso);
+}
+
+.validacao {
+    margin-top: -15px;
+    margin-bottom: 10px;
+    color: var(--cor-texto-aviso-validacao)
+}

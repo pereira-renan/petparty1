@@ -1,0 +1,37 @@
+table {
+    text-align: center;
+}
+
+thead {
+    background: orange;
+}
+
+th {
+    padding: 2px 4px;
+    text-align: center;
+    border-style: solid;
+    border-color: orange;
+    color: white;
+    text-transform: capitalize;
+}
+
+td {
+    border-style: solid;
+    border-color: #dcdcdc;
+    border-width: 0.1px;
+}
+
+tbody tr:hover {
+    background: #dcdcdc;
+}
+
+img {
+    border-radius: 50px;
+    border-color: #dcdcdc;
+    border-width: 0.2px;
+    width: 50px;
+}
+
+.selecionado {
+    background: orange;
+}
